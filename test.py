@@ -1,33 +1,22 @@
 
-<<<<<<< HEAD
 from flask import *
-=======
-from flask import Flask
->>>>>>> 16cbff9303014f9c0e52c34e1fd7029a5de0cf18
 from sqlalchemy import *
 
 app = Flask(__name__)
 
 
-engine = create_engine('sqlite:///memory', echo=True)
+engine = create_engine('sqlite:///baseRotonde.db', echo=True)
 
 
-metadata = MetaData()
-
-valeurs = Table('valeurs',metadata,
-            Column( 'val',Integer))
-
-metadata.create_all(engine)
-
-connection=engine.connect()
-
+connection = engine.connect()
 
 @app.route('/test', methods=['GET','POST'])
 def function():
     if request.method=='GET':
         return render_template('ajoutvaleur.html')
     if request.method=='POST':
-        connection.execute(valeurs.insert(), [ {'val' : 10} ] )
+        connection = engine.connect()
+        connection.execute(places.insert(), [ {'date' :"mardi", "nomUser" : "Mickael"} ] )
         return redirect('/')
 
 @app.route('/')

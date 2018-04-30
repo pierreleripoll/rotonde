@@ -2,10 +2,12 @@ from sqlalchemy import *
 
 
 
-#engine = create_engine('sqlite:///baseRotonde.db', echo=True)
-engine = create_engine('sqlite:///:memory:', echo=True)
+engine = create_engine('sqlite:///baseRotonde.db', echo=True)
+
 
 metadata = MetaData()
+
+
 
 spectacle = Table('spectacle', metadata,
             Column('nom', String, primary_key=True),
