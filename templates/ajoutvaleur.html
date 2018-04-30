@@ -8,16 +8,23 @@
 
 <body>
 
-    <p>Now we add a value : </p>
+  <p>Now we add a value : </p>
 
-<form action="" method="POST">
-    <button name="foo" value="upvote" type="submit">Upvote</button>
-</form>
+  <form action="" method="POST">
+      <p>Nom du spectacle</p>
+      <input type="text" id="uname" name="name">
+      <p>Nombre de tickets</p>
+      <input type="number" id="uname" value="1">
+      <p>Date</p>
+      <input type="date" min="2017-09-14" max="2018-06-30" name="the_date">
+      <p>valider</p>
+      <button name="foo" value="valider" type="submit">Valider</button>
+  </form>
+
+  <p>Next Form for date<p>
+
+
 
 </body>
 
 </html>
-
-/*
-curl -d "param1=value1&param2=value2" -X POST http://localhost:3000/data
-*/
