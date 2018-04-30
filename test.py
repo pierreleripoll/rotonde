@@ -1,21 +1,29 @@
 
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask import *
+from sqlalchemy import *
 
 app = Flask(__name__)
 
 
-engine = create_engine('sqlite:////tmp/base.db', echo=True)
+engine = create_engine('sqlite:///memory', echo=True)
+
+
+metadata = MetaData()
+
+valeurs = Table('valeurs',metadata,
+            Column( 'val',Integer))
+
+metadata.create_all(engine)
 
 connection=engine.connect()
+
 
 @app.route('/test', methods=['GET','POST'])
 def function():
     if request.method=='GET':
         return render_template('ajoutvaleur.html')
     if request.method=='POST':
-        a=0
-        #connection.execute.append(request.form['post'])
+        connection.execute(valeurs.insert(), [ {'val' : 10} ] )
         return redirect('/')
 
 @app.route('/')
