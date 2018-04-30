@@ -1,5 +1,9 @@
 
+<<<<<<< HEAD
 from flask import *
+=======
+from flask import Flask
+>>>>>>> 16cbff9303014f9c0e52c34e1fd7029a5de0cf18
 from sqlalchemy import *
 
 app = Flask(__name__)
