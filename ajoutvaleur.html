@@ -10,10 +10,14 @@
 
     <p>Now we add a value : </p>
 
-<form action="" method="post">
-    <button name="foo" value="upvote">Upvote</button>
+<form action="" method="POST">
+    <button name="foo" value="upvote" type="submit">Upvote</button>
 </form>
 
 </body>
 
 </html>
+
+/*
+curl -d "param1=value1&param2=value2" -X POST http://localhost:3000/data
+*/
