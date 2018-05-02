@@ -69,7 +69,7 @@ def admin_log():
 @app.route('/admin', methods=['GET','POST'])
 def admin():
 
-    if "pseudo" :
+    if 'pseudo' in session :
         if request.method=='GET':
             return render_template('admin.html',pseudo = session["pseudo"])
         if request.method=='POST':
