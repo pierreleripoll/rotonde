@@ -49,6 +49,8 @@ def admin():
     if request.method=='GET':
         return render_template('admin.html')
     if request.method=='POST':
+        result = connection.execute(select([sessions]))
+        print(result.fetchall())
         return redirect('/')
 
 @app.route('/calendrier', methods=['GET','POST'])
