@@ -25,6 +25,10 @@ places = Table('places', metadata,
             Column('date', String, ForeignKey('calendrier.date')),
             Column('nomUser', String, nullable = False))
 
+sessions = Table('sessions', metadata,
+            Column('login',String,nullable=False),
+            Column('password',String,nullable=False))
+
 metadata.create_all(engine)
 
 connection = engine.connect()
@@ -38,6 +42,13 @@ def panier():
         print("HELLLO")
         connection = engine.connect()
         connection.execute(places.insert() , [ {"date":request.form["the_date"], "nomUser":request.form["name"]}] )
+        return redirect('/')
+
+@app.route('/admin', methods=['GET','POST'])
+def admin():
+    if request.method=='GET':
+        return render_template('admin.html')
+    if request.method=='POST':
         return redirect('/')
 
 @app.route('/calendrier', methods=['GET','POST'])
@@ -63,7 +74,7 @@ def logout():
         NomSpectacle.append(row)
     print("\n")
     if request.method=='GET':
-        return render_template('accueil.html', name=NomSpectacle)
+        return render_template('accueil.html', names=NomSpectacle)
     if request.method=='POST':
         if request.form["panier"] :
             print("panier")
