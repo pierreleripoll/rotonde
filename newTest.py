@@ -60,13 +60,6 @@ def calendrier():
     if request.method=='POST':
         return redirect('/')
 
-@app.route('/spectacle', methods=['GET','POST'])
-def spectacle():
-    if request.method=='GET':
-        return render_template('spectacle.html')
-    if request.method=='POST':
-        return redirect('/')
-
 @app.route('/', methods=['GET','POST'])
 def logout():
     connection = engine.connect()
@@ -84,9 +77,6 @@ def logout():
         elif request.form["bouton"] == "calendrier" :
             print("calendrier")
             return redirect('/calendrier')
-        elif request.form["bouton"] == "spectacle" :
-            print("spectacle")
-            return redirect('/spectacle')
         elif request.form["bouton"] == "admin":
             print("admin")
             return redirect('/admin')
