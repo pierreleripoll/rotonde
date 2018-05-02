@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Cart</title>
+</head>
+<body>
+
+  <table class="table table-striped">
+      <tr><th>Spectacle</th><th>Nombre de places</th><th>Prix par place</th><th>Total</th></tr>
+
+      {% for key, value in display_cart.iteritems() %}
+      <tr><td>{{value["name"]}}</td><td>{{value["qty"]}}</td><td>${{ "%.2f" % value["price"]}}</td><td>${{ "%.2f" % (value["qty"] * value["price"])}}</td></tr>
+      {% endfor %}
+
+  </table>
+  <h3>Total: ${{ "%.2f" % total }} </h3>
+
+  <a href="/checkout" class="btn btn-large btn-primary">Check Out</a>
+
+</body>
+</html>

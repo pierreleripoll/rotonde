@@ -1,26 +1,26 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <title>API</title>
+  <meta charset="utf-8">
+  <title>Sessions</title>
 </head>
 <body>
 
-  <h1>Additions</h1>
-  <p>
-    a = <input type="text" id="add-a" value="1"><br>
-    b = <input type="text" id="add-b" value="2"><br>
-    c = <span id="add-result"></span>
-  </p>
-<!--
-  <form action="/login" method="POST">
-    <p>
-      ... mais qui êtes vous ?
-      <input type="text" name="name">
-      <input type="submit" value="Voilà !">
-    </p> -->
+<p>{{ message }}</p>
 
-    <script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
-    <script src="/static/code.js"></script>
+{% if logged %}
+<p>
+  <a href="/logout">[logout]</a>
+</p>
+{% else %}
+<form action="/login" method="POST">
+  <p>
+    ... mais qui êtes vous ?
+    <input type="text" name="name">
+    <input type="submit" value="Voilà !">
+  </p>
+</form>
+{% endif %}
 
 </body>
 </html>
