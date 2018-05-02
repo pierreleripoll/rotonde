@@ -56,13 +56,16 @@ def spectacle():
 
 @app.route('/', methods=['GET','POST'])
 def logout():
+    connection = engine.connect()
+    NomSpectacle = []
+    for row in connection.execute('SELECT nom FROM spectacle'):
+        print(row)
+        NomSpectacle.append(row)
+    print("\n")
     if request.method=='GET':
-        return render_template('accueil.html')
+        return render_template('accueil.html', name=NomSpectacle)
     if request.method=='POST':
-        if request.form["calendrier"]:
-            print("youhouuuuuu")
-            return redirect('/calendrier')
-        elif request.form["panier"] :
+        if request.form["panier"] :
             print("panier")
             return redirect('/panier')
         elif request.form["calendrier"] :
