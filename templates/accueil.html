@@ -1,0 +1,35 @@
+<!doctype html>
+
+<html>
+
+<head>
+  <title>PAGE D'ACCUEIL</title>
+</head>
+
+<body>
+
+  <p class="parag special">Vous êtes sur le super accueil </p>
+
+  <form action="" method="POST">
+    <p> accéder au panier </p>
+    <button name="panier" value="panier" type="submit">PANIER</button>
+
+    <p> accéder au calendrer </p>
+    <button name="calendrier" value="calendrier" type="submit">CALENDRIER</button>
+
+    <p> section admin </p>
+    <button name="admin" value="admin" type="submit">ADMIN</button>
+
+    <p> liste shows </p>
+
+    <ul style="list-style-type:none">
+      {% for name in names %}
+      <li>{{name}}</li>
+      {% endfor %}
+      <li>oh Hai Mark</li>
+    </ul>
+  </form>
+
+</body>
+
+</html>
