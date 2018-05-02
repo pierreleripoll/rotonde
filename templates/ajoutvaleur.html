@@ -3,28 +3,23 @@
 <html>
 
 <head>
-    <title>Ajout Valeur</title>
+    <title>Panier</title>
 </head>
 
 <body>
 
-  <p>Now we add a value : </p>
+  <p>Votre Panier : </p>
 
   <form action="" method="POST">
-      <p>Votre Nom</p>
-      <input type="text" id="uname" name="name">
-      <p>Nombre de tickets</p>
-      <input type="number" id="uname" value="1">
-      <p>Date</p>
-      <input type="date" min="2017-09-14" max="2018-06-30" name="the_date">
-      <p>valider</p>
-      <button name="foo" value="valider" type="submit">Valider</button>
+      <ul style="list-style-type:none">
+        {% for produit in panier %}
+        <li>{{produit}}</li>
+        {% endfor %}
+      </ul>
+      <button name="foo" value="valider" type="submit">Valider votre commande</button>
   </form>
-
-  <p>Next Form for date<p>
-
-
 
 </body>
 
 </html>
+
