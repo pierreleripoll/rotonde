@@ -111,6 +111,15 @@ def logout():
 if __name__ == '__main__':
   app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
   app.run(debug=True)
+            
+class Place:
+    def __init__(self,nom,date,heure,nombre):
+        self.nom = nom
+        self.date = date
+        self.heure = heure
+        self.nombre = nombre
+    def setNombre(self,nombre):
+        self.nombre = nombre
 
 
 connection.close()
