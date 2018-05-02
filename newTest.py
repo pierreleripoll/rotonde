@@ -85,6 +85,9 @@ def logout():
         elif request.form["bouton"] == "spectacle" :
             print("spectacle")
             return redirect('/spectacle')
+        elif request.form["bouton"] == "admin":
+            print("admin")
+            return redirect('/admin')
         else :
             return redirect('/')
 
