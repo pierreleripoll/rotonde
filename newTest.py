@@ -37,12 +37,15 @@ def function():
     if request.method=='POST':
         print("HELLLO")
         connection = engine.connect()
-        connection.execute(places.insert() , [ {"date":"lundi", "nomUser":"roger"}] )
+        connection.execute(places.insert() , [ {"date":request.form["the_date"], "nomUser":request.form["name"]}] )
         return redirect('/')
 
 @app.route('/')
 def logout():
-  return 'Sauvegarde'
+    if request.method=='GET':
+        return render_template('allerPanier.html')
+    if request.method=='POST':
+        return redirect('/test')
 
 if __name__ == '__main__':
   app.run(debug=True)
