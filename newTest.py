@@ -3,9 +3,7 @@ from sqlalchemy import *
 from sqlalchemy.sql import *
 
 def traitement(s):
-    print(s)
-    for word in s:
-        print(word.keys())
+    return s
 
 
 app = Flask(__name__)
@@ -120,7 +118,7 @@ def logout():
 if __name__ == '__main__':
   app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
   app.run(debug=True)
-            
+
 class Place:
     def __init__(self,nom,date,heure,nombre):
         self.nom = nom
