@@ -25,3 +25,30 @@ class Spectacle:
 
     def __repr__(self):
         return "<Spectacle: %s, %s, %s€>"%(self.nom, self.resume, self.prix)
+
+
+# Connexion a la DB
+
+engine = create_engine('sqlite:///baseRotonde.db', echo=True)
+
+def connect(arg):
+    conn = engine.connect()
+    return conn
+
+
+# Renvoie une liste contenant tous les spectacles.
+def get_spectacles():
+    conn = connect()
+    query = 'SELECT nom, resume, prix, photos, liens FROM spectacle'
+    result = conn.execute(query)
+
+    spectacles = []
+
+    for row in result:
+        spectacle = Spectacle(row["nom"], row["resume"], row["prix"], row["photos"], row["liens"])
+
+        spectacles.append(spectacle)
+
+    conn.close()
+
+    return spectacles
