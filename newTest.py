@@ -67,15 +67,17 @@ def admin_log():
                 print(welcomeString)
                 print(len(welcomeString)*'*')
                 print("\n\n")
+                session['pseudo']=login.upper()
+                session['root']="true"
 
         return redirect('/')
 
 @app.route('/admin', methods=['GET','POST'])
 def admin():
-    pseudo = request.cookies.get("pseudo")
-    if pseudo :
+
+    if 'pseudo' in session :
         if request.method=='GET':
-            return render_template('admin.html')
+            return render_template('admin.html',pseudo = session["pseudo"])
         if request.method=='POST':
             return redirect('/')
     else :
@@ -116,7 +118,17 @@ def logout():
             return redirect('/')
 
 if __name__ == '__main__':
+  app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
   app.run(debug=True)
+            
+class Place:
+    def __init__(self,nom,date,heure,nombre):
+        self.nom = nom
+        self.date = date
+        self.heure = heure
+        self.nombre = nombre
+    def setNombre(self,nombre):
+        self.nombre = nombre
 
 
 connection.close()
