@@ -30,8 +30,8 @@ metadata.create_all(engine)
 connection = engine.connect()
 
 
-@app.route('/test', methods=['GET','POST'])
-def function():
+@app.route('/panier', methods=['GET','POST'])
+def panier():
     if request.method=='GET':
         return render_template('ajoutvaleur.html')
     if request.method=='POST':
@@ -40,12 +40,36 @@ def function():
         connection.execute(places.insert() , [ {"date":request.form["the_date"], "nomUser":request.form["name"]}] )
         return redirect('/')
 
-@app.route('/')
+@app.route('/calendrier', methods=['GET','POST'])
+def calendrier():
+    if request.method=='GET':
+        return render_template('calendrier.html')
+    if request.method=='POST':
+        return redirect('/')
+
+@app.route('/spectacle', methods=['GET','POST'])
+def spectacle():
+    if request.method=='GET':
+        return render_template('spectacle.html')
+    if request.method=='POST':
+        return redirect('/')
+
+@app.route('/', methods=['GET','POST'])
 def logout():
     if request.method=='GET':
-        return render_template('allerPanier.html')
+        return render_template('accueil.html')
     if request.method=='POST':
-        return redirect('/test')
+        if request.form["panier"] :
+            print("panier")
+            return redirect('/panier')
+        elif request.form["calendrier"] :
+            print("calendrier")
+            return redirect('/calendrier')
+        elif request.form["spectacle"] :
+            print("spectacle")
+            return redirect('/spectacle')
+        else :
+            return redirect('/')
 
 if __name__ == '__main__':
   app.run(debug=True)
