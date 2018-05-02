@@ -76,13 +76,13 @@ def logout():
     if request.method=='GET':
         return render_template('accueil.html', names=NomSpectacle)
     if request.method=='POST':
-        if request.form["panier"] :
+        if request.form["bouton"] == "panier" :
             print("panier")
             return redirect('/panier')
-        elif request.form["calendrier"] :
+        elif request.form["bouton"] == "calendrier" :
             print("calendrier")
             return redirect('/calendrier')
-        elif request.form["spectacle"] :
+        elif request.form["bouton"] == "spectacle" :
             print("spectacle")
             return redirect('/spectacle')
         else :
