@@ -4,5 +4,10 @@ ul{
 
 p
 {
-	color: blue;
+	color: red;
+}
+
+body
+{
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
 }
