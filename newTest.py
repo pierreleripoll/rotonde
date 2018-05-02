@@ -49,6 +49,7 @@ def admin():
     if request.method=='GET':
         return render_template('admin.html')
     if request.method=='POST':
+        connection = engine.connect()
         result = connection.execute(select([sessions]))
         print(result.fetchall())
         return redirect('/')
