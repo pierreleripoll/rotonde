@@ -17,6 +17,12 @@
       <button name="calendrier" value="calendrier" type="submit">CALENDRIER</button>
       <p> Aimez-vous les pamplemousses ?</p>
       <button name="spectacle" value="spectacle" type="submit">SPECTACLE</button>
+      <ul style="list-style-type:none">
+      {% for name in names %}
+      <li><p>name</p></li>
+      <!-- <li><a href="{{ url_for('upped', nom=img) }}">{{ img }}</a></li> -->
+      {% endfor %}
+      </ul>
   </form>
 
 </body>
