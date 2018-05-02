@@ -2,6 +2,12 @@ from flask import *
 from sqlalchemy import *
 from sqlalchemy.sql import *
 
+def traitement(s):
+    print(s)
+    for word in s:
+        print(word.keys())
+
+
 app = Flask(__name__)
 
 engine = create_engine('sqlite:///baseRotonde.db', echo=True)
@@ -91,6 +97,9 @@ def logout():
         print(row)
         NomSpectacle.append(row)
     print("\n")
+    NomSpectacle = traitement(NomSpectacle)
+    for row in  NomSpectacle:
+        print(row)
     if request.method=='GET':
         return render_template('accueil.html', names=NomSpectacle)
     if request.method=='POST':
