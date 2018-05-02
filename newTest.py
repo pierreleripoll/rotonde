@@ -59,7 +59,10 @@ def logout():
     if request.method=='GET':
         return render_template('accueil.html')
     if request.method=='POST':
-        if request.form["panier"] :
+        if request.form["calendrier"]:
+            print("youhouuuuuu")
+            return redirect('/calendrier')
+        elif request.form["panier"] :
             print("panier")
             return redirect('/panier')
         elif request.form["calendrier"] :
