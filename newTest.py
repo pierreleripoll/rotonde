@@ -44,15 +44,33 @@ def panier():
         connection.execute(places.insert() , [ {"date":request.form["the_date"], "nomUser":request.form["name"]}] )
         return redirect('/')
 
+@app.route('/admin_log', methods=['GET','POST'])
+def admin_log():
+    if request.method=='GET':
+        return render_template('admin_log.html')
+    if request.method=='POST':
+        connection = engine.connect()
+        result = connection.execute(select([sessions]))
+        login = request.form["login"]
+        password = request.form["password"]
+        for row in result :
+            if login == row[0] and password == row[1]:
+                welcomeString = "WELCOME "+login.upper()
+                print("\n\n")
+                print(len(welcomeString)*'*')
+                print(welcomeString)
+                print(len(welcomeString)*'*')
+                print("\n\n")
+
+        return redirect('/')
+
 @app.route('/admin', methods=['GET','POST'])
 def admin():
     if request.method=='GET':
         return render_template('admin.html')
     if request.method=='POST':
-        connection = engine.connect()
-        result = connection.execute(select([sessions]))
-        print(result.fetchall())
         return redirect('/')
+
 
 @app.route('/calendrier', methods=['GET','POST'])
 def calendrier():
