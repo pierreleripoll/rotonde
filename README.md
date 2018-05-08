@@ -18,6 +18,10 @@ Site de réservation de places à la Rotonde
 
 Vous pouvez ajouter les TODOs ici ! ;)
 
+# QUIFAITQUOI
+## Pierre
+ - Je commence la page html spectacle
+
 # Questions sur le projet
 
 ## Antoine
