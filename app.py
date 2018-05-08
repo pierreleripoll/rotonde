@@ -1,12 +1,20 @@
 from flask import *
 from sqlalchemy import *
 from sqlalchemy.sql import *
-
+from werkzeug.utils import secure_filename
+import os
 import model
 
+UPLOAD_FOLDER = './uploads'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER']= UPLOAD_FOLDER
 app.secret_key = 'iswuygdedgv{&75619892__01;;>..zzqwQIHQIWS'
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
@@ -47,7 +55,7 @@ def admin():
                 session.clear()
                 return redirect('/')
             if request.form["bouton"]=="create":
-                return redirect('/set_spectacle')
+                return redirect('/set_spectacle/nouveauSpectacle')
 
     else :
         return redirect('/admin_log')
@@ -100,7 +108,6 @@ def spectacle(nomSpectacle):
             return redirect('/set_spectacle/'+nomSpectacle)
 
 ## MODIFY SPECTACLE
-@app.route('/set_spectacle',defaults={'nomSpectacle' : ''})
 @app.route('/set_spectacle/<nomSpectacle>', methods=['GET','POST'])
 def set_spectacle(nomSpectacle):
     if 'admin' in session:
@@ -109,6 +116,24 @@ def set_spectacle(nomSpectacle):
             thisDates = model.get_dates(nomSpectacle)
             print(thisDates)
             return render_template('set_spectacle.html',spectacle = thisSpectacle)
+        if request.method=="POST":
+            if "nom" in request.form :
+                cont = request.form
+                spectacle = model.Spectacle(cont["nom"],cont["resume"],"test",cont["liens"])
+                # check if the post request has the file part
+                if 'photo' not in request.files:
+                    print("No photo")
+                else:
+                    file = request.files['photo']
+                    # if user does not select file, browser also
+                    # submit a empty part without filename
+                    if file.filename == '':
+                        flash('No selected file')
+                    if file and allowed_file(file.filename):
+                        filename = secure_filename(file.filename)
+                        #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                model.insert_spectacle(spectacle)
+                return redirect('/spectacle/'+request.form["nom"])
     else :
         return abort(403)
 

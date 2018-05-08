@@ -105,6 +105,12 @@ def get_spectacle(nomSpectacle):
 
     return spectacle
 
+def insert_spectacle(spectacle):
+    conn = connect()
+    query = '''INSERT INTO spectacle (nom,resume,photo,liens) VALUES ('''+"'"+spectacle.nom+"'"+","+"'"+spectacle.resume+"'"+","+"'"+spectacle.photos+"'"+","+"'"+spectacle.liens+"'"+")"
+    result = conn.execute(query)
+    return
+
 # Renvoie les dates disponibles pour un spectacles
 def get_dates(nomSpectacle):
     conn = connect()

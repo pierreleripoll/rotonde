@@ -10,11 +10,17 @@
 
   <p>Bienvenue sur la page de modification/création de spectacle : </p>
   <p>{{spectacle.nom}}
-  <form action="" method="POST">
+  <form action="" method="POST" enctype="multipart/form-data">
       Nom du spectacle:<br>
-      <input type="text" name="nomSpectacle" value='{{spectacle.nom}}'><br>
+      <input type="text" name="nom" value='{{spectacle.nom}}'><br>
       Résumé:<br>
-      <input type="text" name="résumé"value='{{spectacle.resume}}' size=50><br>
+      <input type="text" name="resume"value='{{spectacle.resume}}' size=50><br>
+      Photos:<br>
+      <input type="file" name="photo" accept=".png, .jpg, .jpeg" multiple><br>
+      Liens (Facebook, Instagram...):<br>
+      <input type="text" name="liens" value='{{spectacle.liens}}'><br>
+
+      <br>
       <button name="foo" value="valider" type="submit"}>Valider</button>
 
   </form>
