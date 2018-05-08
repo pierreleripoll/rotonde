@@ -31,6 +31,16 @@ metadata.create_all(engine)
 
 # Ici je definis des wrappers pour toutes les tables de la DB
 
+class Date:
+    def __init__(self,date,nom,placesRestantes):
+        self.date = date
+        self.nom = nom
+        self.placesRestantes = placesRestantes
+    def __str__(self):
+        return self.nom+","+self.date+","+str(self.placesRestantes)
+    def __repr__(self):
+        return str(self)
+
 class Place:
     def __init__(self,idPlace,nom,date,heure,nombre):
         self.idPlace = idPlace
@@ -71,9 +81,10 @@ def get_spectacles():
     conn = connect()
     query = 'SELECT nom, resume, photo, liens FROM spectacle'
     result = conn.execute(query)
-
-
-
+    spectacles = []
+    for row in result:
+        spectacle = Spectacle(row["nom"], row["resume"], row["photo"], row["liens"])
+        spectacles.append(spectacle)
     conn.close()
 
     return spectacles
@@ -85,7 +96,7 @@ def get_spectacle(nomSpectacle):
     name = "'" + nomSpectacle +"'"
     query = '''SELECT * FROM spectacle WHERE nom == '''+name
     result = conn.execute(query)
-
+    spectacle = None
     for row in result:
         spectacle = Spectacle(row["nom"], row["resume"], row["photo"], row["liens"])
 
@@ -93,6 +104,21 @@ def get_spectacle(nomSpectacle):
     conn.close()
 
     return spectacle
+
+# Renvoie les dates disponibles pour un spectacles
+def get_dates(nomSpectacle):
+    conn = connect()
+    name = "'" + nomSpectacle +"'"
+    query = '''SELECT * FROM calendrier WHERE nom == '''+name
+    result = conn.execute(query)
+    dates = []
+    for row in result:
+        date = Date(row["date"], row["nom"], row["placesRestantes"])
+        dates.append(date)
+
+    conn.close()
+
+    return dates
 
 def get_sessions():
     conn = connect()

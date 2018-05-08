@@ -86,7 +86,11 @@ def calendrier():
 @app.route('/spectacle/<nomSpectacle>', methods=['GET'])
 def spectacle(nomSpectacle):
     thisSpectacle = model.get_spectacle(nomSpectacle)
-    return render_template('spectacle.html',spectacle = thisSpectacle)
+    thisDates = model.get_dates(nomSpectacle)
+    print(thisDates)
+    if thisSpectacle == None :
+        return abort(404)
+    return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates)
 
 ## PANIER
 @app.route('/panier', methods=['GET'])
