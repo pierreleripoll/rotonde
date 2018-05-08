@@ -11,6 +11,7 @@ app.secret_key = 'iswuygdedgv{&75619892__01;;>..zzqwQIHQIWS'
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
 def logout():
+    print("\nSession en cours : \n",session,"\n")
     NomsSpectacles = []
     spectacles = model.get_spectacles()
 
@@ -36,14 +37,14 @@ def logout():
 @app.route('/admin', methods=['GET','POST'])
 def admin():
 
-    if 'pseudo' in session :
+    if 'admin' in session :
         if request.method=='GET':
             return render_template('admin.html',pseudo = session["pseudo"])
         if request.method=='POST':
             if request.form["bouton"]=="logout":
                 session.pop("pseudo",None)
-                session.pop("login",None)
-                session.pop("password",None)
+                session.pop("admin",None)
+                session.clear()
             return redirect('/')
     else :
         return redirect('/admin_log')
@@ -71,7 +72,8 @@ def admin_log():
                 print(len(welcomeString)*'*')
                 print("\n\n")
                 session['pseudo']=login.upper()
-                session['root']="true"
+                session['admin']="true"
+                print(session)
 
         return redirect('/')
 
@@ -80,6 +82,10 @@ def admin_log():
 def calendrier():
     return render_template('calendrier.html')
 
+## SPECTACLE
+@app.route('/spectacle', methods=['GET'])
+def spectacle():
+    return render_template('spectacle.html')
 
 ## PANIER
 @app.route('/panier', methods=['GET'])
