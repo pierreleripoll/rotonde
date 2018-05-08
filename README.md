@@ -9,6 +9,9 @@ Site de réservation de places à la Rotonde
 - [ ] gérer la reservation dans la base de données
 - [ ] Faire la page html d'acceuil avec défilement des spectacles et redirection vers page spectacle, (spectacle en argument)
 - [ ] Faire page html spectacle qui prend en argument un spectacle (objet déjà créer dans model.py), l'affiche et présente des dates possibles en bas de pages
+- [ ] Utiliser bootstrap dans calendrier ?
+- [ ] Valider le panier -> paiement ? + rajout dans db
+- [ ] Remplir le panier -> dans la session on ajoute des places en faisant session.append["places"](place)
 
 
 
