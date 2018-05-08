@@ -33,13 +33,17 @@ def logout():
             return redirect('/')
 
 ## PAGE ADMIN
-@app.route('/admin', methods=['GET'])
+@app.route('/admin', methods=['GET','POST'])
 def admin():
 
     if 'pseudo' in session :
         if request.method=='GET':
             return render_template('admin.html',pseudo = session["pseudo"])
         if request.method=='POST':
+            if request.form["bouton"]=="logout":
+                session.pop("pseudo",None)
+                session.pop("login",None)
+                session.pop("password",None)
             return redirect('/')
     else :
         return redirect('/admin_log')
@@ -118,3 +122,4 @@ def add_to_cart(id):
 
 if __name__ == '__main__':
     app.run(debug='true')
+    #app.run(host="192.168.43.6",port=2000)
