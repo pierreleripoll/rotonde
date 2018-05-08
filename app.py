@@ -83,9 +83,10 @@ def calendrier():
     return render_template('calendrier.html')
 
 ## SPECTACLE
-@app.route('/spectacle', methods=['GET'])
-def spectacle():
-    return render_template('spectacle.html')
+@app.route('/spectacle/<nomSpectacle>', methods=['GET'])
+def spectacle(nomSpectacle):
+    thisSpectacle = model.get_spectacle(nomSpectacle)
+    return render_template('spectacle.html',spectacle = thisSpectacle)
 
 ## PANIER
 @app.route('/panier', methods=['GET'])

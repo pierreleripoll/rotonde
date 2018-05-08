@@ -72,15 +72,27 @@ def get_spectacles():
     query = 'SELECT nom, resume, photo, liens FROM spectacle'
     result = conn.execute(query)
 
-    spectacles = []
 
-    for row in result:
-        spectacle = Spectacle(row["nom"], row["resume"], row["photo"], row["liens"])
-        spectacles.append(spectacle)
 
     conn.close()
 
     return spectacles
+
+
+# Renvoie le spectacle portant le nom spécififé
+def get_spectacle(nomSpectacle):
+    conn = connect()
+    name = "'" + nomSpectacle +"'"
+    query = '''SELECT * FROM spectacle WHERE nom == '''+name
+    result = conn.execute(query)
+
+    for row in result:
+        spectacle = Spectacle(row["nom"], row["resume"], row["photo"], row["liens"])
+
+
+    conn.close()
+
+    return spectacle
 
 def get_sessions():
     conn = connect()
