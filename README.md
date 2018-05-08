@@ -21,6 +21,9 @@ Vous pouvez ajouter les TODOs ici ! ;)
 # QUIFAITQUOI
 ## Pierre
  - Je commence la page html spectacle
+ 
+## Mathilde
+ - Remplissage de la BD lors de la validation du panier
 
 # Questions sur le projet
 
