@@ -3,14 +3,12 @@
 <html>
 
 <head>
-    <title>{{spectacle.nom.upper()}}</title>
+    <title>MODIFIER SPECTACLE</title>
 </head>
 
 <body>
 
-  <p>SPECTACLE {{spectacle.nom}} </p>
-  <p>Résumé : </p>
-  <p>{{spectacle.resume}}</p>
+  <p>Bienvenue sur la page de modification/création de spectacle : </p>
 
   <form action="" method="POST">
       <p> Quelles dates souhaitez vous réserver ?</p>
@@ -20,11 +18,8 @@
           <li>{{date.date}}    {{date.placesRestantes}} </li>
         {% endfor %}
       <ul>
-      <button name="submit" value="valider" type="submit">Valider</button>
+      <button name="foo" value="valider" type="submit">Valider</button>
 
-      {%if session.admin == 'true'%}
-        <button name="submit" value="modify" type="submit">Modifier</button>
-      {%endif%}
   </form>
 
 </body>

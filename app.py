@@ -83,14 +83,32 @@ def calendrier():
     return render_template('calendrier.html')
 
 ## SPECTACLE
-@app.route('/spectacle/<nomSpectacle>', methods=['GET'])
+@app.route('/spectacle/<nomSpectacle>', methods=['GET','POST'])
 def spectacle(nomSpectacle):
-    thisSpectacle = model.get_spectacle(nomSpectacle)
-    thisDates = model.get_dates(nomSpectacle)
-    print(thisDates)
-    if thisSpectacle == None :
+    if request.method=="GET":
+        thisSpectacle = model.get_spectacle(nomSpectacle)
+        thisDates = model.get_dates(nomSpectacle)
+        print(thisDates)
+        if thisSpectacle == None :
+            return abort(404)
+        return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates)
+    if request.method == "POST":
+        if request.form["submit"] == "modify":
+            return redirect('/set_spectacle/'+nomSpectacle)
+
+## MODIFY SPECTACLE
+@app.route('/set_spectacle/<nomSpectacle>', methods=['GET','POST'])
+def set_spectacle(nomSpectacle):
+    if 'admin' in session:
+        if request.method=="GET":
+            thisSpectacle = model.get_spectacle(nomSpectacle)
+            thisDates = model.get_dates(nomSpectacle)
+            print(thisDates)
+            return render_template('set_spectacle.html',spectacle = thisSpectacle)
+    else :
         return abort(404)
-    return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates)
+
+
 
 ## PANIER
 @app.route('/panier', methods=['GET'])
