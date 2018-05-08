@@ -45,7 +45,10 @@ def admin():
                 session.pop("pseudo",None)
                 session.pop("admin",None)
                 session.clear()
-            return redirect('/')
+                return redirect('/')
+            if request.form["bouton"]=="create":
+                return redirect('/set_spectacle')
+
     else :
         return redirect('/admin_log')
 
@@ -97,6 +100,7 @@ def spectacle(nomSpectacle):
             return redirect('/set_spectacle/'+nomSpectacle)
 
 ## MODIFY SPECTACLE
+@app.route('/set_spectacle',defaults={'nomSpectacle' : ''})
 @app.route('/set_spectacle/<nomSpectacle>', methods=['GET','POST'])
 def set_spectacle(nomSpectacle):
     if 'admin' in session:
@@ -106,7 +110,7 @@ def set_spectacle(nomSpectacle):
             print(thisDates)
             return render_template('set_spectacle.html',spectacle = thisSpectacle)
     else :
-        return abort(404)
+        return abort(403)
 
 
 

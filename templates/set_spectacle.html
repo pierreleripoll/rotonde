@@ -9,16 +9,13 @@
 <body>
 
   <p>Bienvenue sur la page de modification/création de spectacle : </p>
-
+  <p>{{spectacle.nom}}
   <form action="" method="POST">
-      <p> Quelles dates souhaitez vous réserver ?</p>
-      <p> Date      Places Restantes </p>
-      <ul>
-        {%for date in dates %}
-          <li>{{date.date}}    {{date.placesRestantes}} </li>
-        {% endfor %}
-      <ul>
-      <button name="foo" value="valider" type="submit">Valider</button>
+      Nom du spectacle:<br>
+      <input type="text" name="nomSpectacle" value='{{spectacle.nom}}'><br>
+      Résumé:<br>
+      <input type="text" name="résumé"value='{{spectacle.resume}}' size=50><br>
+      <button name="foo" value="valider" type="submit"}>Valider</button>
 
   </form>
 
