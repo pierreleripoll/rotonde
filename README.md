@@ -26,7 +26,7 @@ Vous pouvez ajouter les TODOs ici ! ;)
  - Remplissage de la BD lors de la validation du panier
 
 ## Arthur
-- Je fais la page d'accueil avec la liste des spectacles et le renvoi à la page spectacle
+- Bootstrap calendrier
 
 
 
