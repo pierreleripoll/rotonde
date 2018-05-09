@@ -114,10 +114,10 @@ def spectacle(nomSpectacle):
         if thisSpectacle == None :
             return abort(404)
         path = app.config['UPLOAD_FOLDER']+'/'+urlify(nomSpectacle)
+        paths = []
         if not os.path.isdir(path) :
             print(path+" no uploads dir for this spectacle")
         else:
-            paths = []
             for fileName in os.listdir(path):
                 paths.append('.'+path+'/'+fileName)
             print("Paths :",paths)
