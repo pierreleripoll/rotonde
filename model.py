@@ -90,7 +90,7 @@ def get_spectacles():
     return spectacles
 
 
-# Renvoie le spectacle portant le nom spécififé
+# Renvoie le spectacle portant le nom specifife
 def get_spectacle(nomSpectacle):
     conn = connect()
     name = "'" + nomSpectacle +"'"
