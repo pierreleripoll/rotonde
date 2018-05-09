@@ -8,9 +8,11 @@ import re
 from model import*
 from jinja2 import TemplateNotFound
 
+panier = Blueprint('panier', __name__,
+                        template_folder='templates',static_folder = 'static')
 
 ## PANIER
-@app.route('/panier', methods=['GET'])
+@panier.route('/panier', methods=['GET'])
 def panier():
 
     """TODO: Display the contents of the shopping cart."""
