@@ -26,9 +26,20 @@ def admin():
                 return redirect(url_for('logout'))
             if request.form["bouton"]=="create":
                 return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle='nouveauSpectacle'))
+            if request.form["bouton"]=="showPlaces":
+                return redirect(url_for('admin_relative.show_places'))
 
     else :
         return redirect(url_for('admin_relative.admin_log'))
+
+
+@admin_relative.route('/places',methods=['GET'])
+def show_places():
+    if 'admin' in session:
+        places = get_all_places()
+        return render_template('show_places.html',places=places)
+    else:
+        return redirect(url_for('logout'))
 
 ## LOGIN ADMIN
 @admin_relative.route('/admin_log', methods=['GET','POST'])

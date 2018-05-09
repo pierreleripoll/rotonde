@@ -39,16 +39,16 @@ def spectacle(nomSpectacle):
             if not 'panier' in session :
                 session['panier'] = []
             places = session['panier']
-            for jour in request.form :
+            for date in request.form :
                 try:
-                    n = int(request.form[jour])
+                    n = int(request.form[date])
                     if n> 0 :
                         print("Add a place !")
-                        place = Place(nomSpectacle,"",jour,jour,n)
+                        place = Place(nomSpectacle,"",date,n)
                         print(place.__dict__)
                         places.append(place.__dict__)
                 except ValueError:
-                    print("its a string ",request.form[jour])
+                    print("its a string ",request.form[date])
                     pass
             session['panier']=places
             return redirect(url_for('logout'))

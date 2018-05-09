@@ -1,0 +1,20 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+
+<head>
+  <title>PLACES</title>
+</head>
+
+<body>
+
+  <ul>
+    {%for place in places %}
+      <li>{{place.nomSpectacle}}     {{place.nomUser}}     {{place.date}} </li>
+
+    {% endfor %}
+  <ul>
+
+</body>
+
+</html>

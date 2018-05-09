@@ -22,7 +22,7 @@ Column('date', String, nullable = False),
 Column('nom', String, ForeignKey('spectacle.nom')),
 Column('placesRestantes', Integer, nullable = False))
 
-place = Table('places', metadata,
+places = Table('places', metadata,
 Column('idPlace', Integer, autoincrement=True, primary_key=True),
 Column('nomSpectacle',String,ForeignKey('spectacle.nom')),
 Column('date', String, ForeignKey('calendrier.date')),
@@ -47,7 +47,7 @@ class Date:
         return str(self)
 
 class Place:
-    def __init__(self,nomSpectacle,nomUser,date,heure,nombre):
+    def __init__(self,nomSpectacle,nomUser,date,nombre):
         self.nomSpectacle=nomSpectacle
         self.nomUser = nomUser
         self.date = date
@@ -106,6 +106,17 @@ def get_spectacles():
 
     return spectacles
 
+def get_all_places():
+    conn = connect()
+    query = 'SELECT * FROM places'
+    result = conn.execute(query)
+    places = []
+    for row in result:
+        place = Place(row["nomSpectacle"], row["nomUser"], row["date"],1)
+        places.append(place)
+    conn.close()
+
+    return places
 
 # Renvoie le spectacle portant le nom specifife
 def get_spectacle(nomSpectacle):
@@ -124,8 +135,9 @@ def get_spectacle(nomSpectacle):
 
 def insert_place(place):
     conn = connect()
-    query = '''INSERT INTO place (date,nomUser,nomSpectacle) VALUES ('''+"'"+place.date+"'"+","+"'"+place.nomUser+"'"+","+place.nomSpectacle+")"
-    result = conn.execute(query)
+    for i in range(place.nombre):
+        query = '''INSERT INTO places (date,nomUser,nomSpectacle) VALUES ('''+"'"+place.date+"'"+","+"'"+place.nomUser+"'"+","+"'"+place.nomSpectacle+"'"+")"
+        result = conn.execute(query)
     return
 def insert_spectacle(spectacle):
     conn = connect()
