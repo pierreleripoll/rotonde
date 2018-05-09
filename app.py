@@ -6,7 +6,7 @@ import os
 import re
 from model import*
 from gestion_spectacle import *
-from panier import *
+from panier_relative import *
 
 UPLOAD_FOLDER = './static/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -34,7 +34,7 @@ def logout():
     if request.method=='POST':
         if request.form["bouton"] == "panier" :
             print("panier")
-            return redirect(url_for('panier'))
+            return redirect(url_for('panier_relative.panier'))
         elif request.form["bouton"] == "calendrier" :
             print("calendrier")
             return redirect(url_for('calendrier'))
