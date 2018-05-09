@@ -4,6 +4,9 @@ import re
 import os
 # Connexion a la DB
 
+UPLOAD_FOLDER = './static/uploads'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
 engine = create_engine('sqlite:///baseRotonde.db', echo=True)
 metadata = MetaData()
 

@@ -7,6 +7,7 @@ import re
 from model import*
 from gestion_spectacle import *
 from panier_relative import *
+from admin_relative import *
 
 UPLOAD_FOLDER = './static/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -17,6 +18,7 @@ app.secret_key = 'iswuygdedgv{&75619892__01;;>..zzqwQIHQIWS'
 
 app.register_blueprint(gestion_spectacle)
 app.register_blueprint(panier_relative)
+app.register_blueprint(admin_relative)
 
 
 ## PAGE D'ACCUEIL
@@ -40,57 +42,12 @@ def logout():
             return redirect(url_for('calendrier'))
         elif request.form["bouton"] == "admin":
             print("admin")
-            return redirect(url_for('admin'))
+            return redirect(url_for('admin_relative.admin'))
         else :
             return redirect(url_for('lougout'))
 
 
-## PAGE ADMIN
-@app.route('/admin', methods=['GET','POST'])
-def admin():
 
-    if 'admin' in session :
-        if request.method=='GET':
-            return render_template('admin.html',pseudo = session["pseudo"])
-        if request.method=='POST':
-            if request.form["bouton"]=="logout":
-                session.pop("pseudo",None)
-                session.pop("admin",None)
-                session.clear()
-                return redirect(url_for('logout'))
-            if request.form["bouton"]=="create":
-                return redirect(url_for('set_spectacle',nomSpectacle='nouveauSpectacle'))
-
-    else :
-        return redirect(url_for('admin_log'))
-
-## LOGIN ADMIN
-@app.route('/admin_log', methods=['GET','POST'])
-def admin_log():
-
-    if request.method=='GET':
-        return render_template('admin_log.html')
-
-    if request.method=='POST':
-
-        sessions = get_sessions()
-
-        login = request.form["login"]
-        password = request.form["password"]
-
-        for sess in sessions :
-            if login == sess.login and password == sess.password:
-                welcomeString = "WELCOME "+login.upper()
-                print("\n\n")
-                print(len(welcomeString)*'*')
-                print(welcomeString)
-                print(len(welcomeString)*'*')
-                print("\n\n")
-                session['pseudo']=login.upper()
-                session['admin']="true"
-                print(session)
-
-        return redirect(url_for('admin'))
 
 ## CALENDRIER
 @app.route('/calendrier', methods=['GET'])

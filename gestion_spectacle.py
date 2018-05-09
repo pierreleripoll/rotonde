@@ -8,6 +8,9 @@ import re
 from model import*
 from jinja2 import TemplateNotFound
 
+UPLOAD_FOLDER = './static/uploads'
+ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+
 gestion_spectacle = Blueprint('gestion_spectacle', __name__,
                         template_folder='templates',static_folder = 'static')
 
@@ -33,7 +36,9 @@ def spectacle(nomSpectacle):
         if request.form["submit"] == "modify":
             return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle=nomSpectacle))
         if request.form["submit"] == "valider":
-            return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=nomSpectacle))
+        		#on pouvait pas sortir, mais comme je suis pas sûr j'ai laissé en ##
+            #return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=nomSpectacle))
+            return redirect(url_for('logout'))
 
 ## MODIFY SPECTACLE
 @gestion_spectacle.route('/set_spectacle/<nomSpectacle>', methods=['GET','POST'])
