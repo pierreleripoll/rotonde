@@ -36,9 +36,9 @@ def spectacle(nomSpectacle):
             return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle=nomSpectacle))
         if request.form["submit"] == "valider":
             print(request.form)
-            if not 'places' in session :
-                session['places'] = []
-            places = session['places']
+            if not 'panier' in session :
+                session['panier'] = []
+            places = session['panier']
             for jour in request.form :
                 try:
                     n = int(request.form[jour])
@@ -50,7 +50,7 @@ def spectacle(nomSpectacle):
                 except ValueError:
                     print("its a string ",request.form[jour])
                     pass
-            session['places']=places
+            session['panier']=places
             return redirect(url_for('logout'))
 
 ## MODIFY SPECTACLE

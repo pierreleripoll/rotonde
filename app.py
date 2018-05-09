@@ -46,6 +46,11 @@ def logout():
             return redirect(url_for('lougout'))
 
 
+@app.route('/empty_cart')
+def empty_cart():
+    if 'panier' in session :
+        session.pop('panier')
+    return redirect(url_for('panier_relative.panier'))    
 
 
 ## CALENDRIER

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Cart</title>
+</head>
+<body>
+
+  <table class="table table-striped">
+      <tr>
+        <th>Spectacle</th>
+        <th>Nombre de places</th>
+        <th>Date</th>
+
+      {% for place in display_cart %}
+      <tr>
+        <td>{{place["nomSpectacle"]}}</td>
+        <td>{{place["nombre"]}}</td>
+        <td>{{place["date"]}}</td>
+      </tr>
+      {% endfor %}
+
+  </table>
+  <h3>Total: </h3>
+
+  <a href="/" class="btn btn-large btn-primary">Check Out</a>
+  <a href="/empty_cart" class="btn btn-large btn-primary">Vider panier</a>
+</body>
+</html>
