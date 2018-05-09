@@ -113,7 +113,15 @@ def spectacle(nomSpectacle):
         print(thisDates)
         if thisSpectacle == None :
             return abort(404)
-        return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates)
+        path = app.config['UPLOAD_FOLDER']+'/'+urlify(nomSpectacle)
+        if not os.path.isdir(path) :
+            print(path+" no uploads dir for this spectacle")
+        else:
+            paths = []
+            for fileName in os.listdir(path):
+                paths.append('.'+path+'/'+fileName)
+            print("Paths :",paths)
+        return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths)
     if request.method == "POST":
         if request.form["submit"] == "modify":
             return redirect('/set_spectacle/'+nomSpectacle)

@@ -25,6 +25,10 @@
       {%if session.admin == 'true'%}
         <button name="submit" value="modify" type="submit">Modifier</button>
       {%endif%}
+      <br></br>
+      {%for url in paths%}
+        <img src="{{url}}" width=500 alt="Flowers in Chania">
+      {%endfor%}
   </form>
 
 </body>
