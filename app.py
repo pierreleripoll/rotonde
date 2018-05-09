@@ -16,7 +16,7 @@ app.config['UPLOAD_FOLDER']= UPLOAD_FOLDER
 app.secret_key = 'iswuygdedgv{&75619892__01;;>..zzqwQIHQIWS'
 
 app.register_blueprint(gestion_spectacle)
-app.register_blueprint(panier)
+app.register_blueprint(panier_relative)
 
 
 ## PAGE D'ACCUEIL

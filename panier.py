@@ -8,15 +8,13 @@ import re
 from model import*
 from jinja2 import TemplateNotFound
 
-panier = Blueprint('panier', __name__,
+panier_relative = Blueprint('panier_relative', __name__,
                         template_folder='templates',static_folder = 'static')
 
 ## PANIER
-@panier.route('/panier', methods=['GET'])
+@panier_relative.route('/panier', methods=['GET'])
 def panier():
-
     """TODO: Display the contents of the shopping cart."""
-
     if "cart" not in session:
         # flash("There is nothing in your cart.")
         return render_template("cart.html", display_cart = {}, total = 0)
@@ -37,14 +35,11 @@ def panier():
 
         return render_template("cart.html", display_cart = dict_of_places, total = total_price)
 
-@panier.route('/add_to_cart/<int:id>', methods=['POST','GET']) #Provisoire, enlever le get par la suite
+@panier_relative.route('/add_to_cart/<int:id>', methods=['POST','GET']) #Provisoire, enlever le get
 def add_to_cart(id):
-
     if "cart" not in session:
         session["cart"] = []
-
     session["cart"].append(id)
-
     flash("Successfully added to cart!")
     return redirect("/panier")
 
