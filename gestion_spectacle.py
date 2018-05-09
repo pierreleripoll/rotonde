@@ -9,7 +9,6 @@ from model import*
 from jinja2 import TemplateNotFound
 
 UPLOAD_FOLDER = './static/uploads'
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 gestion_spectacle = Blueprint('gestion_spectacle', __name__,
                         template_folder='templates',static_folder = 'static')
@@ -36,8 +35,22 @@ def spectacle(nomSpectacle):
         if request.form["submit"] == "modify":
             return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle=nomSpectacle))
         if request.form["submit"] == "valider":
-        		#on pouvait pas sortir, mais comme je suis pas sûr j'ai laissé en ##
-            #return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=nomSpectacle))
+            print(request.form)
+            if not 'places' in session :
+                session['places'] = []
+            places = session['places']
+            for jour in request.form :
+                try:
+                    n = int(request.form[jour])
+                    if n> 0 :
+                        print("Add a place !")
+                        place = Place(nomSpectacle,"",jour,jour,n)
+                        print(place.__dict__)
+                        places.append(place.__dict__)
+                except ValueError:
+                    print("its a string ",request.form[jour])
+                    pass
+            session['places']=places
             return redirect(url_for('logout'))
 
 ## MODIFY SPECTACLE

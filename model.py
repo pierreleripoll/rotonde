@@ -24,6 +24,7 @@ Column('placesRestantes', Integer, nullable = False))
 
 place = Table('places', metadata,
 Column('idPlace', Integer, autoincrement=True, primary_key=True),
+Column('nomSpectacle',String,ForeignKey('spectacle.nom')),
 Column('date', String, ForeignKey('calendrier.date')),
 Column('nomUser', String, nullable = False))
 
@@ -46,11 +47,10 @@ class Date:
         return str(self)
 
 class Place:
-    def __init__(self,idPlace,nom,date,heure,nombre):
-        self.idPlace = idPlace
-        self.nom = nom
+    def __init__(self,nomSpectacle,nomUser,date,heure,nombre):
+        self.nomSpectacle=nomSpectacle
+        self.nomUser = nomUser
         self.date = date
-        self.heure = heure
         self.nombre = nombre
 
     def setNombre(self,nombre):
@@ -122,6 +122,11 @@ def get_spectacle(nomSpectacle):
 
     return spectacle
 
+def insert_place(place):
+    conn = connect()
+    query = '''INSERT INTO place (date,nomUser,nomSpectacle) VALUES ('''+"'"+place.date+"'"+","+"'"+place.nomUser+"'"+","+place.nomSpectacle+")"
+    result = conn.execute(query)
+    return
 def insert_spectacle(spectacle):
     conn = connect()
     query = '''INSERT INTO spectacle (nom,resume,photo,liens) VALUES ('''+"'"+spectacle.nom+"'"+","+"'"+spectacle.resume+"'"+","+"'"+str(spectacle.photos)+"'"+","+"'"+spectacle.liens+"'"+")"

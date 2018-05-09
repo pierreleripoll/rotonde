@@ -17,8 +17,9 @@
       <p> Date      Places Restantes </p>
       <ul>
         {%for date in dates %}
-          <li>{{date.date}}    {{date.placesRestantes}} </li>
-          <input type="number" id={{date.date}} name="places" min="0" max="10">
+          <li>{{date.date}}    {{date.placesRestantes}}
+            <input type="number" id="places" name="{{date.date}}" min="0" max="{{dates.placesRestantes}}"> </li>
+
         {% endfor %}
       <ul>
       <button name="submit" value="valider" type="submit">Valider</button>

@@ -10,20 +10,25 @@ metadata = MetaData()
 
 
 spectacle = Table('spectacle', metadata,
-            Column('nom', String, primary_key=True),
-            Column('resume', String, nullable = True),
-            Column('photo', Integer, nullable = True), #lien vers un file upload
-            Column('liens', String, nullable = True))
+Column('nom', String, primary_key=True),
+Column('resume', String, nullable = True),
+Column('photo', Integer, nullable = True), #nombre de photos, path vers le dossier /uploads/nomSpectacle
+Column('liens', String, nullable = True))
 
 calendrier = Table('calendrier', metadata,
-            Column('date', String, nullable = False),
-            Column('nom', String, ForeignKey('spectacle.nom')),
-            Column('placesRestantes', Integer, nullable = False))
+Column('date', String, nullable = False),
+Column('nom', String, ForeignKey('spectacle.nom')),
+Column('placesRestantes', Integer, nullable = False))
 
-places = Table('places', metadata,
-            Column('idPlaces', Integer, autoincrement=True, primary_key=True),
-            Column('date', String, ForeignKey('calendrier.date')),
-            Column('nomUser', String, nullable = False))
+place = Table('places', metadata,
+Column('idPlace', Integer, autoincrement=True, primary_key=True),
+Column('nomSpectacle'),String,ForeignKey('spectacle.nom'),
+Column('date', String, ForeignKey('calendrier.date')),
+Column('nomUser', String, nullable = False))
+
+sessions = Table('sessions', metadata,
+Column('login',String,nullable=False),
+Column('password',String,nullable=False))
 
 
 
