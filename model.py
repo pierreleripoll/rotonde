@@ -1,6 +1,7 @@
 from sqlalchemy import *
 from sqlalchemy.sql import *
-
+import re
+import os
 # Connexion a la DB
 
 engine = create_engine('sqlite:///baseRotonde.db', echo=True)
@@ -70,6 +71,19 @@ class Session:
 
     def __repr__(self):
         return "<Session: %s, %s>"%(self.login, self.password)
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+def urlify(s):
+
+     # Remove all non-word characters (everything except numbers and letters)
+     s = re.sub(r"[^\w\s]", '', s)
+
+     # Replace all runs of whitespace with a single dash
+     s = re.sub(r"\s+", '-', s)
+
+     return s.lower()
 
 def connect():
     conn = engine.connect()
