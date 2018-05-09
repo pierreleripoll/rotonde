@@ -3,9 +3,10 @@ from sqlalchemy import *
 from sqlalchemy.sql import *
 from werkzeug.utils import secure_filename
 import os
-import model
+import re
+from model import*
 
-UPLOAD_FOLDER = './uploads'
+UPLOAD_FOLDER = './static/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 app = Flask(__name__)
@@ -15,13 +16,22 @@ app.secret_key = 'iswuygdedgv{&75619892__01;;>..zzqwQIHQIWS'
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+def urlify(s):
+
+     # Remove all non-word characters (everything except numbers and letters)
+     s = re.sub(r"[^\w\s]", '', s)
+
+     # Replace all runs of whitespace with a single dash
+     s = re.sub(r"\s+", '-', s)
+
+     return s.lower()
 
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
 def logout():
     print("\nSession en cours : \n",session,"\n")
     NomsSpectacles = []
-    spectacles = model.get_spectacles()
+    spectacles = get_spectacles()
 
     for spectacle in spectacles:
         NomsSpectacles.append(spectacle.nom)
@@ -40,6 +50,7 @@ def logout():
             return redirect('/admin')
         else :
             return redirect('/')
+
 
 ## PAGE ADMIN
 @app.route('/admin', methods=['GET','POST'])
@@ -69,7 +80,7 @@ def admin_log():
 
     if request.method=='POST':
 
-        sessions = model.get_sessions()
+        sessions = get_sessions()
 
         login = request.form["login"]
         password = request.form["password"]
@@ -97,8 +108,8 @@ def calendrier():
 @app.route('/spectacle/<nomSpectacle>', methods=['GET','POST'])
 def spectacle(nomSpectacle):
     if request.method=="GET":
-        thisSpectacle = model.get_spectacle(nomSpectacle)
-        thisDates = model.get_dates(nomSpectacle)
+        thisSpectacle = get_spectacle(nomSpectacle)
+        thisDates = get_dates(nomSpectacle)
         print(thisDates)
         if thisSpectacle == None :
             return abort(404)
@@ -112,32 +123,60 @@ def spectacle(nomSpectacle):
 def set_spectacle(nomSpectacle):
     if 'admin' in session:
         if request.method=="GET":
-            thisSpectacle = model.get_spectacle(nomSpectacle)
-            thisDates = model.get_dates(nomSpectacle)
+            thisSpectacle = get_spectacle(nomSpectacle)
+            thisDates = get_dates(nomSpectacle)
             print(thisDates)
             return render_template('set_spectacle.html',spectacle = thisSpectacle)
         if request.method=="POST":
             if "nom" in request.form :
                 cont = request.form
-                spectacle = model.Spectacle(cont["nom"],cont["resume"],"test",cont["liens"])
+                spectacle = Spectacle(cont["nom"],cont["resume"],0 ,cont["liens"])
                 # check if the post request has the file part
-                if 'photo' not in request.files:
+                if 'photos' not in request.files:
                     print("No photo")
                 else:
-                    file = request.files['photo']
-                    # if user does not select file, browser also
-                    # submit a empty part without filename
-                    if file.filename == '':
-                        flash('No selected file')
-                    if file and allowed_file(file.filename):
-                        filename = secure_filename(file.filename)
-                        #file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-                model.insert_spectacle(spectacle)
+                    print("There is photos :")
+                    name = urlify(spectacle.nom)
+                    pathUpload = app.config['UPLOAD_FOLDER']+'/'+name
+                    os.mkdir(pathUpload)
+                    numberPhotos = 0
+                    for f in request.files.getlist('photos'):
+                        print(f.filename)
+                        # if user does not select file, browser also
+                        # submit a empty part without filename
+                        if f.filename == '':
+                            flash('No selected file')
+                        if f and allowed_file(f.filename):
+                            filename = secure_filename(f.filename)
+                            f.save(os.path.join(pathUpload, filename))
+                            numberPhotos +=1
+                    spectacle.photos=numberPhotos
+                if get_spectacle(spectacle.nom) :
+                    update_spectacle(spectacle)
+                else:
+                    insert_spectacle(spectacle)
                 return redirect('/spectacle/'+request.form["nom"])
     else :
         return abort(403)
 
+## SHOW UPLOADS FILES
+@app.route('/uploads/<nomSpectacle>', methods=['GET'])
+def uploads(nomSpectacle):
 
+    if 'admin' in session:
+        if request.method=="GET":
+            path = app.config['UPLOAD_FOLDER']+'/'+urlify(nomSpectacle)
+            if not os.path.isdir(path) :
+                print(path+" is not a dir")
+                return abort(404)
+            else:
+                paths = []
+                for fileName in os.listdir(path):
+                    paths.append('.'+path+'/'+fileName)
+                print("Paths :",paths)
+                return render_template('uploaded.html',paths = paths)
+    else :
+        return abort(403)
 
 ## PANIER
 @app.route('/panier', methods=['GET'])
@@ -155,8 +194,8 @@ def shopping_cart():
         total_price = 0
 
         for item in items:
-            # place = model.get_place_by_id() #A modifier
-            place = model.Place(item,'test','osef','osef',1)
+            # place = get_place_by_id() #A modifier
+            place = Place(item,'test','osef','osef',1)
             total_price += 1 # A modifier
             if place.idPlace in dict_of_places:
                 dict_of_places[place.idPlace]["qty"] += 1

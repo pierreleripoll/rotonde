@@ -12,7 +12,7 @@ metadata = MetaData()
 spectacle = Table('spectacle', metadata,
             Column('nom', String, primary_key=True),
             Column('resume', String, nullable = True),
-            Column('photo', String, nullable = True), #lien vers un file upload
+            Column('photo', Integer, nullable = True), #lien vers un file upload
             Column('liens', String, nullable = True))
 
 calendrier = Table('calendrier', metadata,
@@ -33,8 +33,8 @@ connection = engine.connect()
 
 connection.execute(spectacle.insert(), [
     {'nom': 'Don Juan', 'resume': 'pas cool'},
-    {'nom': 'Le Cid', 'resume': 'not yet', 'photo' : 'hey toi'},
-    {'nom': 'Hamlet', 'resume': 'theatreEtude des petits', 'photo' : 'Romain a poil !', 'liens' : 'coucou'}
+    {'nom': 'Le Cid', 'resume': 'not yet', 'photo' : 0},
+    {'nom': 'Hamlet', 'resume': 'theatreEtude des petits', 'photo' : 0, 'liens' : 'coucou'}
 ])
 
 connection.execute(calendrier.insert(), [

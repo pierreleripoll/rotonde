@@ -10,7 +10,7 @@ metadata = MetaData()
 spectacle = Table('spectacle', metadata,
 Column('nom', String, primary_key=True),
 Column('resume', String, nullable = True),
-Column('photo', String, nullable = True), #lien vers un file upload
+Column('photo', Integer, nullable = True), #nombre de photos, path vers le dossier /uploads/nomSpectacle
 Column('liens', String, nullable = True))
 
 calendrier = Table('calendrier', metadata,
@@ -107,10 +107,17 @@ def get_spectacle(nomSpectacle):
 
 def insert_spectacle(spectacle):
     conn = connect()
-    query = '''INSERT INTO spectacle (nom,resume,photo,liens) VALUES ('''+"'"+spectacle.nom+"'"+","+"'"+spectacle.resume+"'"+","+"'"+spectacle.photos+"'"+","+"'"+spectacle.liens+"'"+")"
+    query = '''INSERT INTO spectacle (nom,resume,photo,liens) VALUES ('''+"'"+spectacle.nom+"'"+","+"'"+spectacle.resume+"'"+","+"'"+str(spectacle.photos)+"'"+","+"'"+spectacle.liens+"'"+")"
     result = conn.execute(query)
     return
 
+# Update un spectacle
+def update_spectacle(spectacle):
+    conn = connect()
+    query = '''UPDATE spectacle SET resume ='''+"'"+spectacle.resume+"'"+","+"photo ="+"'"+str(spectacle.photos)+"'"+","+"liens="+"'"+spectacle.liens+"'"+'''
+    WHERE nom= spectacle.nom'''
+    result = conn.execute(query)
+    return
 # Renvoie les dates disponibles pour un spectacles
 def get_dates(nomSpectacle):
     conn = connect()
