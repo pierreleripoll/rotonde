@@ -41,15 +41,15 @@ def logout():
     if request.method=='POST':
         if request.form["bouton"] == "panier" :
             print("panier")
-            return redirect('/panier')
+            return redirect(url_for('panier'))
         elif request.form["bouton"] == "calendrier" :
             print("calendrier")
-            return redirect('/calendrier')
+            return redirect(url_for('calendrier'))
         elif request.form["bouton"] == "admin":
             print("admin")
-            return redirect('/admin')
+            return redirect(url_for('admin'))
         else :
-            return redirect('/')
+            return redirect(url_for('lougout'))
 
 
 ## PAGE ADMIN
@@ -64,12 +64,12 @@ def admin():
                 session.pop("pseudo",None)
                 session.pop("admin",None)
                 session.clear()
-                return redirect('/')
+                return redirect(url_for('logout'))
             if request.form["bouton"]=="create":
-                return redirect('/set_spectacle/nouveauSpectacle')
+                return redirect(url_for('set_spectacle',nomSpectacle='nouveauSpectacle'))
 
     else :
-        return redirect('/admin_log')
+        return redirect(url_for('admin_log'))
 
 ## LOGIN ADMIN
 @app.route('/admin_log', methods=['GET','POST'])
@@ -97,7 +97,7 @@ def admin_log():
                 session['admin']="true"
                 print(session)
 
-        return redirect('/')
+        return redirect(url_for('admin'))
 
 ## CALENDRIER
 @app.route('/calendrier', methods=['GET'])
@@ -124,7 +124,9 @@ def spectacle(nomSpectacle):
         return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths)
     if request.method == "POST":
         if request.form["submit"] == "modify":
-            return redirect('/set_spectacle/'+nomSpectacle)
+            return redirect(url_for('set_spectacle',nomSpectacle=nomSpectacle))
+        if request.form["submit"] == "valider":
+            return redirect(url_for('spectacle',nomSpectacle=nomSpectacle))
 
 ## MODIFY SPECTACLE
 @app.route('/set_spectacle/<nomSpectacle>', methods=['GET','POST'])
@@ -164,7 +166,7 @@ def set_spectacle(nomSpectacle):
                     update_spectacle(spectacle)
                 else:
                     insert_spectacle(spectacle)
-                return redirect('/spectacle/'+request.form["nom"])
+                return redirect(url_for('spectacle',nomSpectacle=request.form["nom"]))
     else :
         return abort(403)
 
@@ -189,7 +191,7 @@ def uploads(nomSpectacle):
 
 ## PANIER
 @app.route('/panier', methods=['GET'])
-def shopping_cart():
+def panier():
 
     """TODO: Display the contents of the shopping cart."""
 

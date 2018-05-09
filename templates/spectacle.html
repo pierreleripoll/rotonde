@@ -18,6 +18,7 @@
       <ul>
         {%for date in dates %}
           <li>{{date.date}}    {{date.placesRestantes}} </li>
+          <input type="number" id={{date.date}} name="places" min="0" max="10">
         {% endfor %}
       <ul>
       <button name="submit" value="valider" type="submit">Valider</button>
@@ -27,7 +28,7 @@
       {%endif%}
       <br></br>
       {%for url in paths%}
-        <img src="{{url}}" width=500 alt="Flowers in Chania">
+        <img src="{{url}}" width=500 alt="Flowers in Chania"><br>
       {%endfor%}
   </form>
 
