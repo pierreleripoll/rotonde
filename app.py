@@ -6,6 +6,7 @@ import os
 import re
 from model import*
 from gestion_spectacle import *
+from panier import *
 
 UPLOAD_FOLDER = './static/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -14,6 +15,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER']= UPLOAD_FOLDER
 app.secret_key = 'iswuygdedgv{&75619892__01;;>..zzqwQIHQIWS'
 app.register_blueprint(gestion_spectacle)
+app.register_blueprint(panier)
 
 
 ## PAGE D'ACCUEIL
@@ -113,42 +115,6 @@ def uploads(nomSpectacle):
     else :
         return abort(403)
 
-## PANIER
-@app.route('/panier', methods=['GET'])
-def panier():
-
-    """TODO: Display the contents of the shopping cart."""
-
-    if "cart" not in session:
-        # flash("There is nothing in your cart.")
-        return render_template("cart.html", display_cart = {}, total = 0)
-    else:
-        items = session["cart"]
-        dict_of_places = {}
-
-        total_price = 0
-
-        for item in items:
-            # place = get_place_by_id() #A modifier
-            place = Place(item,'test','osef','osef',1)
-            total_price += 1 # A modifier
-            if place.idPlace in dict_of_places:
-                dict_of_places[place.idPlace]["qty"] += 1
-            else:
-                dict_of_places[place.idPlace] = {"qty":1, "name": "spectacle" + str(place.idPlace), "price": 1}
-
-        return render_template("cart.html", display_cart = dict_of_places, total = total_price)
-
-@app.route("/add_to_cart/<int:id>", methods=['POST','GET']) #Provisoire, enlever le get par la suite
-def add_to_cart(id):
-
-    if "cart" not in session:
-        session["cart"] = []
-
-    session["cart"].append(id)
-
-    flash("Successfully added to cart!")
-    return redirect("/panier")
 
 
 
