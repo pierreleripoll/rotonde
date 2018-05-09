@@ -25,6 +25,11 @@ Vous pouvez ajouter les TODOs ici ! ;)
 ## Mathilde
  - Remplissage de la BD lors de la validation du panier
 
+## Arthur
+- Je fais la page d'accueil avec la liste des spectacles et le renvoi à la page spectacle
+
+
+
 # Questions sur le projet
 
 ## Antoine
@@ -34,8 +39,6 @@ Vous pouvez ajouter les TODOs ici ! ;)
 - Avoir un champ `id` dans spectacle comme clé principale plutôt que `nom` ?
 - Avoir la table place liée à un nom et un spectacle, mais laisser date heure et tout dans spectacle ?
 - truc sur le nombre or something
-
-## Arthur
 
 ## Jean-Nicolas
 
