@@ -146,7 +146,8 @@ def set_spectacle(nomSpectacle):
                     print("There is photos :")
                     name = urlify(spectacle.nom)
                     pathUpload = app.config['UPLOAD_FOLDER']+'/'+name
-                    os.mkdir(pathUpload)
+                    if not os.path.isdir(pathUpload):
+                        os.mkdir(pathUpload)
                     numberPhotos = 0
                     for f in request.files.getlist('photos'):
                         print(f.filename)
