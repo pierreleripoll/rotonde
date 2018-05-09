@@ -37,7 +37,7 @@ def panier():
 
         return render_template("cart.html", display_cart = dict_of_places, total = total_price)
 
-@app.route("/add_to_cart/<int:id>", methods=['POST','GET']) #Provisoire, enlever le get par la suite
+@panier.route('/add_to_cart/<int:id>', methods=['POST','GET']) #Provisoire, enlever le get par la suite
 def add_to_cart(id):
 
     if "cart" not in session:
