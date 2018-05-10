@@ -1,10 +1,12 @@
 from flask import *
-from sqlalchemy import *
-from sqlalchemy.sql import *
+#from flask_sqlalchemy import SQLAlchemy
+#from sqlalchemy import *
+#from sqlalchemy.sql import *
 from werkzeug.utils import secure_filename
 import os
 import re
-from model import*
+from model import *
+from model import db
 from gestion_spectacle import *
 from panier_relative import *
 from admin_relative import *
@@ -13,11 +15,16 @@ UPLOAD_FOLDER = './static/uploads'
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER']= UPLOAD_FOLDER
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///baseRotonde.db'
 app.secret_key = 'iswuygdedgv{&75619892__01;;>..zzqwQIHQIWS'
 
 app.register_blueprint(gestion_spectacle)
 app.register_blueprint(panier_relative)
 app.register_blueprint(admin_relative)
+
+with app.app_context():
+    db.init_app(app)
+    db.create_all()
 
 
 ## PAGE D'ACCUEIL

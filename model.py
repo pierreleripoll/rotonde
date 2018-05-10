@@ -1,50 +1,51 @@
-from sqlalchemy import *
-from sqlalchemy.sql import *
+from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 import re
 import os
 # Connexion a la DB
 
+
+db = SQLAlchemy()
+
 UPLOAD_FOLDER = './static/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
-engine = create_engine('sqlite:///baseRotonde.db', echo=True)
-metadata = MetaData()
+class Spectacle(db.Model):
+    nom = db.Column(db.String(80), primary_key = True)
+    resume = db.Column(db.Text, nullable = True)
+    photo = db.Column(db.Integer, nullable = True)
+    liens = db.Column(db.String, nullable = True)
 
-
-spectacle = Table('spectacle', metadata,
-Column('nom', String, primary_key=True),
-Column('resume', String, nullable = True),
-Column('photo', Integer, nullable = True), #nombre de photos, path vers le dossier /uploads/nomSpectacle
-Column('liens', String, nullable = True))
-
-calendrier = Table('calendrier', metadata,
-Column('date', String, nullable = False),
-Column('nom', String, ForeignKey('spectacle.nom')),
-Column('placesRestantes', Integer, nullable = False))
-
-places = Table('places', metadata,
-Column('idPlace', Integer, autoincrement=True, primary_key=True),
-Column('nomSpectacle',String,ForeignKey('spectacle.nom')),
-Column('date', String, ForeignKey('calendrier.date')),
-Column('nomUser', String, nullable = False))
-
-sessions = Table('sessions', metadata,
-Column('login',String,nullable=False),
-Column('password',String,nullable=False))
-
-metadata.create_all(engine)
-
-# Ici je definis des wrappers pour toutes les tables de la DB
-
-class Date:
-    def __init__(self,date,nom,placesRestantes):
-        self.date = date
-        self.nom = nom
-        self.placesRestantes = placesRestantes
-    def __str__(self):
-        return self.nom+","+self.date+","+str(self.placesRestantes)
     def __repr__(self):
-        return str(self)
+        return '<Spectacle: %r>' % self.nom
+
+class Calendrier(db.Model):
+    date = db.Column(db.DateTime, nullable = False, default=datetime.utcnow, primary_key = True)
+    nom = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False)
+    placesRestantes = db.Column(db.Integer, nullable = False)
+
+    spectacle = db.relationship('Spectacle', backref = db.backref('calendriers', lazy = True)) # Peut etre a changer, pas sur de ce que je fais
+
+    def __repr__(self):
+        return '<Calendrier: %r>' % self.date
+
+class Place(db.Model):
+    idPlace = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    nomSpectacle = db.Column(db.String(80), db.ForeignKey('spectacle.nom'), nullable = False)
+    date = db.Column(db.DateTime, db.ForeignKey('calendrier.date'), nullable = False)
+    nomUser = db.Column(db.String(80), nullable = False)
+
+    calendrier = db.relationship('Calendrier', backref = db.backref('places', lazy = True)) #idem qu'au dessus
+
+    def __repr__(self):
+        return '<Place: %r>' % self.idPlace
+
+class Session(db.Model):
+    login = db.Column(db.String(80), nullable = False, primary_key = True)
+    password = db.Column(db.String(300), nullable = False) # TODO: encrypter le mdp avec passlib
+
+    def __repr__(self):
+        return '<Session: %r %r>' % (self.login, self.password)
 
 class Place:
     def __init__(self,nomSpectacle,nomUser,date,nombre):
@@ -56,24 +57,6 @@ class Place:
     def setNombre(self,nombre):
         self.nombre = nombre
 
-class Spectacle:
-    def __init__(self, nom, resume, photos, liens):
-        self.nom = nom
-        self.resume = resume
-        # self.prix = prix
-        self.photos = photos
-        self.liens = liens
-
-    def __repr__(self):
-        return "<Spectacle: %s, %s, %s>"%(self.nom, self.resume, self.prix)
-
-class Session:
-    def __init__(self, login, password):
-        self.login = login
-        self.password = password
-
-    def __repr__(self):
-        return "<Session: %s, %s>"%(self.login, self.password)
 
 def allowed_file(filename):
     return '.' in filename and \
