@@ -167,6 +167,18 @@ def get_dates(nomSpectacle):
 
     return dates
 
+#Renvoie l'ensemble des dates  
+def get_all_dates ():
+	conn = connect()
+	query='''SELECT * FROM calendrier'''
+	result= conn.execute(query)
+	dates=[]
+	for row in result:
+		date=Date(row["date"], row["nom"], row["placesRestantes"])
+		dates.append(date)
+	conn.close()
+	return dates
+
 def get_sessions():
     conn = connect()
     query = 'select login, password from sessions'
