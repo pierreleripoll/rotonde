@@ -61,6 +61,7 @@ class Place:
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
 def urlify(s):
 
      # Remove all non-word characters (everything except numbers and letters)
@@ -71,6 +72,7 @@ def urlify(s):
 
      return s.lower()
 
+
 def connect():
     conn = engine.connect()
     return conn
@@ -78,89 +80,50 @@ def connect():
 
 # Renvoie une liste contenant tous les spectacles.
 def get_spectacles():
-    conn = connect()
-    query = 'SELECT nom, resume, photo, liens FROM spectacle'
-    result = conn.execute(query)
-    spectacles = []
-    for row in result:
-        spectacle = Spectacle(row["nom"], row["resume"], row["photo"], row["liens"])
-        spectacles.append(spectacle)
-    conn.close()
-
+    spectacles = Spectacle.query.all()
     return spectacles
 
 def get_all_places():
-    conn = connect()
-    query = 'SELECT * FROM places'
-    result = conn.execute(query)
-    places = []
-    for row in result:
-        place = Place(row["nomSpectacle"], row["nomUser"], row["date"],1)
-        places.append(place)
-    conn.close()
-
+    places = Place.query.all()
     return places
 
 # Renvoie le spectacle portant le nom specifife
 def get_spectacle(nomSpectacle):
-    conn = connect()
-    name = "'" + nomSpectacle +"'"
-    query = '''SELECT * FROM spectacle WHERE nom == '''+name
-    result = conn.execute(query)
-    spectacle = None
-    for row in result:
-        spectacle = Spectacle(row["nom"], row["resume"], row["photo"], row["liens"])
-
-
-    conn.close()
+    spectacle = Spectacle.query.filter_by(nom=nomSpectacle).first_or_404()
 
     return spectacle
 
 def insert_place(place):
-    conn = connect()
-    for i in range(place.nombre):
-        query = '''INSERT INTO places (date,nomUser,nomSpectacle) VALUES ('''+"'"+place.date+"'"+","+"'"+place.nomUser+"'"+","+"'"+place.nomSpectacle+"'"+")"
-        result = conn.execute(query)
+    db.session.add(place)
+    db.session.commit()
+
     return
+
 def insert_spectacle(spectacle):
-    conn = connect()
-    query = '''INSERT INTO spectacle (nom,resume,photo,liens) VALUES ('''+"'"+spectacle.nom+"'"+","+"'"+spectacle.resume+"'"+","+"'"+str(spectacle.photos)+"'"+","+"'"+spectacle.liens+"'"+")"
-    result = conn.execute(query)
+    db.session.add(spectacle)
+    db.session.commit()
     return
 
 # Update un spectacle
 def update_spectacle(spectacle):
-    conn = connect()
-    query = '''UPDATE spectacle SET resume ='''+"'"+spectacle.resume+"'"+","+"photo ="+"'"+str(spectacle.photos)+"'"+","+"liens="+"'"+spectacle.liens+"'"+'''
-    WHERE nom= spectacle.nom'''
-    result = conn.execute(query)
-    return
-# Renvoie les dates disponibles pour un spectacles
-def get_dates(nomSpectacle):
-    conn = connect()
-    name = "'" + nomSpectacle +"'"
-    query = '''SELECT * FROM calendrier WHERE nom == '''+name
-    result = conn.execute(query)
-    dates = []
-    for row in result:
-        date = Date(row["date"], row["nom"], row["placesRestantes"])
-        dates.append(date)
+    oldSpectacle = Spectacle.query.filter_by(nom=spectacle.nom).first_or_404()
 
-    conn.close()
+    oldSpectacle.resume = spectacle.resume
+    oldSpectacle.photo = spectacle.photo
+    oldSpectacle.liens = spectacles.liens
+
+    db.session.commit()
+
+    return
+
+# Renvoie les dates disponibles pour un spectacle
+def get_dates(nomSpectacle):
+    dates = Calendrier.query.filter_by(nom = nomSpectacle).all()
 
     return dates
 
 def get_sessions():
-    conn = connect()
-    query = 'select login, password from sessions'
-    result = conn.execute(query)
 
-    sessions = []
-
-    for row in result:
-        sess = Session(row["login"], row["password"])
-        sessions.append(sess)
-
-    conn.close()
-
+    sessions = Session.query.all()
+    
     return sessions
