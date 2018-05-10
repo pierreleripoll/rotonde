@@ -167,7 +167,7 @@ def get_dates(nomSpectacle):
 
     return dates
 
-#Renvoie l'ensemble des dates  
+#Renvoie l'ensemble des dates disponibles
 def get_all_dates ():
 	conn = connect()
 	query='''SELECT * FROM calendrier'''
