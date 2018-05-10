@@ -22,10 +22,11 @@ app.register_blueprint(gestion_spectacle)
 app.register_blueprint(panier_relative)
 app.register_blueprint(admin_relative)
 
-with app.app_context():
-    db.init_app(app)
-    db.create_all()
+db.init_app(app)
 
+with app.app_context():
+    sessions = Session.query.all()
+    print(sessions)
 
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
@@ -89,5 +90,6 @@ def uploads(nomSpectacle):
 
 
 if __name__ == '__main__':
+
     app.run(debug='true')
     #app.run(host="192.168.43.6",port=2000)
