@@ -1,7 +1,4 @@
 from flask import *
-#from flask_sqlalchemy import SQLAlchemy
-#from sqlalchemy import *
-#from sqlalchemy.sql import *
 from werkzeug.utils import secure_filename
 import os
 import re

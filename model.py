@@ -40,22 +40,14 @@ class Place(db.Model):
     def __repr__(self):
         return '<Place: %r>' % self.idPlace
 
+    # TODO: Remettre le setNombre si besoin ?
+
 class Session(db.Model):
     login = db.Column(db.String(80), nullable = False, primary_key = True)
     password = db.Column(db.String(300), nullable = False) # TODO: encrypter le mdp avec passlib
 
     def __repr__(self):
         return '<Session: %r %r>' % (self.login, self.password)
-
-# class Place:
-#     def __init__(self,nomSpectacle,nomUser,date,nombre):
-#         self.nomSpectacle=nomSpectacle
-#         self.nomUser = nomUser
-#         self.date = date
-#         self.nombre = nombre
-#
-#     def setNombre(self,nombre):
-#         self.nombre = nombre
 
 
 def allowed_file(filename):
