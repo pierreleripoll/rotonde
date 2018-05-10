@@ -19,6 +19,11 @@ app.register_blueprint(gestion_spectacle)
 app.register_blueprint(panier_relative)
 app.register_blueprint(admin_relative)
 
+#PAGE DE TEST JAVASCRIPT
+@app.route('/javascript')
+def javascript():
+    return render_template('testJS.html')
+
 
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
@@ -74,7 +79,7 @@ def calendrier():
 			except ValueError:
 				print("it's a string", request.form[str(date.date)])
 				pass
-			
+
 		session['panier']=places
 	return redirect ("/panier")
 

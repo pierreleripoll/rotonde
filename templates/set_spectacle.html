@@ -4,6 +4,28 @@
 
 <head>
     <title>MODIFIER SPECTACLE</title>
+
+    <script >
+
+        var i =0;
+
+        function addOneDate(){
+            var lastDate = document.getElementById("date"+i.toString())
+            var inputDate = document.createElement("INPUT");
+            inputDate.setAttribute("type","datetime-local");
+            i++;
+            inputDate.setAttribute("name","date"+i.toString());
+            inputDate.setAttribute("id","date"+i.toString());
+            console.log(i);
+            console.log(lastDate.value);
+            inputDate.setAttribute("value",lastDate.value);
+            var br = document.createElement("br");
+            inputDate.appendChild(br);
+
+            document.getElementById("date-div").appendChild(inputDate);
+        }
+    </script>
+
 </head>
 
 <body>
@@ -11,18 +33,36 @@
   <p>Bienvenue sur la page de modification/création de spectacle : </p>
   <p>{{spectacle.nom}}
   <form action="" method="POST" enctype="multipart/form-data">
-      Nom du spectacle:<br>
-      <input type="text" name="nom" value='{{spectacle.nom}}'><br>
-      Résumé:<br>
-      <input type="text" name="resume"value='{{spectacle.resume}}' size=50><br>
+    <div>
+      <label for="nom" >Nom du spectacle:<abbr title="required"></abbr></label><br>
+      <input type="text" id="nom" name="nom" value='{{spectacle.nom}}'><br>
+    </div>
+    <div>
+      <label for="resume">Résumé:</label><br>
+      <input type="text" id="resume" name="resume"value='{{spectacle.resume}}' size=50><br>
+    </div>
+    <div>
       Photos:<br>
       <input type="file" name="photos" accept=".png, .jpg, .jpeg" multiple><br>
+    </div>
+    <div>
       Liens (Facebook, Instagram...):<br>
       <input type="url" name="liens" value='{{spectacle.liens}}'><br>
-
+    </div>
       <br>
-      <button name="foo" value="valider" type="submit"}>Valider</button>
+    <div>
+      <label for="dates">Dates :  </label>
+      <button type="button" id="addDate" onclick="addOneDate()" name="addDate">Add</button><br>
+      <div id="date-div">
+        <input type="datetime-local" id="date0" name="date0" >
+        <input type="number" id="nPlaces0" name="nPlaces0" min="0" max="500"><br>
+      </div>
+    </div>
 
+    <div>
+      <br><br>
+      <button name="foo" id="submit" value="valider" type="submit"}>Valider</button>
+    </div>
   </form>
 
 </body>
