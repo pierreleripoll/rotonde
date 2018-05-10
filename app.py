@@ -16,6 +16,7 @@ UPLOAD_FOLDER = './static/uploads'
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER']= UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///baseRotonde.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 app.secret_key = 'iswuygdedgv{&75619892__01;;>..zzqwQIHQIWS'
 
 app.register_blueprint(gestion_spectacle)
@@ -23,10 +24,6 @@ app.register_blueprint(panier_relative)
 app.register_blueprint(admin_relative)
 
 db.init_app(app)
-
-with app.app_context():
-    sessions = Session.query.all()
-    print(sessions)
 
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])

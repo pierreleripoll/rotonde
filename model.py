@@ -47,15 +47,15 @@ class Session(db.Model):
     def __repr__(self):
         return '<Session: %r %r>' % (self.login, self.password)
 
-class Place:
-    def __init__(self,nomSpectacle,nomUser,date,nombre):
-        self.nomSpectacle=nomSpectacle
-        self.nomUser = nomUser
-        self.date = date
-        self.nombre = nombre
-
-    def setNombre(self,nombre):
-        self.nombre = nombre
+# class Place:
+#     def __init__(self,nomSpectacle,nomUser,date,nombre):
+#         self.nomSpectacle=nomSpectacle
+#         self.nomUser = nomUser
+#         self.date = date
+#         self.nombre = nombre
+#
+#     def setNombre(self,nombre):
+#         self.nombre = nombre
 
 
 def allowed_file(filename):
@@ -89,7 +89,7 @@ def get_all_places():
 
 # Renvoie le spectacle portant le nom specifife
 def get_spectacle(nomSpectacle):
-    spectacle = Spectacle.query.filter_by(nom=nomSpectacle).first_or_404()
+    spectacle = Spectacle.query.filter_by(nom=nomSpectacle).first()
 
     return spectacle
 
@@ -106,7 +106,7 @@ def insert_spectacle(spectacle):
 
 # Update un spectacle
 def update_spectacle(spectacle):
-    oldSpectacle = Spectacle.query.filter_by(nom=spectacle.nom).first_or_404()
+    oldSpectacle = Spectacle.query.filter_by(nom=spectacle.nom).first()
 
     oldSpectacle.resume = spectacle.resume
     oldSpectacle.photo = spectacle.photo
@@ -125,5 +125,5 @@ def get_dates(nomSpectacle):
 def get_sessions():
 
     sessions = Session.query.all()
-    
+
     return sessions
