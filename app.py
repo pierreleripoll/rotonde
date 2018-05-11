@@ -27,7 +27,7 @@ db.init_app(app)
 def logout():
     print("\nSession en cours : \n",session,"\n")
     NomsSpectacles = []
-    spectacles = get_spectacles()
+    spectacles = get_all_spectacles()
 
     for spectacle in spectacles:
         NomsSpectacles.append(spectacle.nom)
