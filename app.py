@@ -39,20 +39,20 @@ def logout():
 	for spectacle in spectacles:
 		NomsSpectacles.append(spectacle.nom)
 
-		if request.method=='GET':
-			return render_template('accueil.html', names=NomsSpectacles)
-		if request.method=='POST':
-			if request.form["bouton"] == "panier" :
-				print("panier")
-				return redirect(url_for('panier_relative.panier'))
-			elif request.form["bouton"] == "calendrier" :
-				print("calendrier")
-				return redirect(url_for('calendrier'))
-			elif request.form["bouton"] == "admin":
-				print("admin")
-				return redirect(url_for('admin_relative.admin'))
-			else :
-				return redirect(url_for('lougout'))
+	if request.method=='GET':
+		return render_template('accueil.html', names=NomsSpectacles)
+	if request.method=='POST':
+		if request.form["bouton"] == "panier" :
+			print("panier")
+			return redirect(url_for('panier_relative.panier'))
+		elif request.form["bouton"] == "calendrier" :
+			print("calendrier")
+			return redirect(url_for('calendrier'))
+		elif request.form["bouton"] == "admin":
+			print("admin")
+			return redirect(url_for('admin_relative.admin'))
+		else :
+			return redirect(url_for('lougout'))
 
 @app.route('/empty_cart')
 def empty_cart():
