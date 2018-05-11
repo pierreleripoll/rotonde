@@ -7,22 +7,41 @@
 
     <script >
 
-        var i =0;
+        var i = 1;
+
+        function init(val){
+          i = val;
+        }
 
         function addOneDate(){
-            var lastDate = document.getElementById("date"+i.toString())
+
+            var lastDate = document.getElementById("datetime"+i.toString())
+            var div = document.createElement("div");
             var inputDate = document.createElement("INPUT");
             inputDate.setAttribute("type","datetime-local");
             i++;
-            inputDate.setAttribute("name","date"+i.toString());
-            inputDate.setAttribute("id","date"+i.toString());
+            inputDate.setAttribute("name","datetime"+i.toString());
+            inputDate.setAttribute("id","datetime"+i.toString());
             console.log(i);
             console.log(lastDate.value);
             inputDate.setAttribute("value",lastDate.value);
             var br = document.createElement("br");
-            inputDate.appendChild(br);
 
-            document.getElementById("date-div").appendChild(inputDate);
+            div.appendChild(inputDate);
+
+            var nPlace =document.createElement("input");
+            nPlace.setAttribute("type","number");
+            nPlace.setAttribute("id","nPlaces"+i.toString());
+            nPlace.setAttribute("name","nPlaces"+i.toString());
+            nPlace.setAttribute("min","0");
+            nPlace.setAttribute("max","500");
+
+            div.appendChild(nPlace);
+
+            document.getElementById("date-div").appendChild(br);
+            document.getElementById("date-div").appendChild(div);
+
+
         }
     </script>
 
@@ -53,9 +72,18 @@
     <div>
       <label for="dates">Dates :  </label>
       <button type="button" id="addDate" onclick="addOneDate()" name="addDate">Add</button><br>
+      <script>
+        var dates = {{dates}};
+        init(dates.length);
+        console.log(dates.length);
+      </script>
       <div id="date-div">
-        <input type="datetime-local" id="date0" name="date0" >
-        <input type="number" id="nPlaces0" name="nPlaces0" min="0" max="500"><br>
+        {%for date in dates:%}
+          <div id="date{{loop.index}}">
+            <input type="datetime-local" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}" >
+            <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
+          </div>
+        {%endfor%}
       </div>
     </div>
 
