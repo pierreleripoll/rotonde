@@ -1,10 +1,9 @@
 from flask import *
-from sqlalchemy import *
-from sqlalchemy.sql import *
 from werkzeug.utils import secure_filename
 import os
 import re
-from model import*
+from model import *
+from model import db
 from gestion_spectacle import *
 from panier_relative import *
 from admin_relative import *
@@ -13,11 +12,15 @@ UPLOAD_FOLDER = './static/uploads'
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER']= UPLOAD_FOLDER
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///baseRotonde.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 app.secret_key = 'iswuygdedgv{&75619892__01;;>..zzqwQIHQIWS'
 
 app.register_blueprint(gestion_spectacle)
 app.register_blueprint(panier_relative)
 app.register_blueprint(admin_relative)
+
+db.init_app(app)
 
 #PAGE DE TEST JAVASCRIPT
 @app.route('/javascript')
@@ -106,5 +109,6 @@ def uploads(nomSpectacle):
 
 
 if __name__ == '__main__':
+
     app.run(debug='true')
     #app.run(host="192.168.43.6",port=2000)
