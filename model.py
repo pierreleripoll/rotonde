@@ -117,8 +117,8 @@ def get_dates(nomSpectacle):
 #Renvoie l'ensemble des dates disponibles
 def get_all_dates ():
     dates = Calendrier.query.all()
-	
-	return dates
+
+    return dates
 
 def get_sessions():
 
