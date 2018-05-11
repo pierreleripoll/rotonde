@@ -9,15 +9,15 @@
   <table class="table table-striped">
       <tr>
         <th>Spectacle</th>
-        <th>Nombre de places</th>
         <th>Date</th>
+        <th>Nombre de places</th>
+
 
       {% for place in display_cart %}
       <tr>
         <td>{{place["nomSpectacle"]}}</td>
-        <td>{{place["nombre"]}}</td>
-        <input type="number" name="quantity" min="1" max="5" value="1">
         <td>{{place["date"]}}</td>
+        <td><input type="number" name="quantity" min="1" max="5" value="{{place['qte']}}"></td>
       </tr>
       {% endfor %}
 
