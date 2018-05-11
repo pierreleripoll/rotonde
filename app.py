@@ -20,22 +20,20 @@ app.register_blueprint(gestion_spectacle)
 app.register_blueprint(panier_relative)
 app.register_blueprint(admin_relative)
 
-<<<<<<< HEAD
 db.init_app(app)
-=======
+
 #PAGE DE TEST JAVASCRIPT
 @app.route('/javascript')
 def javascript():
     return render_template('testJS.html')
 
->>>>>>> master
 
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
 def logout():
     print("\nSession en cours : \n",session,"\n")
     NomsSpectacles = []
-    spectacles = get_all_spectacles()
+    spectacles = get_spectacles()
 
     for spectacle in spectacles:
         NomsSpectacles.append(spectacle.nom)
