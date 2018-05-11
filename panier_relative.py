@@ -54,7 +54,7 @@ def panier():
 
 
 @panier_relative.route('/add_to_cart/<int:id>', methods=['POST','GET']) #Provisoire, enlever le get
-def add_to_cart(id):
+def add_to_cart(id, ):
     if "cart" not in session:
         session["cart"] = []
     session["cart"].append(id)
