@@ -31,6 +31,8 @@ def admin():
                 return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle='nouveauSpectacle'))
             if request.form["bouton"]=="showPlaces":
                 return redirect(url_for('admin_relative.show_places'))
+            if request.form["bouton"]=="accueil":
+                return redirect(url_for('logout'))
 
     else :
         return redirect(url_for('admin_relative.admin_log'))

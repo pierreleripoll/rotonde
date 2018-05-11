@@ -15,10 +15,11 @@
 			  <p>{{date.date}}  {{date.nom}}</p>
 			  <p>Il reste {{date.placesRestantes}} places</p>
 			  <input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"> </li>
-			  
+
 	   {% endfor %}
    </ul>
    <button name="foo" value="valider" type="submit">Ajouter au panier</button>
+   <button name="foo" value="accueil" type="submit">Accueil</button>
    </form>
 
 </body>

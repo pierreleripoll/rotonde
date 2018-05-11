@@ -16,13 +16,13 @@
       <tr>
         <td>{{place["nomSpectacle"]}}</td>
         <td>{{place["nombre"]}}</td>
+        <input type="number" name="quantity" min="1" max="5" value="1">
         <td>{{place["date"]}}</td>
       </tr>
       {% endfor %}
 
   </table>
   <h3>Total: </h3>
-
   <form action="" method="POST">
       Veuillez rentrer votre nom:<br>
       <input type="text" name="nom"><br>
