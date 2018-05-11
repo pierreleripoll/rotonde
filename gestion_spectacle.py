@@ -51,8 +51,10 @@ def spectacle(nomSpectacle):
                     print("its a string ",request.form[date])
                     pass
             session['panier']=places
-            return redirect(url_for('logout'))
+            return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=nomSpectacle))
 
+        if request.form["submit"] == "accueil":
+            return redirect(url_for('logout'))
 ## MODIFY SPECTACLE
 @gestion_spectacle.route('/set_spectacle/<nomSpectacle>', methods=['GET','POST'])
 def set_spectacle(nomSpectacle):
