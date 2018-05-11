@@ -40,6 +40,13 @@ class Place(db.Model):
     def __repr__(self):
         return '<Place: %r>' % self.idPlace
 
+    def serialize(self):
+        dic = {}
+        dic["nomSpectacle"]=self.nomSpectacle
+        dic["date"]=self.date
+        dic["nomUser"]=self.nomUser
+        return dic
+
     # TODO: Remettre le setNombre si besoin ?
 
 class Session(db.Model):

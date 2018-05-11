@@ -44,9 +44,11 @@ def spectacle(nomSpectacle):
                     n = int(request.form[date])
                     if n> 0 :
                         print("Add a place !")
-                        place = Place(nomSpectacle,"",date,n)
-                        print(place.__dict__)
-                        places.append(place.__dict__)
+                        for i in range(n):
+                            place = Place(nomSpectacle=nomSpectacle,date=date,nomUser="")
+                            placeJSON = place.serialize()
+                            print(placeJSON)
+                            places.append(place.serialize())
                 except ValueError:
                     print("its a string ",request.form[date])
                     pass
