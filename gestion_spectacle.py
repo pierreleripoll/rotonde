@@ -62,8 +62,10 @@ def set_spectacle(nomSpectacle):
         if request.method=="GET":
             thisSpectacle = get_spectacle(nomSpectacle)
             thisDates = get_dates(nomSpectacle)
+            for calendrier in thisDates:
+                calendrier.date = datePytoHTML(calendrier.date)
             print(thisDates)
-            return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates)
+            return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates))
         if request.method=="POST":
             if "nom" in request.form :
                 cont = request.form
@@ -93,6 +95,21 @@ def set_spectacle(nomSpectacle):
                     update_spectacle(spectacle)
                 else:
                     insert_spectacle(spectacle)
+
+                nombrePlace = 1
+                actualDates = get_dates(nomSpectacle)
+                while "datetime"+str(nombrePlace) in cont :
+                    datePy =dateHTMLtoPy(cont["datetime"+str(nombrePlace)])
+                    date = Calendrier(date=datePy,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(nombrePlace)]))
+                    nombrePlace +=1
+                    alreadyIn="false"
+                    for actualDate in actualDates:
+                        if datePy == actualDate.date:
+                            update_date(date)
+                            alreadyIn = "true"
+                    if alreadyIn == "false":
+                        insert_date(date)
+
                 return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=request.form["nom"]))
     else :
         return abort(403)

@@ -91,6 +91,12 @@ def insert_place(place):
 
     return
 
+def insert_date(date):
+    db.session.add(date)
+    db.session.commit()
+
+    return
+
 def insert_spectacle(spectacle):
     db.session.add(spectacle)
     db.session.commit()
@@ -107,6 +113,27 @@ def update_spectacle(spectacle):
     db.session.commit()
 
     return
+
+# Update une date
+def update_date(newDate):
+    oldDate = Calendrier.query.filter_by(date=newDate.date).first()
+    oldDate.date = newDate.date
+    oldDate.nom = newDate.nom
+    oldDate.placesRestantes = newDate.placesRestantes
+
+    db.session.commit()
+
+    return
+
+
+#Convertir une date html en python
+def dateHTMLtoPy(date_in):
+    datetimePy = datetime.strptime(date_in,'%Y-%m-%dT%H:%M')
+    return datetimePy
+
+def datePytoHTML(date_in):
+    datetimeHTML = date_in.strftime('%Y-%m-%dT%H:%M')
+    return datetimeHTML
 
 # Renvoie les dates disponibles pour un spectacle
 def get_dates(nomSpectacle):

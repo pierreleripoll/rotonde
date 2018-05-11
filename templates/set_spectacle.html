@@ -7,7 +7,7 @@
 
     <script >
 
-        var i = 1;
+        var i = 0;
 
         function init(val){
           i = val;
@@ -15,7 +15,9 @@
 
         function addOneDate(){
 
-            var lastDate = document.getElementById("datetime"+i.toString())
+            var lastDate = document.getElementById("datetime"+i.toString());
+            var lastNPlaces = document.getElementById("nPlaces"+i.toString());
+
             var div = document.createElement("div");
             var inputDate = document.createElement("INPUT");
             inputDate.setAttribute("type","datetime-local");
@@ -23,8 +25,7 @@
             inputDate.setAttribute("name","datetime"+i.toString());
             inputDate.setAttribute("id","datetime"+i.toString());
             console.log(i);
-            console.log(lastDate.value);
-            inputDate.setAttribute("value",lastDate.value);
+
             var br = document.createElement("br");
 
             div.appendChild(inputDate);
@@ -35,6 +36,13 @@
             nPlace.setAttribute("name","nPlaces"+i.toString());
             nPlace.setAttribute("min","0");
             nPlace.setAttribute("max","500");
+
+            if(lastDate){
+              inputDate.setAttribute("value",lastDate.value);
+            }
+            if(lastNPlaces){
+              nPlace.setAttribute("value",lastNPlaces.value);
+            }
 
             div.appendChild(nPlace);
 
@@ -73,9 +81,10 @@
       <label for="dates">Dates :  </label>
       <button type="button" id="addDate" onclick="addOneDate()" name="addDate">Add</button><br>
       <script>
-        var dates = {{dates}};
-        init(dates.length);
-        console.log(dates.length);
+        console.log("TEST");
+        var datesLength = {{nDates}};
+        init(datesLength);
+        console.log("Number of dates already in:"+datesLength);
       </script>
       <div id="date-div">
         {%for date in dates:%}
