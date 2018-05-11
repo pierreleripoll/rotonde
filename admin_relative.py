@@ -14,7 +14,10 @@ admin_relative = Blueprint('admin_relative', __name__,
 ## PAGE ADMIN
 @admin_relative.route('/admin', methods=['GET','POST'])
 def admin():
-
+    #
+    # if request.form["submit"] == "accueil":
+    #     return redirect(url_for('logout'))
+    # login = request.form["login"]
     if 'admin' in session :
         if request.method=='GET':
             return render_template('admin.html',pseudo = session["pseudo"])
@@ -50,9 +53,12 @@ def admin_log():
 
     if request.method=='POST':
 
+        if request.form["submit"] == "accueil":
+            return redirect(url_for('logout'))
+        login = request.form["login"]
+
         sessions = get_sessions()
 
-        login = request.form["login"]
         password = request.form["password"]
 
         for sess in sessions :
