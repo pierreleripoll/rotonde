@@ -14,7 +14,6 @@ panier_relative = Blueprint('panier_relative', __name__,
 def isInCart(item, cart):
     for idx, show in enumerate(cart):
         if item['nomSpectacle'] == show['nomSpectacle'] and item['date'] == show['date']:
-            print(item['nomSpectacle'] + " est dans la carte à la place "+str(idx))
             return idx
     return -1
 
@@ -23,17 +22,33 @@ def calculCart(items):
     for item in items:
         idx = isInCart(item,display_cart)
         if idx == -1 or display_cart == []:
-            print("il est pas dedans !")
             display_cart.append({'nomSpectacle' : item['nomSpectacle'], 'date':item['date'], 'qte' : 1})
         else:
             display_cart[idx]['qte']+=1
     return display_cart
+
+def udpateQte(cont):
+    for i, show in enumerate(display_cart):
+        index = 'qte'+str(i+1)
+        change = int(cont[index]) - int(show['qte'])
+        print(str(cont[index]) + str(show['qte']))
+        if(change ==0):
+            print("non changed")
+        else:
+            for j, place in enumerate(session['panier']):
+                if place['nomSpectacle'] == show['nomSpectacle'] and place['date'] == show['date']:
+                    print(place['nomSpectacle'] + " " + place['date'])
+                    print("wowo")
+                    session['panier'].pop(j)
+                    change -= 1
+                    if(change == 0):
+                        return 1
+    print("voici le panier de la session : "+ str(session['panier']))
 ## PANIER
 @panier_relative.route('/panier', methods=['GET','POST'])
 def panier():
     if request.method == "GET":
         """TODO: Display the contents of the shopping cart."""
-
 
         if "panier" not in session:
             #flash("There is nothing in your cart.")
@@ -41,9 +56,13 @@ def panier():
 
         else:
             items = session["panier"]
-            print("ITEMS\n",items)
+            print("\n\n\n")
+            print(session["panier"])
+            print("\n\n\n")
+            global display_cart
             display_cart = calculCart(items)
             print(display_cart)
+
             # dict_of_places = {}
             #
             # total_price = 0
@@ -59,9 +78,14 @@ def panier():
 
             return render_template("panier.html", display_cart = display_cart, total = 10)
     if request.method == "POST":
+
         if "panier" not in session :
             return redirect(url_for('logout'))
         else:
+            if request.form['foo']=='valider':
+                cont = request.form
+                print("\n\n\n\n"+str(cont)+"\n\n\n\n")
+                udpateQte(cont);
             if 'nom' not in request.form or request.form['nom'] == "":
                 return redirect(url_for('panier_relative.panier'))
             else:
