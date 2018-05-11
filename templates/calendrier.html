@@ -9,11 +9,17 @@
 <body>
 
   <p>CALENDRIER </p>
-
   <form action="" method="POST">
-      <p> Aimez-vous les fraises des bois?</p>
-      <button name="foo" value="valider" type="submit">Valider</button>
-  </form>
+  <ul>
+	  {%for date in dates %}
+			  <p>{{date.date}}  {{date.nom}}</p>
+			  <p>Il reste {{date.placesRestantes}} places</p>
+			  <input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"> </li>
+			  
+	   {% endfor %}
+   </ul>
+   <button name="foo" value="valider" type="submit">Ajouter au panier</button>
+   </form>
 
 </body>
 

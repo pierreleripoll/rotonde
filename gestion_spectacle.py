@@ -61,7 +61,7 @@ def set_spectacle(nomSpectacle):
             thisSpectacle = get_spectacle(nomSpectacle)
             thisDates = get_dates(nomSpectacle)
             print(thisDates)
-            return render_template('set_spectacle.html',spectacle = thisSpectacle)
+            return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates)
         if request.method=="POST":
             if "nom" in request.form :
                 cont = request.form

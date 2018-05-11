@@ -20,7 +20,15 @@ app.register_blueprint(gestion_spectacle)
 app.register_blueprint(panier_relative)
 app.register_blueprint(admin_relative)
 
+<<<<<<< HEAD
 db.init_app(app)
+=======
+#PAGE DE TEST JAVASCRIPT
+@app.route('/javascript')
+def javascript():
+    return render_template('testJS.html')
+
+>>>>>>> master
 
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
@@ -57,9 +65,28 @@ def empty_cart():
 
 
 ## CALENDRIER
-@app.route('/calendrier', methods=['GET'])
+@app.route('/calendrier', methods=['GET','POST'])
 def calendrier():
-    return render_template('calendrier.html')
+	dates= get_all_dates();
+	if request.method=="GET":
+		return render_template('calendrier.html',dates=dates)
+	else:
+		if not 'panier' in session:
+			session['panier'] =[]
+		places = session['panier']
+		for date in dates:
+			try:
+				n=int(request.form[str(date.date)])
+				if n>0:
+					place = Place(date.nom,"",date.date,n)
+					print("Place added", place.__dict__)
+					places.append(place.__dict__)
+			except ValueError:
+				print("it's a string", request.form[str(date.date)])
+				pass
+
+		session['panier']=places
+	return redirect ("/panier")
 
 ## SHOW UPLOADS FILES
 @app.route('/uploads/<nomSpectacle>', methods=['GET'])
