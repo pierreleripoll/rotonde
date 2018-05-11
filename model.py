@@ -15,7 +15,7 @@ class Spectacle(db.Model):
     resume = db.Column(db.Text, nullable = True)
     photo = db.Column(db.Integer, nullable = True)
     liens = db.Column(db.String, nullable = True)
-
+    admin = db.Column(db.String, nullable =True)
     def __repr__(self):
         return '<Spectacle: %r>' % self.nom
 

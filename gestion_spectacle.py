@@ -16,9 +16,9 @@ gestion_spectacle = Blueprint('gestion_spectacle', __name__,
 ## SPECTACLE
 @gestion_spectacle.route('/spectacle/<nomSpectacle>', methods=['GET','POST'])
 def spectacle(nomSpectacle):
+    thisSpectacle = get_spectacle(nomSpectacle)
+    thisDates = get_dates(nomSpectacle)
     if request.method=="GET":
-        thisSpectacle = get_spectacle(nomSpectacle)
-        thisDates = get_dates(nomSpectacle)
         print(thisDates)
         if thisSpectacle == None :
             return abort(404)
@@ -32,9 +32,9 @@ def spectacle(nomSpectacle):
             print("Paths :",paths)
         return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths)
     if request.method == "POST":
-        if request.form["submit"] == "modify":
+        if request.form["submit"] == "modify" and session['pseudo'] == thisSpectacle.admin:
             return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle=nomSpectacle))
-        if request.form["submit"] == "valider":
+        if request.form["submit"] == "valider" :
             print(request.form)
             if not 'panier' in session :
                 session['panier'] = []
@@ -71,7 +71,7 @@ def set_spectacle(nomSpectacle):
         if request.method=="POST":
             if "nom" in request.form :
                 cont = request.form
-                spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"])
+                spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'])
                 # check if the post request has the file part
                 if 'photos' not in request.files:
                     print("No photo")
