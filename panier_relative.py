@@ -85,6 +85,8 @@ def panier():
             if request.form['foo']=='valider':
                 cont = request.form
                 print("\n\n\n\n"+str(cont)+"\n\n\n\n")
+                global display_cart
+                display_cart = calculCart(session['panier'])
                 udpateQte(cont);
             if 'nom' not in request.form or request.form['nom'] == "":
                 return redirect(url_for('panier_relative.panier'))
@@ -92,7 +94,7 @@ def panier():
                 panier = session['panier']
                 name = request.form['nom']
                 for p in panier:
-                    place = Place(p['nomSpectacle'],name,p['date'],p['nombre'])
+                    place = Place(nomSpectacle=p['nomSpectacle'],nomUser=name,date=dateJSONToPy(p['date']))
                     insert_place(place)
                 session.pop('panier')
                 return redirect(url_for('logout'))
@@ -107,11 +109,11 @@ def add_to_cart(id, ):
     return redirect("/panier")
 
 
-    #
+
     # for i in idx:
     #     if item['date'] == display_cart[i]['date']:
-    #         print("et à la même date donc on augmente la qte")
+    #
     #         display_cart[idx]['qte']+=1
     # else:
-    #     print("la date est différente !")
+    #
     #     display_cart.append({'nomSpectacle' : item['nomSpectacle'], 'date':item['date'], 'qte' : 1})

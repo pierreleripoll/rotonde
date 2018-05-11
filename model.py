@@ -138,6 +138,11 @@ def dateHTMLtoPy(date_in):
     datetimePy = datetime.strptime(date_in,'%Y-%m-%dT%H:%M')
     return datetimePy
 
+def dateJSONToPy(date_in):
+    print("dateJSONToPy ",date_in)
+    datetimePy = datetime.strptime(date_in,'%Y-%m-%d %H:%M:%S')
+    return datetimePy
+
 def datePytoHTML(date_in):
     datetimeHTML = date_in.strftime('%Y-%m-%dT%H:%M')
     return datetimeHTML
