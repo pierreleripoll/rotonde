@@ -72,6 +72,12 @@ def set_spectacle(nomSpectacle):
             if "nom" in request.form :
                 cont = request.form
                 spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'])
+
+                alreadyIn = get_spectacle(spectacle.nom)
+                if alreadyIn:
+                    if alreadyIn.admin != session['pseudo']:
+                        return abort(403)
+
                 # check if the post request has the file part
                 if 'photos' not in request.files:
                     print("No photo")
@@ -93,7 +99,7 @@ def set_spectacle(nomSpectacle):
                             f.save(os.path.join(pathUpload, filename))
                             numberPhotos +=1
                     spectacle.photos=numberPhotos
-                if get_spectacle(spectacle.nom) :
+                if alreadyIn :
                     update_spectacle(spectacle)
                 else:
                     insert_spectacle(spectacle)
