@@ -102,7 +102,7 @@ def update_spectacle(spectacle):
 
     oldSpectacle.resume = spectacle.resume
     oldSpectacle.photo = spectacle.photo
-    oldSpectacle.liens = spectacles.liens
+    oldSpectacle.liens = spectacle.liens
 
     db.session.commit()
 
