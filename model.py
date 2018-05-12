@@ -13,7 +13,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 class Spectacle(db.Model):
     nom = db.Column(db.String(80), primary_key = True)
     resume = db.Column(db.Text, nullable = True)
-    photo = db.Column(db.Integer, nullable = True)
+    photos = db.Column(db.Integer, nullable = True)
     liens = db.Column(db.String, nullable = True)
     admin = db.Column(db.String, nullable =True)
     def __repr__(self):
@@ -92,7 +92,7 @@ def get_spectacle(nomSpectacle):
 
     return spectacle
 
-# Renvoie l'objet Date correspondant a la date en param    
+# Renvoie l'objet Date correspondant a la date en param
 def get_date (date):
 	date= Calendrier.query.filter_by(date=date).first()
 	return date
@@ -119,7 +119,7 @@ def update_spectacle(spectacle):
     oldSpectacle = Spectacle.query.filter_by(nom=spectacle.nom).first()
 
     oldSpectacle.resume = spectacle.resume
-    oldSpectacle.photo = spectacle.photo
+    oldSpectacle.photos = spectacle.photos
     oldSpectacle.liens = spectacle.liens
 
     db.session.commit()
@@ -137,12 +137,12 @@ def update_date(newDate):
 
     return
 
-#update le nombre de places sur une date   
+#update le nombre de places sur une date
 def update_placesRestantes (date, placesPrises):
 	date.placesRestantes=date.placesRestantes - placesPrises
-	
+
 	db.session.commit()
-	
+
 	return
 
 #Convertir une date html en python
