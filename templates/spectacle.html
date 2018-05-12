@@ -7,7 +7,7 @@
 </head>
 
 <body>
-
+  <p><a href="/">Acceuil</a></p>
   <p>SPECTACLE {{spectacle.nom}} </p>
   <p>Résumé : </p>
   <p>{{spectacle.resume}}</p>
@@ -24,7 +24,6 @@
         {% endfor %}
       <ul>
       <button name="submit" value="valider" type="submit">Valider</button>
-      <button name="submit" value="accueil" type="submit">Accueil</button>
       {%if session.admin == 'true' and session.pseudo == spectacle.admin%}
         <button name="submit" value="modify" type="submit">Modifier</button>
       {%endif%}
