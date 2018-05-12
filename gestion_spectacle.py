@@ -71,13 +71,13 @@ def set_spectacle(nomSpectacle):
         if request.method=="POST":
             if "nom" in request.form :
                 cont = request.form
-                spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'])
+                spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0)
                 print("\n\n"+ str(cont) +"\n\n")
                 alreadyIn = get_spectacle(spectacle.nom)
                 if alreadyIn:
                     if alreadyIn.admin != session['pseudo']:
                         return abort(403)
-
+                    spectacle.photos = alreadyIn.photos
                 # check if the post request has the file part
                 if 'photos' not in request.files:
                     print("No photo")
@@ -87,7 +87,7 @@ def set_spectacle(nomSpectacle):
                     pathUpload = app.config['UPLOAD_FOLDER']+'/'+name
                     if not os.path.isdir(pathUpload):
                         os.mkdir(pathUpload)
-                    numberPhotos = 0
+                    numberPhotos = spectacle.photos
                     for f in request.files.getlist('photos'):
                         print(f.filename)
                         # if user does not select file, browser also
@@ -96,7 +96,7 @@ def set_spectacle(nomSpectacle):
                             flash('No selected file')
                         if f and allowed_file(f.filename):
                             filename = secure_filename(f.filename)
-                            f.save(os.path.join(pathUpload, filename))
+                            f.save(os.path.join(pathUpload, urlify(spectacle.nom)+"_"+str(numberPhotos)))
                             numberPhotos +=1
                     spectacle.photos=numberPhotos
                 if alreadyIn :

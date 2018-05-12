@@ -37,6 +37,12 @@ def navbar():
 def sign_in():
 	return render_template('sign_in.html')
 
+@app.context_processor
+def utility_processor():
+    def niceUrl(s):
+        return urlify(s)
+    return dict(niceUrl=niceUrl)
+
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
 def logout():
