@@ -23,7 +23,9 @@ def calculCart(items):
     for item in items:
         idx = isInCart(item,display_cart)
         if idx == -1 or display_cart == []:
-            display_cart.append({'nomSpectacle' : item['nomSpectacle'], 'date':item['date'], 'qte' : 1})
+            date = get_date(date=dateJSONToPy(str(item['date'])))
+            left = date.placesRestantes
+            display_cart.append({'nomSpectacle' : item['nomSpectacle'], 'date':item['date'], 'qte' : 1, 'left' : left})
         else:
             display_cart[idx]['qte']+=1
     return display_cart
@@ -55,6 +57,9 @@ def udpateQte(cont):
                     change -= 1
     print("voici le panier de la session : "+ str(session['panier']))
     session.update()
+
+
+
 ## PANIER
 @panier_relative.route('/panier', methods=['POST','GET'])
 def panier():
@@ -75,25 +80,6 @@ def panier():
             return render_template("panier.html", display_cart = {}, total = 0)
 
         else:
-            items = session["panier"]
-            print("\n\n\n")
-            print(session["panier"])
-            print("\n\n\n")
-
-
-            # dict_of_places = {}
-            #
-            # total_price = 0
-            #
-            # for item in items:
-            #     # place = get_place_by_id() #A modifier
-            #     place = Place(item,'test','osef','osef',1)
-            #     total_price += 1 # A modifier
-            #     if place.idPlace in dict_of_places:
-            #         dict_of_places[place.idPlace]["qty"] += 1
-            #     else:
-            #         dict_of_places[place.idPlace] = {"qty":1, "name": "spectacle" + str(place.idPlace), "price": 1}
-
             return render_template("panier.html", display_cart = display_cart, total = 10)
     if request.method == "POST":
         print("\n\n\n\n\n\n\n\nEntering in POST\n\n\n\n\n\n\n\n\n");
@@ -112,11 +98,21 @@ def panier():
                 panier = session['panier']
                 print(panier)
                 name = request.form['nom']
-                for p in panier:
-                    place = Place(nomSpectacle=p['nomSpectacle'],nomUser=name,date=dateJSONToPy(str(p['date'])))
-                    insert_place(place)
-                    datemodif=get_date(date=dateJSONToPy(str(p['date'])))
-                    update_placesRestantes(datemodif, 1)
+                for show in display_cart:
+                    print("requesting date")
+                    date = dateJSONToPy(str(show['date']))
+                    place = Place(nomSpectacle=show['nomSpectacle'],nomUser=name,date=date)
+                    datemodif=get_date(date=date)
+                    for i in range(1, show['qte']+1):
+                        print(i)
+                        insert_place(place)
+                        update_placesRestantes(datemodif, 1)
+                # for p in panier:
+                #     date = dateJSONToPy(str(p['date']))
+                #     place = Place(nomSpectacle=p['nomSpectacle'],nomUser=name,date=date)
+                #     insert_place(place)
+                #     datemodif=get_date(date=date)
+                #     update_placesRestantes(datemodif, 1)
                 session.pop('panier')
                 return redirect(url_for('logout'))
 
