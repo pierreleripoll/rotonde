@@ -29,6 +29,9 @@ db.init_app(app)
 def javascript():
 	return render_template('testJS.html')
 
+@app.route('/navbar')
+def navbar():
+    return render_template('navbar.html')
 
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
