@@ -9,28 +9,75 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Rotonde</title>
+    <title>MODIFIER SPECTACLE</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="static/boot4/css/bootstrap.css" rel="stylesheet">
+    <link href="../static/boot4/css/bootstrap.min.css" rel="stylesheet">
 
 
     <!-- Custom styles for this template -->
-    <link href="static/styles/navbar.css" rel="stylesheet">
+    <link href="../static/styles/navbar.css" rel="stylesheet">
+    <script >
 
-    <link href="static/styles/album.css" rel="stylesheet">
+        var i = 0;
+
+        function init(val){
+          i = val;
+        }
+
+        function addOneDate(){
+
+            var lastDate = document.getElementById("datetime"+i.toString());
+            var lastNPlaces = document.getElementById("nPlaces"+i.toString());
+
+            var div = document.createElement("div");
+            var inputDate = document.createElement("INPUT");
+            inputDate.setAttribute("type","datetime-local");
+            i++;
+            inputDate.setAttribute("name","datetime"+i.toString());
+            inputDate.setAttribute("id","datetime"+i.toString());
+            console.log(i);
+
+            var br = document.createElement("br");
+
+            div.appendChild(inputDate);
+
+            var nPlace =document.createElement("input");
+            nPlace.setAttribute("type","number");
+            nPlace.setAttribute("id","nPlaces"+i.toString());
+            nPlace.setAttribute("name","nPlaces"+i.toString());
+            nPlace.setAttribute("min","0");
+            nPlace.setAttribute("max","500");
+
+            if(lastDate){
+              inputDate.setAttribute("value",lastDate.value);
+            }
+            if(lastNPlaces){
+              nPlace.setAttribute("value",lastNPlaces.value);
+            }
+
+            div.appendChild(nPlace);
+
+            document.getElementById("date-div").appendChild(br);
+            document.getElementById("date-div").appendChild(div);
+
+
+        }
+    </script>
+
 
   </head>
 
   <body>
+
     <header>
      <!-- Fixed navbar -->
-     <nav class="navbar navbar-expand bg-light navbar-light ">
-       <a class="navbar-brand" href="#"><img src="static/styles/logo_insa.png" style="height: 40px;" alt="logo"></a>
+     <nav class="navbar navbar-expand bg-light navbar-light fixed-top ">
+       <a class="navbar-brand" href="#"><img src="../static/styles/logo_insa.png" style="height: 40px;" alt="logo"></a>
 
        <div class="collapse navbar-collapse" id="navbarCollapse">
          <ul class="navbar-nav mr-auto">
-           <li class="nav-item active">
+           <li class="nav-item">
              <a class="nav-link" href="/">Acceuil</a>
            </li>
            <li class="nav-item">
@@ -41,7 +88,7 @@
            </li>
          </ul>
          <ul class="nav navbar-nav navbar-right">
-           <li class="nav-item">
+           <li class="nav-item active">
              <a class="nav-link" href="/admin">Admin</a>
            </li>
          </ul>
@@ -51,51 +98,51 @@
    </header>
 
 
-    </div> <!-- /container -->
-    <main role="main">
+   <p>Bienvenue sur la page de modification/création de spectacle : </p>
+   <p>{{spectacle.nom}}
+   <form action="" method="POST" enctype="multipart/form-data">
+     <div>
+       <label for="nom" >Nom du spectacle:<abbr title="required"></abbr></label><br>
+       <input type="text" id="nom" name="nom" value='{{spectacle.nom}}'><br>
+     </div>
+     <div>
+       <label for="resume">Résumé:</label><br>
+       <input type="text" id="resume" name="resume"value='{{spectacle.resume}}' size=50><br>
+     </div>
+     <div>
+       Photos:<br>
+       <input type="file" name="photos" accept=".png, .jpg, .jpeg" multiple><br>
+     </div>
+     <div>
+       Liens (Facebook, Instagram...):<br>
+       <input type="url" name="liens" value='{{spectacle.liens}}'><br>
+     </div>
+       <br>
+     <div>
+       <label for="dates">Dates :  </label>
+       <button type="button" id="addDate" onclick="addOneDate()" name="addDate">Add</button><br>
+       <script>
+         console.log("TEST");
+         var datesLength = {{nDates}};
+         init(datesLength);
+         console.log("Number of dates already in:"+datesLength);
+       </script>
+       <div id="date-div">
+         {%for date in dates:%}
+           <div id="date{{loop.index}}">
+             <input type="datetime-local" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}" >
+             <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
+           </div>
+         {%endfor%}
+       </div>
+     </div>
 
-      <section class="jumbotron text-center">
-        <div class="container">
-          <h1 class="jumbotron-heading">Liste des spectacles</h1>
-          <p class="lead text-muted">Voici la liste des spectacles joués en ce moment à la Rotonde, pour voir les spectacles joués par jour allez dans Calendrier ! Cliquez sur un spectacle pour plus d'informations ou pour réserver des places.</p>
-          <p>
-            <a href="calendrier" class="btn btn-primary my-2">Calendrier</a>
+     <div>
+       <br><br>
+       <button name="foo" id="submit" value="valider" type="submit"}>Valider</button>
 
-          </p>
-        </div>
-      </section>
-
-      <div class="album py-5 bg-light">
-        <div class="container">
-          <div class="row">
-          {%for spectacle in spectacles%}
-            <div class="col-md-4">
-              <div class="card mb-4 box-shadow">
-                <a href="/spectacle/{{spectacle.nom}}">
-                <img class="card-img-top" class="img-thumbnail" src="static/uploads/{{niceUrl(spectacle.nom)}}/{{niceUrl(spectacle.nom)}}_0" alt="{{niceUrl(spectacle.nom)}}_0"  >
-                </a>
-                <div class="card-body">
-                  <h5 class="card-title">{{spectacle.nom}} </h5>
-                  <p class="card-text">{{spectacle.resume}}</p>
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="btn-group">
-                      <a href="/spectacle/{{spectacle.nom}}"class="btn btn-primary">Voir</a>
-                      {%if session.admin == 'true' and session.pseudo == spectacle.admin%}
-                      <a href="/set_spectacle/{{spectacle.nom}}"class="btn btn-secondary">Edit</a>
-                      {%endif%}
-                    </div>
-                    <small class="text-muted">{{spectacle.admin}}</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-            {%endfor%}
-
-
-        </div>
-      </div>
-
-    </main>
+     </div>
+   </form>
 
 
 
@@ -103,7 +150,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="static/assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="static/bootstrap/js/bootstrap.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../static/assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="../static/boot4/js/bootstrap.min.js"></script>
   </body>
 </html>
