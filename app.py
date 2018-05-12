@@ -33,6 +33,10 @@ def javascript():
 def navbar():
     return render_template('navbar.html')
 
+@app.route('/sign_in')
+def sign_in():
+	return render_template('sign_in.html')
+
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
 def logout():
