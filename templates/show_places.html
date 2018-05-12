@@ -9,7 +9,7 @@
 <body>
 
   <ul>
-    {%for place in places %}
+    {%for place in places|reverse %}
       <li>{{place.nomSpectacle}}     {{place.nomUser}}     {{place.date}} </li>
 
     {% endfor %}

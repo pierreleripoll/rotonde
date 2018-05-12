@@ -14,6 +14,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER']= UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///baseRotonde.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
+app.config['MAX_CONTENT_LENGTH'] =  512 * 1024
 app.secret_key = 'iswuygdedgv{&75619892__01;;>..zzqwQIHQIWS'
 
 app.register_blueprint(gestion_spectacle)
