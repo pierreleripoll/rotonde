@@ -18,34 +18,38 @@
     <!-- Custom styles for this template -->
     <link href="static/styles/navbar.css" rel="stylesheet">
 
+    <!-- Pour l'album -->
+
+
   </head>
 
   <body>
-
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Rotonde</a>
+    <header>
+      <!-- Fixed navbar -->
+      <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+          <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Rotonde</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+              <li class="active"><a href="/">Acceuil</a></li>
+              <li><a href="/calendrier">Calendrier</a></li>
+              <li><a href="/panier">Panier</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="/admin">Admin</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Acceuil</a></li>
-            <li><a href="/calendrier">Calendrier</a></li>
-            <li><a href="/panier">Panier</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/admin">Admin</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+      </nav>
+    </header>
 
     <div class="container">
 
@@ -66,8 +70,8 @@
           <p> liste shows </p>
 
           <ul style="list-style-type:none">
-            {% for name in names %}
-            <li><a href="/spectacle/{{name}}">{{name}}</li>
+            {% for spectacle in spectacles %}
+            <li><a href="/spectacle/{{spectacle.nom}}">{{spectacle.nom}}</li>
             {% endfor %}
             <li>oh Hai Mark</li>
           </ul>
@@ -75,6 +79,46 @@
       </div>
 
     </div> <!-- /container -->
+    <main role="main">
+
+      <section class="jumbotron text-center">
+        <div class="container">
+          <h1 class="jumbotron-heading">Liste des spectacles</h1>
+          <p class="lead text-muted">Voici la liste des spectacles joués en ce moment à la Rotonde, pour voir les spectacles joués par jour allez dans Calendrier ! Cliquez sur un spectacle pour plus d'informations ou pour réserver des places.</p>
+          <p>
+            <a href="calendrier" class="btn btn-primary my-2">Calendrier</a>
+
+          </p>
+        </div>
+      </section>
+
+      <div class="album py-5 bg-light">
+        <div class="container">
+
+          {%for spectacle in spectacles%}
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card mb-4 box-shadow">
+                <img class="card-img-top" src="static/uploads/konzert/konzert_01.jpg" alt="{{spectacle.nom}}">
+                <div class="card-body">
+                  <p class="card-text">{{spectacle.resume}}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    </div>
+                    <small class="text-muted">9 mins</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {%endfor%}
+
+
+        </div>
+      </div>
+
+    </main>
 
 
 

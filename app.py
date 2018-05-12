@@ -45,11 +45,9 @@ def logout():
 	NomsSpectacles = []
 	spectacles = get_spectacles()
 
-	for spectacle in spectacles:
-		NomsSpectacles.append(spectacle.nom)
 
 	if request.method=='GET':
-		return render_template('accueil.html', names=NomsSpectacles)
+		return render_template('accueil.html', spectacles=spectacles)
 	if request.method=='POST':
 		if request.form["bouton"] == "panier" :
 			print("panier")
