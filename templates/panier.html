@@ -53,16 +53,16 @@
           <tr>
             <th>Spectacle</th>
             <th>Date</th>
-            <th>Nombre de places</th>
+            <th>Places diponibles</th>
+            <th>Vos places</th>
 
 
           {% for place in display_cart %}
           <tr>
             <td>{{place["nomSpectacle"]}}</td>
             <td>{{place["date"]}}</td>
-
-              <td><input type="number" method="POST" name=qte{{loop.index}} min="0" max="100" value="{{place['qte']}}"></td>
-
+            <td>{{place["left"]}}</td>
+            <td><input type="number" method="POST" name=qte{{loop.index}} min="0" max="{{place['left']}}" value="{{place['qte']}}"></td>
           </tr>
           {% endfor %}
 
