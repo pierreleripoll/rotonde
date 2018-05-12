@@ -19,7 +19,7 @@
       <ul>
         {%for date in dates %}
           <li>{{date.date}}    {{date.placesRestantes}}
-            <input type="number" id="places" name="{{date.date}}" min="0" max="{{dates.placesRestantes}}"> </li>
+            <input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"> </li>
 
         {% endfor %}
       <ul>
