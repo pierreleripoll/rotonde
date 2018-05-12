@@ -18,6 +18,7 @@ def isInCart(item, cart):
     return -1
 
 def calculCart(items):
+    print("entering calculCart with items = "+str(items))
     display_cart = []
     for item in items:
         idx = isInCart(item,display_cart)
@@ -28,27 +29,46 @@ def calculCart(items):
     return display_cart
 
 def udpateQte(cont):
+    global display_cart
     for i, show in enumerate(display_cart):
         index = 'qte'+str(i+1)
+        toDelete = []
         change = int(cont[index]) - int(show['qte'])
-        print(str(cont[index]) + str(show['qte']))
+        print(change)
+        print(str(cont[index]) +" - "+ str(show['qte'])+" = "+str(change))
         if(change ==0):
             print("non changed")
         else:
-            for j, place in enumerate(session['panier']):
-                if place['nomSpectacle'] == show['nomSpectacle'] and place['date'] == show['date']:
-                    print(place['nomSpectacle'] + " " + place['date'])
-                    print("wowo")
-                    session['panier'].pop(j)
+            while (change != 0):
+                if(change < 0):
+                    for j, place in enumerate(session['panier']):
+                        if place['nomSpectacle'] == show['nomSpectacle'] and place['date'] == show['date']:
+                            print("on supprime une des places : "+place['nomSpectacle'] + " " + place['date'] +" "+ str(j))
+                            session['panier'].pop(j)
+                            change += 1
+                            break
+                else:
+                    place = Place(nomSpectacle=show['nomSpectacle'],date=show['date'],nomUser="")
+                    placeJSON = place.serialize()
+                    print("on ajoute une places : "+str(placeJSON))
+                    session['panier'].append(placeJSON)
                     change -= 1
-                    if(change == 0):
-                        return 1
     print("voici le panier de la session : "+ str(session['panier']))
+    session.update()
 ## PANIER
-@panier_relative.route('/panier', methods=['GET','POST'])
+@panier_relative.route('/panier', methods=['POST','GET'])
 def panier():
+
+    if "panier" not in session:
+        #flash("There is nothing in your cart.")
+        return render_template("panier.html", display_cart = {}, total = 0)
+
+    global display_cart
+    display_cart = calculCart(session['panier'])
+
     if request.method == "GET":
         """TODO: Display the contents of the shopping cart."""
+        print("\n\n\n\n\n\n\n\nEntering in GET\n\n\n\n\n\n\n\n\n");
 
         if "panier" not in session:
             #flash("There is nothing in your cart.")
@@ -59,9 +79,7 @@ def panier():
             print("\n\n\n")
             print(session["panier"])
             print("\n\n\n")
-            global display_cart
-            display_cart = calculCart(items)
-            print(display_cart)
+
 
             # dict_of_places = {}
             #
@@ -78,20 +96,21 @@ def panier():
 
             return render_template("panier.html", display_cart = display_cart, total = 10)
     if request.method == "POST":
-
+        print("\n\n\n\n\n\n\n\nEntering in POST\n\n\n\n\n\n\n\n\n");
         if "panier" not in session :
             return redirect(url_for('logout'))
         else:
             if request.form['foo']=='valider':
                 cont = request.form
                 print("\n\n\n\n"+str(cont)+"\n\n\n\n")
-                global display_cart
-                display_cart = calculCart(session['panier'])
+                print(display_cart)
                 udpateQte(cont);
             if 'nom' not in request.form or request.form['nom'] == "":
                 return redirect(url_for('panier_relative.panier'))
             else:
+                print("on m'appelle")
                 panier = session['panier']
+                print(panier)
                 name = request.form['nom']
                 for p in panier:
                     place = Place(nomSpectacle=p['nomSpectacle'],nomUser=name,date=dateJSONToPy(str(p['date'])))
@@ -109,13 +128,3 @@ def add_to_cart(id, ):
     session["cart"].append(id)
     flash("Successfully added to cart!")
     return redirect("/panier")
-
-
-
-    # for i in idx:
-    #     if item['date'] == display_cart[i]['date']:
-    #
-    #         display_cart[idx]['qte']+=1
-    # else:
-    #
-    #     display_cart.append({'nomSpectacle' : item['nomSpectacle'], 'date':item['date'], 'qte' : 1})
