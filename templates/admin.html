@@ -9,10 +9,10 @@
     <meta name="author" content="">
     <link rel="icon" href="../../favicon.ico">
 
-    <title>Fixed Top Navbar Example for Bootstrap</title>
+    <title>Admin</title>
 
     <!-- Bootstrap core CSS -->
-    <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="static/boot4/css/bootstrap.min.css" rel="stylesheet">
 
 
     <!-- Custom styles for this template -->
@@ -22,30 +22,33 @@
 
   <body>
 
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-default navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Rotonde</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Acceuil</a></li>
-            <li><a href="/calendrier">Calendrier</a></li>
-            <li><a href="/panier">Panier</a></li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="/admin">Admin</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
-      </div>
-    </nav>
+    <header>
+     <!-- Fixed navbar -->
+     <nav class="navbar navbar-expand bg-light navbar-light ">
+       <a class="navbar-brand" href="#"><img src="static/styles/logo_insa.png" style="height: 40px;" alt="logo"></a>
+
+       <div class="collapse navbar-collapse" id="navbarCollapse">
+         <ul class="navbar-nav mr-auto">
+           <li class="nav-item">
+             <a class="nav-link" href="/">Acceuil</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="/calendrier">Calendrier</a>
+           </li>
+           <li class="nav-item">
+             <a class="nav-link" href="/panier">Panier</a>
+           </li>
+         </ul>
+         <ul class="nav navbar-nav navbar-right">
+           <li class="nav-item active">
+             <a class="nav-link" href="/admin">Admin</a>
+           </li>
+         </ul>
+
+       </div>
+     </nav>
+   </header>
+
 
     <div class="container">
       <p><a href="/">Acceuil</a></p>
@@ -65,9 +68,7 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+    <script>window.jQuery || document.write('<script src="static/assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="static/boot4/js/bootstrap.min.js"></script>
   </body>
 </html>
