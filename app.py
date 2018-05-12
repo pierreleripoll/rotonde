@@ -60,7 +60,8 @@ def empty_cart():
 	if 'panier' in session :
 		session.pop('panier')
 		return redirect(url_for('panier_relative.panier'))
-
+	else:
+		return redirect(url_for('logout'))
 
 ## CALENDRIER
 @app.route('/calendrier', methods=['GET','POST'])

@@ -72,7 +72,7 @@ def set_spectacle(nomSpectacle):
             if "nom" in request.form :
                 cont = request.form
                 spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'])
-
+                print("\n\n"+ str(cont) +"\n\n")
                 alreadyIn = get_spectacle(spectacle.nom)
                 if alreadyIn:
                     if alreadyIn.admin != session['pseudo']:
