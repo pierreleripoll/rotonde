@@ -1,36 +1,90 @@
-<!doctype html>
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
 
-<html>
-<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/accueil.css') }}">
+    <title>Fixed Top Navbar Example for Bootstrap</title>
 
-<head>
-  <title>PAGE D'ACCUEIL</title>
-</head>
+    <!-- Bootstrap core CSS -->
+    <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
-<body>
 
-  <p>Bienvenue sur le site de réservation en ligne de la rotonde</p>
+    <!-- Custom styles for this template -->
+    <link href="static/styles/navbar.css" rel="stylesheet">
 
-  <form action="" method="POST">
-    <p> accéder au panier </p>
-    <button name="bouton" value="panier" type="submit">PANIER</button>
+  </head>
 
-    <p> accéder au calendrer </p>
-    <button name="bouton" value="calendrier" type="submit">CALENDRIER</button>
+  <body>
 
-    <p> section admin </p>
-    <button name="bouton" value="admin" type="submit">ADMIN</button>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Rotonde</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Acceuil</a></li>
+            <li><a href="/calendrier">Calendrier</a></li>
+            <li><a href="/panier">Panier</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/admin">Admin</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
 
-    <p> liste shows </p>
+    <div class="container">
 
-    <ul style="list-style-type:none">
-      {% for name in names %}
-      <li><a href="/spectacle/{{name}}">{{name}}</li>
-      {% endfor %}
-      <li>oh Hai Mark</li>
-    </ul>
-  </form>
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <p>Bienvenue sur le site de réservation en ligne de la rotonde</p>
 
-</body>
+        <form action="" method="POST">
+          <p> accéder au panier </p>
+          <button name="bouton" value="panier" type="submit">PANIER</button>
 
+          <p> accéder au calendrer </p>
+          <button name="bouton" value="calendrier" type="submit">CALENDRIER</button>
+
+          <p> section admin </p>
+          <button name="bouton" value="admin" type="submit">ADMIN</button>
+
+          <p> liste shows </p>
+
+          <ul style="list-style-type:none">
+            {% for name in names %}
+            <li><a href="/spectacle/{{name}}">{{name}}</li>
+            {% endfor %}
+            <li>oh Hai Mark</li>
+          </ul>
+        </form>
+      </div>
+
+    </div> <!-- /container -->
+
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+    <script src="../../dist/js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+  </body>
 </html>
