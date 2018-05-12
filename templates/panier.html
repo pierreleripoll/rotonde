@@ -18,7 +18,7 @@
         <td>{{place["nomSpectacle"]}}</td>
         <td>{{place["date"]}}</td>
 
-          <td><input type="number" method="POST" name=qte{{loop.index}} min="1" max="100" value="{{place['qte']}}"></td>
+          <td><input type="number" method="POST" name=qte{{loop.index}} min="0" max="100" value="{{place['qte']}}"></td>
 
       </tr>
       {% endfor %}
