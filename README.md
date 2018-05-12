@@ -7,7 +7,7 @@ Site de réservation de places à la Rotonde
 
 - [ ] Choisir un frontend
 - [x] gérer la reservation dans la base de données -> places insérées dans la BD
-- [ ] actualiser le nombre de places restantes lors de l'ajout de places
+- [x] actualiser le nombre de places restantes lors de l'ajout de places
 - [x] Faire la page html d'acceuil avec défilement des spectacles et redirection vers page spectacle, (spectacle en argument)
 - [x] Faire page html spectacle qui prend en argument un spectacle (objet déjà créer dans model.py), l'affiche et présente des dates possibles en bas de pages
 - [ ] Utiliser bootstrap dans calendrier ?

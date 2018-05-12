@@ -78,9 +78,11 @@ def calendrier():
 				try:
 					n=int(request.form[str(date.date)])
 					if n>0:
-						place = Place(date.nom,"",date.date,n)
-						print("Place added", place.__dict__)
-						places.append(place.__dict__)
+						for i in range (0,n):
+							place = Place(nomSpectacle=date.nom,nomUser="",date=(date.date))
+							placeJSON=place.serialize()
+							print("Place added", placeJSON)
+							places.append(placeJSON)
 				except ValueError:
 					print("it's a string", request.form[str(date.date)])
 					pass

@@ -94,8 +94,10 @@ def panier():
                 panier = session['panier']
                 name = request.form['nom']
                 for p in panier:
-                    place = Place(nomSpectacle=p['nomSpectacle'],nomUser=name,date=dateJSONToPy(p['date']))
+                    place = Place(nomSpectacle=p['nomSpectacle'],nomUser=name,date=dateJSONToPy(str(p['date'])))
                     insert_place(place)
+                    datemodif=get_date(date=dateJSONToPy(str(p['date'])))
+                    update_placesRestantes(datemodif, 1)
                 session.pop('panier')
                 return redirect(url_for('logout'))
 

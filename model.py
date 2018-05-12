@@ -92,6 +92,11 @@ def get_spectacle(nomSpectacle):
 
     return spectacle
 
+# Renvoie l'objet Date correspondant a la date en param    
+def get_date (date):
+	date= Calendrier.query.filter_by(date=date).first()
+	return date
+
 def insert_place(place):
     db.session.add(place)
     db.session.commit()
@@ -132,6 +137,13 @@ def update_date(newDate):
 
     return
 
+#update le nombre de places sur une date   
+def update_placesRestantes (date, placesPrises):
+	date.placesRestantes=date.placesRestantes - placesPrises
+	
+	db.session.commit()
+	
+	return
 
 #Convertir une date html en python
 def dateHTMLtoPy(date_in):
