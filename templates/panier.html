@@ -1,95 +1,99 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
 
-    <title>Panier</title>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" href="../../favicon.ico">
 
-    <!-- Bootstrap core CSS -->
-    <link href="static/boot4/css/bootstrap.min.css" rel="stylesheet">
+  <title>Panier</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="static/boot4/css/bootstrap.min.css" rel="stylesheet">
 
 
-    <!-- Custom styles for this template -->
-    <link href="static/styles/navbar.css" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href="static/styles/navbar.css" rel="stylesheet">
 
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <header>
-     <!-- Fixed navbar -->
-     <nav class="navbar navbar-expand bg-light navbar-light fixed-top ">
-       <a class="navbar-brand" href="#"><img src="static/styles/logo_insa.png" style="height: 40px;" alt="logo"></a>
+  <header>
+    <!-- Fixed navbar -->
+    <nav class="navbar navbar-expand bg-light navbar-light fixed-top ">
+      <a class="navbar-brand" href="#"><img src="static/styles/logo_insa.png" style="height: 40px;" alt="logo"></a>
 
-       <div class="collapse navbar-collapse" id="navbarCollapse">
-         <ul class="navbar-nav mr-auto">
-           <li class="nav-item">
-             <a class="nav-link" href="/">Acceuil</a>
-           </li>
-           <li class="nav-item">
-             <a class="nav-link" href="/calendrier">Calendrier</a>
-           </li>
-           <li class="nav-item active">
-             <a class="nav-link" href="/panier">Panier</a>
-           </li>
-         </ul>
-         <ul class="nav navbar-nav navbar-right">
-           <li class="nav-item">
-             <a class="nav-link" href="/admin">Admin</a>
-           </li>
-         </ul>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">Acceuil</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/calendrier">Calendrier</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/panier">Panier</a>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li class="nav-item">
+            <a class="nav-link" href="/admin">Admin</a>
+          </li>
+        </ul>
 
-       </div>
-     </nav>
-   </header>
+      </div>
+    </nav>
+  </header>
 
-    <div class="container">
-      <form action="" method="POST">
+  <div class="container">
+    <form action="" method="POST">
       <table class="table table-striped">
-          <tr>
-            <th>Spectacle</th>
-            <th>Date</th>
-            <th>Places diponibles</th>
-            <th>Vos places</th>
+        <tr>
+          <th>Spectacle</th>
+          <th>Date</th>
+          <th>Places diponibles</th>
+          <th>Vos places</th>
 
-
-          {% for place in display_cart %}
-          <tr>
-            <td>{{place["nomSpectacle"]}}</td>
-            <td>{{place["date"]}}</td>
-            <td>{{place["left"]}}</td>
-            <td><input type="number" method="POST" name=qte{{loop.index}} min="0" max="{{place['left']}}" value="{{place['qte']}}"></td>
-          </tr>
-          {% endfor %}
+        </tr>
+        {% for place in display_cart %}
+        <tr>
+          <td>{{place["nomSpectacle"]}}</td>
+          <td>{{place["date"]}}</td>
+          <td>{{place["left"]}}</td>
+          <td><input type="number" method="POST" name=qte{{loop.index}} min="0" max="{{place['left']}}" value="{{place['qte']}}"></td>
+        </tr>
+        {% endfor %}
 
       </table>
 
-      <h3>Total: </h3>
-          Veuillez rentrer votre nom:<br>
-          <input type="text" name="nom"><br>
-          <br>
-          <button name="foo" value="valider" type="submit"}>Valider</button>
-      </form>
+      <h3>Total: </h3> Veuillez rentrer votre nom:<br>
+      <input type="text" name="nom"><br>
+      <br>
+      <button name="foo" value="valider" type="submit" }>Valider</button>
+    </form>
 
-      <a href="/empty_cart" class="btn btn-large btn-primary">Vider panier</a>
+    <a href="/empty_cart" class="btn btn-large btn-primary">Vider panier</a>
 
-    </div> <!-- /container -->
+  </div>
+  <!-- /container -->
 
 
 
-    <!-- Bootstrap core JavaScript
+  <!-- Bootstrap core JavaScript
     ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
-  </body>
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script>
+    window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')
+  </script>
+  <script src="../../dist/js/bootstrap.min.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
+</body>
+
 </html>
