@@ -8,6 +8,7 @@
   margin-bottom: 0;
   background-color: #fff;
 }
+
 @media (min-width: 200px) {
   .jumbotron {
     padding-top: calc(var(--jumbotron-padding-y) * 2);
@@ -30,26 +31,32 @@
 footer {
   padding-top: 3rem;
   padding-bottom: 3rem;
+  margin-top: 0;
+  padding-top: 60px;
+  padding-bottom: 20px;
+  background-color: #e3e4e4;
+  color: #87888a;
+  margin-bottom: 0;
 }
 
 footer p {
   margin-bottom: .25rem;
 }
 
-.box-shadow { box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05); }
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
 
 .card-img-top-pers {
-
   width: 100%;
   border-top-left-radius: calc(0.25rem - 1px);
   border-top-right-radius: calc(0.25rem - 1px);
 }
+
 .card-columns .card {
-    margin-bottom: .75rem;
-    margin-left: .100rem;
-
+  margin-bottom: .75rem;
+  margin-left: .100rem;
 }
-
 
 .card-columns {
   @include media-breakpoint-only(xl) {
