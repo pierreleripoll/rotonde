@@ -6,15 +6,15 @@ Site de réservation de places à la Rotonde
 
 - [ ] rendre clean le css (bootstrap commun pour tout le monde)
 - [ ] rendre clean le html (jinja2, extends, import...)
-- [ ] mail de confirmation
-- [ ] gérer le dépassement de places (vérif côté serveur etc)
-- [ ] rajouter infos sur le spectacle
+- [MATHILDE] mail de confirmation
+- [ARTHUR] gérer le dépassement de places (vérif côté serveur etc)
+- [JN] rajouter infos sur le spectacle
 - [ ] gestion des vignettes (trop grande, trop petite, mauvais format) -> image par déf
 - [ ] gestion des dates à modifier (#firefox not working...)
 - [ ] interface pour spectacle | gestion spectacle
-- [ ] mode super admin / admin -> contact email, UTILISER FLASK SESSION/ADMIN/USER ?
+- [PIERRE] mode super admin / admin -> contact email, UTILISER FLASK SESSION/ADMIN/USER ?
 - [ ] calendrier a faire
-- [ ] site de paiement (site vu par pierre ou autre solution ?)
+- [ ] site de paiement (utiliser Stripe ?)
 - [x] gérer la reservation dans la base de données -> places insérées dans la BD
 - [x] actualiser le nombre de places restantes lors de l'ajout de places
 - [x] Faire la page html d'acceuil avec défilement des spectacles et redirection vers page spectacle, (spectacle en argument)
