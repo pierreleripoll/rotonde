@@ -103,10 +103,13 @@ def panier():
                     date = dateJSONToPy(str(show['date']))
                     place = Place(nomSpectacle=show['nomSpectacle'],nomUser=name,date=date)
                     datemodif=get_date(date=date)
+                    added = 0
                     for i in range(1, show['qte']+1):
+                        added+=1
                         print(i)
                         insert_place(place)
-                        update_placesRestantes(datemodif, 1)
+                    update_placesRestantes(datemodif, added)
+                    commit_place_insertion(added)
                 # for p in panier:
                 #     date = dateJSONToPy(str(p['date']))
                 #     place = Place(nomSpectacle=p['nomSpectacle'],nomUser=name,date=date)

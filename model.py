@@ -1,4 +1,4 @@
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy#,CheckConstraint
 from datetime import datetime
 import re
 import os
@@ -23,9 +23,8 @@ class Calendrier(db.Model):
     date = db.Column(db.DateTime, nullable = False, default=datetime.utcnow, primary_key = True)
     nom = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False)
     placesRestantes = db.Column(db.Integer, nullable = False)
-
     spectacle = db.relationship('Spectacle', backref = db.backref('calendriers', lazy = True)) # Peut etre a changer, pas sur de ce que je fais
-
+    #CheckConstraint('placesRestantes >= 0', name='pos')
     def __repr__(self):
         return '<Calendrier: %r>' % self.date
 
@@ -36,7 +35,6 @@ class Place(db.Model):
     nomUser = db.Column(db.String(80), nullable = False)
 
     calendrier = db.relationship('Calendrier', backref = db.backref('places', lazy = True)) #idem qu'au dessus
-
     def __repr__(self):
         return '<Place: %r>' % self.idPlace
 
@@ -99,6 +97,10 @@ def get_date (date):
 
 def insert_place(place):
     db.session.add(place)
+
+
+def commit_place_insertion(added):
+    print added
     db.session.commit()
 
     return
