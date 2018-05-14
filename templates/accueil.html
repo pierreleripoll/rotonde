@@ -20,24 +20,6 @@
   <link href="static/styles/navbar.css" rel="stylesheet">
 
   <link href="static/styles/album.css" rel="stylesheet">
-
-  <style>
-   .col-md-4 {
-     line-height: initial;
-   }
-   .footer{
-     position: inherit;
-     margin-top: 50px;
-     bottom: 0;
-     height: auto;
-     margin-bottom: 0;
-   }
-   body{
-     margin-bottom: 0;
-   }
-
-  </style>
-
 </head>
 
 <body>
@@ -83,7 +65,7 @@
     <div class="container-fluid">
       <div class="card-columns">
         {%for spectacle in spectacles%}
-        <div class="card mb-4 box-shadow">
+        <div class="card mb-4">
           <a href="/spectacle/{{spectacle.nom}}">
                   <img class="card-img-top" class="img-thumbnail" src="static/uploads/{{niceUrl(spectacle.nom)}}/{{niceUrl(spectacle.nom)}}_0" alt="{{niceUrl(spectacle.nom)}}_0"  >
                   </a>
@@ -118,8 +100,7 @@
           </div>
         </div>
       </div>
-      <small class="copyright col-md-4"><p>Copyright @2018 Rotonde</p>
-  <p>All rights reserved</p>
+      <small class="copyright col-md-4"><p>Created in 2018</p>
   </small>
     </div>
   </footer>
