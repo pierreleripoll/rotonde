@@ -102,7 +102,7 @@
     <p>{{spectacle.nom}}
       <form action="" method="POST" enctype="multipart/form-data">
         <div class="form-group">
-          <label for="nom">Nom du spectacle:<abbr title="required"></abbr></label><br>
+          <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
           <input type="text" id="nom" class="form-control" name="nom" value='{{spectacle.nom}}'><br>
         </div>
         <div class="form-group">
@@ -116,6 +116,10 @@
         <div class="form-group">
           <label for="liens">Liens:</label><br>
           <input type="url" name="liens" class="form-control" value='{{spectacle.liens}}'><br>
+        </div>
+        <div class="form-group">
+          <label for="contact">Contacts:</label><br>
+          <input type="number" name="contact" class="form-control" value='{{spectacle.idContact}}'><br>
         </div>
         <br>
         <div>

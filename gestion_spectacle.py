@@ -57,6 +57,7 @@ def spectacle(nomSpectacle):
 
         if request.form["submit"] == "accueil":
             return redirect(url_for('logout'))
+
 ## MODIFY SPECTACLE
 @gestion_spectacle.route('/set_spectacle/<nomSpectacle>', methods=['GET','POST'])
 def set_spectacle(nomSpectacle):
@@ -71,7 +72,7 @@ def set_spectacle(nomSpectacle):
         if request.method=="POST":
             if "nom" in request.form :
                 cont = request.form
-                spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0)
+                spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0, idContact=cont["contact"])
                 print("\n\n"+ str(cont) +"\n\n")
                 alreadyIn = get_spectacle(spectacle.nom)
                 if alreadyIn:

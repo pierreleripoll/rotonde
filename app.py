@@ -22,8 +22,12 @@ app.register_blueprint(panier_relative)
 app.register_blueprint(admin_relative)
 
 db.init_app(app)
-# with app.app_context() :
-#     db.create_all()
+
+# SI DECOMMENTER FLASK CREER LES TABLES
+with app.app_context() :
+	db.create_all()
+
+
 #PAGE DE TEST JAVASCRIPT
 @app.route('/javascript')
 def javascript():

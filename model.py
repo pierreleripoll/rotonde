@@ -16,8 +16,18 @@ class Spectacle(db.Model):
     photos = db.Column(db.Integer, nullable = True)
     liens = db.Column(db.String, nullable = True)
     admin = db.Column(db.String, nullable =True)
+    idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = False)
     def __repr__(self):
         return '<Spectacle: %r>' % self.nom
+
+class Contact(db.Model):
+    id = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    nom = db.Column(db.String(80))
+    prenom = db.Column(db.String(80))
+    telephone = db.Column(db.Integer, nullable = True)
+    adresseMail = db.Column(db.String, nullable = True)
+    def __repr__(self):
+        return '<Contact: %r>' % self.nom
 
 class Calendrier(db.Model):
     date = db.Column(db.DateTime, nullable = False, default=datetime.utcnow, primary_key = True)
