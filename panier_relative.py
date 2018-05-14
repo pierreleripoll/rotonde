@@ -8,9 +8,31 @@ import re
 from model import*
 from jinja2 import TemplateNotFound
 
+import smtplib
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
+
 panier_relative = Blueprint('panier_relative', __name__,
                         template_folder='templates',static_folder = 'static')
 
+def sendMail (adressedest, cart, nomUser):
+	fromaddr = "mathilde0humbert@gmail.com"
+	toaddr = adressedest
+	msg = MIMEMultipart()
+	msg['From'] = fromaddr
+	msg['To'] = toaddr
+	msg['Subject'] = "Reservation spectacle"
+
+	html= render_template("mail.html", nomUser=nomUser, places=cart)
+	msg.attach(MIMEText(html, 'html'))
+
+	server = smtplib.SMTP('smtp.gmail.com', 587)
+	server.starttls()
+	server.login(fromaddr, "08Se1997?")
+	text = msg.as_string()
+	server.sendmail(fromaddr, toaddr, text)
+	server.quit()
+  
 def isInCart(item, cart):
     for idx, show in enumerate(cart):
         if item['nomSpectacle'] == show['nomSpectacle'] and item['date'] == show['date']:
@@ -98,6 +120,7 @@ def panier():
                 panier = session['panier']
                 print(panier)
                 name = request.form['nom']
+                mail = request.form['mail']
                 for show in display_cart:
                     print("requesting date")
                     date = dateJSONToPy(str(show['date']))
@@ -109,6 +132,8 @@ def panier():
                     try:
                         commit_place_insertion(added)
                         update_placesRestantes(datemodif, added)
+                        places=get_places_user_name(name)
+                        sendMail(mail, places, name)
                         session.pop('panier')
                     except:
                         print("error")
