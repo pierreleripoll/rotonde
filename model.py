@@ -94,6 +94,11 @@ def get_all_places():
     places = Place.query.all()
     return places
 
+# Renvoie les places correspondant a un nom 
+def get_places_user_name(userName):
+	places = Place.query.filter_by(nomUser=userName).all()
+	return places
+
 # Renvoie le spectacle portant le nom specifife
 def get_spectacle(nomSpectacle):
     spectacle = Spectacle.query.filter_by(nom=nomSpectacle).first()
