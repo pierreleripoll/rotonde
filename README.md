@@ -14,7 +14,7 @@ Site de réservation de places à la Rotonde
 - [ ] interface pour spectacle | gestion spectacle
 - [PIERRE] mode super admin / admin -> contact email, UTILISER FLASK SESSION/ADMIN/USER ?
 - [ ] calendrier a faire
-- [ ] site de paiement (site vu par pierre ou autre solution ?)
+- [ ] site de paiement (utiliser Stripe ?)
 - [x] gérer la reservation dans la base de données -> places insérées dans la BD
 - [x] actualiser le nombre de places restantes lors de l'ajout de places
 - [x] Faire la page html d'acceuil avec défilement des spectacles et redirection vers page spectacle, (spectacle en argument)
