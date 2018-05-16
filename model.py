@@ -114,15 +114,13 @@ def insert_place(place):
     db.session.add(place)
 
 
-def commit_place_insertion(added):
-    print added
+def commit_place_insertion():
     db.session.commit()
 
     return
 
 def insert_date(date):
     db.session.add(date)
-    db.session.commit()
 
     return
 
