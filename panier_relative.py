@@ -18,7 +18,7 @@ panier_relative = Blueprint('panier_relative', __name__,
 #Remplacer #mail et #mdp par des vraies valeurs 
 #Adresse gmail et il faut changer les paramètres du compte pour autoriser l'utilisation par des applis moins sécurisées
 def sendMail (adressedest, cart, nomUser):
-	fromaddr = #mail rotonde
+	fromaddr = "rotondeinsatest@gmail.com"
 	toaddr = adressedest
 	msg = MIMEMultipart()
 	msg['From'] = fromaddr
@@ -30,7 +30,7 @@ def sendMail (adressedest, cart, nomUser):
 
 	server = smtplib.SMTP('smtp.gmail.com', 587)
 	server.starttls()
-	server.login(fromaddr, #mdp rotonde)
+	server.login(fromaddr, "motdepasse1!")
 	text = msg.as_string()
 	server.sendmail(fromaddr, toaddr, text)
 	server.quit()
