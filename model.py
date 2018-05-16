@@ -96,6 +96,11 @@ def get_all_places():
     places = Place.query.all()
     return places
 
+# Renvoie les places correspondant a un nom 
+def get_places_user_name(userName):
+	places = Place.query.filter_by(nomUser=userName).all()
+	return places
+
 # Renvoie le spectacle portant le nom specifife
 def get_spectacle(nomSpectacle):
     spectacle = Spectacle.query.filter_by(nom=nomSpectacle).first()
@@ -111,15 +116,13 @@ def insert_place(place):
     db.session.add(place)
 
 
-def commit_place_insertion(added):
-    print added
+def commit_place_insertion():
     db.session.commit()
 
     return
 
 def insert_date(date):
     db.session.add(date)
-    db.session.commit()
 
     return
 
