@@ -72,7 +72,7 @@ def set_spectacle(nomSpectacle):
         if request.method=="POST":
             if "nom" in request.form :
                 cont = request.form
-                spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0, idContact=cont["contact"])
+                spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0, idContact=111)
                 print("\n\n"+ str(cont) +"\n\n")
                 alreadyIn = get_spectacle(spectacle.nom)
                 if alreadyIn:
