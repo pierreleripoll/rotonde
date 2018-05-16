@@ -38,7 +38,7 @@
     inputPrenom.setAttribute("type", "text");
     inputPrenom.setAttribute("id", "prenomUser");
     inputPrenom.setAttribute("class", "form-control");
-    inputPrenom.setAttribute("name", "nomUser");
+    inputPrenom.setAttribute("name", "prenomUser");
     inputPrenom.setAttribute("placeholder","Prenom");
 
     div.appendChild(inputPrenom);
@@ -60,29 +60,47 @@
 
     div.appendChild(adressemail);
 
-    var annee = document.createElement("input");
-    annee.setAttribute("type", "integer");
-    annee.setAttribute("id", "annee");
-    annee.setAttribute("name", "annee");
-    annee.setAttribute("min","1954");
-    annee.setAttribute("max","2100");
-    annee.setAttribute("placeholder","Année");
+    var annee = document.createElement("select");
+    annee.id = "anneeSelect";
+    annee.name="anneeSelect";
 
+    for (var x = 0; x < 6; x++) {
+        var option = document.createElement("option");
+        option.value = x;
+        option.text = x;
+        annee.appendChild(option);
+    }
     div.appendChild(annee);
 
-    var depart = document.createElement("input");
-    depart.setAttribute("type", "text");
-    depart.setAttribute("id", "depart");
-    depart.setAttribute("class", "form-control");
-    depart.setAttribute("name", "depart");
-    depart.setAttribute("placeholder","Departement");
 
+    var depart = document.createElement("select");
+    depart.id = "departSelect";
+    depart.name="departSelect";
+
+    departement = ["exterieur","Bioscience","GCU","GE","GEN","GI","GM","IF","PC","SGM","TC"];
+    for (var x = 0; x < departement.length; x++) {
+        var option = document.createElement("option");
+        option.value = departement[x];
+        option.text = departement[x];
+        depart.appendChild(option);
+    }
     div.appendChild(depart);
+
+    var bouton = document.createElement("button");
+    bouton.setAttribute("name", "button");
+    bouton.setAttribute("id", "boutonContact");
+    bouton.setAttribute("value", "boutonAddContact");
+    bouton.setAttribute("type","boutonContact");
+    var t = document.createTextNode("Valider Contact");
+
+    bouton.appendChild(t);
+
+    div.appendChild(bouton);
 
     if (i == 0) {
       i=1
       document.getElementById("contact").appendChild(div);
-      document.getElementById("addContactbutton").innerHTML = "Valider Contact";
+      document.getElementById("addContactbutton").innerHTML = "Annuler Contact";
     } else if (i == 1) {
       i=0
       document.getElementById("addContactbutton").innerHTML = "Ajouter Contact";
@@ -187,9 +205,9 @@
         </div>
         <div>
           <p>Contacts : </p>
-          <select>
-            {%for contact in contacts:%}
-            <option value="{{contact.nom}}">{{contact.nom}}</option>
+          <select name=ajoutContactDB>
+            {%for c in contact:%}
+            <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
             {%endfor%}
           </select>
           <button type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
@@ -201,7 +219,7 @@
         <br>
         <div>
           <label for="dates">Dates :  </label>
-          <button type="button" id="addDate" onclick="addOneDate()" name="addDate">Add</button><br>
+          <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button><br>
           <script>
           console.log("TEST");
           var datesLength = {{ nDates}};
@@ -220,7 +238,7 @@
 
         <div>
           <br><br>
-          <button name="foo" id="valide" value="valider" type="valide" }>Valider</button>
+          <button name="button" id="valide" value="valider" type="valide" }>Valider</button>
 
         </div>
       </form>
