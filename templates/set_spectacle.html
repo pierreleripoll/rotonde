@@ -19,53 +19,120 @@
   <!-- Custom styles for this template -->
   <link href="../static/styles/navbar.css" rel="stylesheet">
   <link href="../static/styles/charte.css" rel="stylesheet">
+
   <script>
-    var i = 0;
+  var i = 0
 
-    function init(val) {
-      i = val;
+  function addNewContact() {
+    var div = document.createElement("div");
+    var inputName = document.createElement("INPUT");
+    inputName.setAttribute("type", "text");
+    inputName.setAttribute("id", "nomUser");
+    inputName.setAttribute("class", "form-control");
+    inputName.setAttribute("name", "nomUser");
+    inputName.setAttribute("placeholder","Nom");
+
+    div.appendChild(inputName);
+
+    var inputPrenom = document.createElement("input");
+    inputPrenom.setAttribute("type", "text");
+    inputPrenom.setAttribute("id", "prenomUser");
+    inputPrenom.setAttribute("class", "form-control");
+    inputPrenom.setAttribute("name", "nomUser");
+    inputPrenom.setAttribute("placeholder","Prenom");
+
+    div.appendChild(inputPrenom);
+
+    var telephone = document.createElement("input");
+    telephone.setAttribute("type", "integer");
+    telephone.setAttribute("id", "telephone");
+    telephone.setAttribute("name", "telephone");
+    telephone.setAttribute("placeholder","Numero de Telephone");
+
+    div.appendChild(telephone);
+
+    var adressemail = document.createElement("input");
+    adressemail.setAttribute("type", "text");
+    adressemail.setAttribute("id", "adressemail");
+    adressemail.setAttribute("class", "form-control");
+    adressemail.setAttribute("name", "adressemail");
+    adressemail.setAttribute("placeholder","Adresse email");
+
+    div.appendChild(adressemail);
+
+    var annee = document.createElement("input");
+    annee.setAttribute("type", "integer");
+    annee.setAttribute("id", "annee");
+    annee.setAttribute("name", "annee");
+    annee.setAttribute("min","1954");
+    annee.setAttribute("max","2100");
+    annee.setAttribute("placeholder","Année");
+
+    div.appendChild(annee);
+
+    var depart = document.createElement("input");
+    depart.setAttribute("type", "text");
+    depart.setAttribute("id", "depart");
+    depart.setAttribute("class", "form-control");
+    depart.setAttribute("name", "depart");
+    depart.setAttribute("placeholder","Departement");
+
+    div.appendChild(depart);
+
+    if (i == 0) {
+      i=1
+      document.getElementById("contact").appendChild(div);
+      document.getElementById("addContactbutton").innerHTML = "Valider Contact";
+    } else if (i == 1) {
+      i=0
+      document.getElementById("addContactbutton").innerHTML = "Ajouter Contact";
+      document.getElementById("contact").innerHTML = "";
     }
-
-    function addOneDate() {
-
-      var lastDate = document.getElementById("datetime" + i.toString());
-      var lastNPlaces = document.getElementById("nPlaces" + i.toString());
-
-      var div = document.createElement("div");
-      var inputDate = document.createElement("INPUT");
-      inputDate.setAttribute("type", "datetime-local");
-      i++;
-      inputDate.setAttribute("name", "datetime" + i.toString());
-      inputDate.setAttribute("id", "datetime" + i.toString());
-      console.log(i);
-
-      var br = document.createElement("br");
-
-      div.appendChild(inputDate);
-
-      var nPlace = document.createElement("input");
-      nPlace.setAttribute("type", "number");
-      nPlace.setAttribute("id", "nPlaces" + i.toString());
-      nPlace.setAttribute("name", "nPlaces" + i.toString());
-      nPlace.setAttribute("min", "0");
-      nPlace.setAttribute("max", "500");
-
-      if (lastDate) {
-        inputDate.setAttribute("value", lastDate.value);
-      }
-      if (lastNPlaces) {
-        nPlace.setAttribute("value", lastNPlaces.value);
-      }
-
-      div.appendChild(nPlace);
-
-      document.getElementById("date-div").appendChild(br);
-      document.getElementById("date-div").appendChild(div);
-
-
-    }
+  }
   </script>
 
+  <script>
+  var i = 0;
+  function init(val) {
+    i = val;
+  }
+
+  function addOneDate() {
+    var lastDate = document.getElementById("datetime" + i.toString());
+    var lastNPlaces = document.getElementById("nPlaces" + i.toString());
+
+    var div = document.createElement("div");
+    var inputDate = document.createElement("INPUT");
+    inputDate.setAttribute("type", "datetime-local");
+    i++;
+    inputDate.setAttribute("name", "datetime" + i.toString());
+    inputDate.setAttribute("id", "datetime" + i.toString());
+    console.log(i);
+
+    var br = document.createElement("br");
+
+    div.appendChild(inputDate);
+
+    var nPlace = document.createElement("input");
+    nPlace.setAttribute("type", "number");
+    nPlace.setAttribute("id", "nPlaces" + i.toString());
+    nPlace.setAttribute("name", "nPlaces" + i.toString());
+    nPlace.setAttribute("min", "0");
+    nPlace.setAttribute("max", "500");
+
+    if (lastDate) {
+      inputDate.setAttribute("value", lastDate.value);
+    }
+    if (lastNPlaces) {
+      nPlace.setAttribute("value", lastNPlaces.value);
+    }
+
+    div.appendChild(nPlace);
+
+    document.getElementById("date-div").appendChild(br);
+    document.getElementById("date-div").appendChild(div);
+  }
+  </script>
 
 </head>
 
@@ -118,23 +185,28 @@
           <label for="liens">Liens:</label><br>
           <input type="url" name="liens" class="form-control" value='{{spectacle.liens}}'><br>
         </div>
-        <div class="form-group">
-          <label for="contact">Contacts:</label><br>
-          <input type="number" name="contact" class="form-control" value='{{spectacle.idContact}}'><br>
+        <div>
+          <p>Contacts : </p>
+          <select>
+            {%for contact in contacts:%}
+            <option value="{{contact.nom}}">{{contact.nom}}</option>
+            {%endfor%}
+          </select>
+          <button type="button" id="addContactbutton" onclick="addNewContact();" name="ajouterContact">Ajouter Contact</button>
+          <br>
+          <br>
+          <div id="contact">
+          </div>
         </div>
         <br>
         <div>
           <label for="dates">Dates :  </label>
           <button type="button" id="addDate" onclick="addOneDate()" name="addDate">Add</button><br>
           <script>
-            console.log("TEST");
-            var datesLength = {
-              {
-                nDates
-              }
-            };
-            init(datesLength);
-            console.log("Number of dates already in:" + datesLength);
+          console.log("TEST");
+          var datesLength = {{ nDates}};
+          init(datesLength);
+          console.log("Number of dates already in:" + datesLength);
           </script>
           <div id="date-div">
             {%for date in dates:%}
@@ -152,18 +224,18 @@
 
         </div>
       </form>
-  </div>
+    </div>
 
 
 
-  <!-- Bootstrap core JavaScript
+    <!-- Bootstrap core JavaScript
     ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script>
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
     window.jQuery || document.write('<script src="../static/assets/js/vendor/jquery.min.js"><\/script>')
-  </script>
-  <script src="../static/boot4/js/bootstrap.min.js"></script>
-</body>
+    </script>
+    <script src="../static/boot4/js/bootstrap.min.js"></script>
+  </body>
 
-</html>
+  </html>

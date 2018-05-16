@@ -26,6 +26,8 @@ class Contact(db.Model):
     prenom = db.Column(db.String(80))
     telephone = db.Column(db.Integer, nullable = True)
     adresseMail = db.Column(db.String, nullable = True)
+    annee = db.Column(db.Integer, nullable = True) #si 0 =  c'est un exterieur de l'INSA
+    depart = db.Column(db.String, nullable = True)
     def __repr__(self):
         return '<Contact: %r>' % self.nom
 
