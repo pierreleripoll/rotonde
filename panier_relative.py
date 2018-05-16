@@ -15,6 +15,8 @@ from email.MIMEText import MIMEText
 panier_relative = Blueprint('panier_relative', __name__,
                         template_folder='templates',static_folder = 'static')
 
+#Remplacer #mail et #mdp par des vraies valeurs 
+#Adresse gmail et il faut changer les paramètres du compte pour autoriser l'utilisation par des applis moins sécurisées
 def sendMail (adressedest, cart, nomUser):
 	fromaddr = #mail rotonde
 	toaddr = adressedest
