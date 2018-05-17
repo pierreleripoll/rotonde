@@ -24,8 +24,8 @@ app.register_blueprint(admin_relative)
 db.init_app(app)
 
 # SI DECOMMENTER FLASK CREER LES TABLES
-with app.app_context() :
-	db.create_all()
+# with app.app_context() :
+# 	db.create_all()
 
 
 #PAGE DE TEST JAVASCRIPT
