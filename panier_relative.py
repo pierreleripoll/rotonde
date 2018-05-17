@@ -51,8 +51,6 @@ def calculCart(items):
         idx = isInCart(item,display_cart)
         if idx == -1 or display_cart == []:
             date = get_date(date=dateJSONToPy(str(item['date'])))
-	    print(date)
-	    print(date)
             left = date.placesRestantes
             display_cart.append({'nomSpectacle' : item['nomSpectacle'], 'date':item['date'], 'qte' : 1, 'left' : left})
         else:
@@ -139,7 +137,7 @@ def panier():
                         print(i)
                         insert_place(place)
                     update_placesRestantes(datemodif,added)
-		    session.pop('panier')
+                    session.pop('panier')
                     places=get_places_mail(mail)
                     sendMail(mail, places, name)
                 return redirect(url_for('logout'))
