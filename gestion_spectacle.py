@@ -125,7 +125,7 @@ def set_spectacle(nomSpectacle):
                             alreadyIn = "true"
                     if alreadyIn == "false":
                         insert_date(date)
-
+                    db.session.commit();
                 return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=request.form["nom"]))
     else :
         return abort(403)

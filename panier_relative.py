@@ -15,7 +15,6 @@ from email.mime.text import MIMEText
 panier_relative = Blueprint('panier_relative', __name__,template_folder='templates',static_folder = 'static')
 
 #Remplacer #mail et #mdp par des vraies valeurs
-#Adresse gmail et il faut changer les paramètres du compte pour autoriser l'utilisation par des applis moins sécurisées
 def sendMail (adressedest, cart, nomUser):
 	fromaddr = mailrotonde
 	toaddr = adressedest
@@ -126,7 +125,7 @@ def panier():
                     print("requesting date")
                     date = dateJSONToPy(str(show['date']))
                     added=0
-                    place = Place(nomSpectacle=show['nomSpectacle'],nomUser=name,date=date)
+                    place = Place(nomSpectacle=show['nomSpectacle'],nomUser=name,date=date, adresseMail=mail)
                     datemodif=get_date(date=date)
                     for i in range(1, show['qte']+1):
                         added+=1
@@ -139,7 +138,7 @@ def panier():
                     except:
                         print("error")
                         pass
-                    places=get_places_user_name(name)
+                    places=get_places_mail(mail)
                     sendMail(mail, places, name)
                 return redirect(url_for('logout'))
 
