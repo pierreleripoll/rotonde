@@ -125,7 +125,7 @@ def panier():
                     print("requesting date")
                     date = dateJSONToPy(str(show['date']))
                     added=0
-                    place = Place(nomSpectacle=show['nomSpectacle'],nomUser=name,date=date)
+                    place = Place(nomSpectacle=show['nomSpectacle'],nomUser=name,date=date, adresseMail=mail)
                     datemodif=get_date(date=date)
                     for i in range(1, show['qte']+1):
                         added+=1
@@ -138,7 +138,7 @@ def panier():
                     except:
                         print("error")
                         pass
-                    places=get_places_user_name(name)
+                    places=get_places_mail(mail)
                     sendMail(mail, places, name)
                 return redirect(url_for('logout'))
 
