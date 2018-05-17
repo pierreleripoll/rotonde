@@ -217,7 +217,7 @@
         </div>
         <div class="form-group">
           <label for="typeSpectacle">Genre:</label><br>
-          <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}' multiple>
+          <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}'>
               <option value="Théâtre">Théâtre</option>
               <option value="Musique">Musique</option>
               <option value="Danse">Danse</option>
@@ -226,19 +226,23 @@
               <option value="Cirque">Cirque</option>
               <option value="Performance">Performance</option>
               <option value="Autre">Autre</option>
-          </select>
+          </select><br>
         </div>
         <div class="form-group">
           <label for="duree">Durée (en minutes):</label><br>
           <input type="number" name="duree" class="form-control" value='{{spectacle.duree}}'><br>
         </div>
         <div class="form-group">
-          <label for="tarf">Tarif:</label><br>
-          <input type="number" name="tarf" class="form-control" value='{{spectacle.tarif}}'><br>
+          <label for="tarif">Tarif:</label><br>
+          <input type="number" name="tarif" class="form-control" value='{{spectacle.tarif}}'><br>
         </div>
-        <div>
-          <p>Contacts : </p>
-          <select name=ajoutContactDB>
+        <div class="form-group">
+          <label for="infoComplementaire">Info complémentaire:</label><br>
+          <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
+        </div>
+        <div class="form-group">
+          <label for="ajoutContactDB">Contact:</label><br>
+          <select type="number"name="ajoutContactDB">
             {%for c in contact:%}
             <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
             {%endfor%}
