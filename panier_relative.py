@@ -138,7 +138,9 @@ def panier():
                         added+=1
                         print(i)
                         insert_place(place)
-                    update_placesRestantes(datemodif,added)
+                    res=update_placesRestantes(datemodif,added)
+		    if(res==-1):
+			return redirect(url_for('panier_relative.panier'))
 		    session.pop('panier')
                     places=get_places_mail(mail)
                     sendMail(mail, places, name)
