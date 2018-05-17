@@ -1,13 +1,9 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% extends "layout.html" %}
+{% set active_page = 'panier' %}
+{% block title %}Panier{% endblock %}
 
-<html>
 
-<head>
-    <title>Panier</title>
-</head>
-
-<body>
-
+{% block content %}
   <p>Votre Panier : </p>
 
   <form action="" method="POST">
@@ -18,8 +14,4 @@
       </ul>
       <button name="foo" value="valider" type="submit">Valider votre commande</button>
   </form>
-
-</body>
-
-</html>
-
+{% endblock %}

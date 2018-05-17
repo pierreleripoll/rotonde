@@ -1,26 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Sessions</title>
-</head>
-<body>
+{% extends "layout.html" %}
+{% set active_page = 'index' %}
+{% block title %}Accueil{% endblock %}
 
-<p>{{ message }}</p>
 
-{% if logged %}
-<p>
-  <a href="/logout">[logout]</a>
-</p>
-{% else %}
-<form action="/login" method="POST">
+{% block content %}
+  <p>{{ message }}</p>
+
+  {% if logged %}
   <p>
-    ... mais qui êtes vous ?
-    <input type="text" name="name">
-    <input type="submit" value="Voilà !">
+    <a href="/logout">[logout]</a>
   </p>
-</form>
-{% endif %}
-
-</body>
-</html>
+  {% else %}
+  <form action="/login" method="POST">
+    <p>
+      ... mais qui êtes vous ?
+      <input type="text" name="name">
+      <input type="submit" value="Voilà !">
+    </p>
+  </form>
+  {% endif %}
+{% endblock %}

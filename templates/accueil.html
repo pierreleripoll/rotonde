@@ -1,59 +1,10 @@
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="../../favicon.ico">
-
-  <title>Rotonde</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="static/boot4/css/bootstrap.css" rel="stylesheet">
+{% extends "layout.html" %}
+{% set active_page = 'accueil' %}
+{% block title %}Accueil{% endblock %}
 
 
-  <!-- Custom styles for this template -->
-  <link href="static/styles/navbar.css" rel="stylesheet">
-
-  <link href="static/styles/album.css" rel="stylesheet">
-</head>
-
-<body>
-  <header>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand d-flex bg-light navbar-light fixed-top ">
-      <a class="navbar-brand" href="#"><img src="static/styles/logo_insa.png" style="height: 40px;" alt="logo"></a>
-
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item active">
-            <a class="nav-link" href="/">Accueil</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/calendrier">Calendrier</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/panier">Panier</a>
-          </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li class="nav-item">
-            <a class="nav-link" href="/admin">Admin</a>
-          </li>
-        </ul>
-
-      </div>
-    </nav>
-  </header>
-
-
-  <!-- /container -->
+{% block content %}
   <main role="main">
-
     <section class="jumbotron text-center">
       <div class="container">
         <h1 class="jumbotron-heading">Liste des spectacles</h1>
@@ -84,37 +35,5 @@
         {%endfor%}
       </div>
     </div>
-
-
   </main>
-
-  <footer id="footer" class="footer" role="footer">
-    <div class="container">
-      <div class="col-md-8">
-        <div class="row">
-          <div class="col-md-6" style="line-height: initial;">
-            <p>La Rotonde</p>
-            <p>INSA Lyon</p>
-            <p>20 Avenue des Arts</p>
-            <p>69100 Villeurbanne</p>
-          </div>
-        </div>
-      </div>
-      <small class="copyright col-md-4"><p>Created in 2018</p>
-  </small>
-    </div>
-  </footer>
-
-
-
-  <!-- Bootstrap core JavaScript
-    ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script>
-    window.jQuery || document.write('<script src="static/assets/js/vendor/jquery.min.js"><\/script>')
-  </script>
-  <script src="static/boot4/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+{% endblock %}

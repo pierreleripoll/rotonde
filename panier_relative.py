@@ -15,8 +15,13 @@ from email.mime.text import MIMEText
 panier_relative = Blueprint('panier_relative', __name__,template_folder='templates',static_folder = 'static')
 
 #Remplacer #mail et #mdp par des vraies valeurs
+
 def sendMail (adressedest, cart, nomUser):
+
+	mailrotonde="rotondeinsatest@gmail.com"
+	mdprotonde="motdepasse1!"
 	fromaddr = mailrotonde
+
 	toaddr = adressedest
 	msg = MIMEMultipart()
 	msg['From'] = fromaddr
@@ -28,7 +33,7 @@ def sendMail (adressedest, cart, nomUser):
 
 	server = smtplib.SMTP('smtp.gmail.com', 587)
 	server.starttls()
-	server.login(fromaddr, mdprotonde)
+	server.login(fromaddr, "motdepasse1!")
 	text = msg.as_string()
 	server.sendmail(fromaddr, toaddr, text)
 	server.quit()
@@ -46,6 +51,8 @@ def calculCart(items):
         idx = isInCart(item,display_cart)
         if idx == -1 or display_cart == []:
             date = get_date(date=dateJSONToPy(str(item['date'])))
+	    print(date)
+	    print(date)
             left = date.placesRestantes
             display_cart.append({'nomSpectacle' : item['nomSpectacle'], 'date':item['date'], 'qte' : 1, 'left' : left})
         else:
@@ -131,13 +138,10 @@ def panier():
                         added+=1
                         print(i)
                         insert_place(place)
-                    try:
-                        commit_place_insertion()
-                        update_placesRestantes(datemodif, added)
-                        session.pop('panier')
-                    except:
-                        print("error")
-                        pass
+                    res=update_placesRestantes(datemodif,added)
+		    if(res==-1):
+			return redirect(url_for('panier_relative.panier'))
+		    session.pop('panier')
                     places=get_places_mail(mail)
                     sendMail(mail, places, name)
                 return redirect(url_for('logout'))

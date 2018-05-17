@@ -42,9 +42,8 @@ class Contact(db.Model):
 class Calendrier(db.Model):
     date = db.Column(db.DateTime, nullable = False, default=datetime.utcnow, primary_key = True)
     nom = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False)
-    placesRestantes = db.Column(db.Integer, nullable = False)
+    placesRestantes = db.Column(db.Integer,db.CheckConstraint('placesRestantes>=0'),nullable = False)
     spectacle = db.relationship('Spectacle', backref = db.backref('calendriers', lazy = True)) # Peut etre a changer, pas sur de ce que je fais
-    CheckConstraint('placesRestantes >= 0', name='pos')
     def __repr__(self):
         return '<Calendrier: %r>' % self.date
 
@@ -177,13 +176,14 @@ def update_date(newDate):
 
 #update le nombre de places sur une date
 def update_placesRestantes (date, placesPrises):
-    if (date.placesRestantes - placesPrises < 0):
-        db.session.rollback()
-        return -1
-    else:
+    try:
         date.placesRestantes=date.placesRestantes - placesPrises
         db.session.commit()
-    return 1
+        return 1
+    except:
+        print("error not enough")
+        #db.session.rollback()
+    return -1
 
 #Convertir une date html en python
 def dateHTMLtoPy(date_in):
@@ -210,6 +210,12 @@ def get_all_dates ():
     dates = Calendrier.query.all()
 
     return dates
+
+def initContact():
+    contact = Contact(nom="---",prenom="---",annee="",depart="")
+    db.session.add(contact)
+    db.session.commit()
+    return
 
 def get_sessions():
 

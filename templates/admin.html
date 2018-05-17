@@ -1,56 +1,10 @@
-<!DOCTYPE html>
-<html lang="fr">
-
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="../../favicon.ico">
-
-  <title>Admin</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="static/boot4/css/bootstrap.min.css" rel="stylesheet">
+{% extends "layout.html" %}
+{% set active_page = 'admin' %}
+{% block title %}Administration{% endblock %}
 
 
-
-</head>
-
-<body>
-
-  <header>
-    <!-- Fixed navbar -->
-    <nav class="navbar navbar-expand bg-light navbar-light fixed-top ">
-      <a class="navbar-brand" href="#"><img src="static/styles/logo_insa.png" style="height: 40px;" alt="logo"></a>
-
-      <div class="collapse navbar-collapse" id="navbarCollapse">
-        <ul class="navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/">Accueil</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/calendrier">Calendrier</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/panier">Panier</a>
-          </li>
-        </ul>
-        <ul class="nav navbar-nav navbar-right">
-          <li class="nav-item active">
-            <a class="nav-link" href="/admin">Admin</a>
-          </li>
-        </ul>
-
-      </div>
-    </nav>
-  </header>
-
-
+{% block content %}
   <div class="container">
-    <p><a href="/">Acceuil</a></p>
     <p>Bienvenue {{pseudo}} ! </p>
 
     <form action="" method="POST">
@@ -60,18 +14,4 @@
     </form>
 
   </div>
-  <!-- /container -->
-
-
-
-  <!-- Bootstrap core JavaScript
-    ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script>
-    window.jQuery || document.write('<script src="static/assets/js/vendor/jquery.min.js"><\/script>')
-  </script>
-  <script src="static/boot4/js/bootstrap.min.js"></script>
-</body>
-
-</html>
+{% endblock %}
