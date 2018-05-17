@@ -12,7 +12,7 @@
 
 
   <!-- Bootstrap core CSS -->
-  <link href="../static/boot4/css/bootstrap.css" rel="stylesheet">
+  <link href="/static/boot4/css/bootstrap.css" rel="stylesheet">
 
 
   <!-- Custom styles for this template -->
@@ -57,15 +57,21 @@
         <div class="card col-md-6 ">
           <div class="card-body">
             <h5 class="card-title">{{spectacle.nom}} </h5>
+            {%if spectacle.auteur%}
+            <h3 class="card-title">{{spectacle.nom.upper()}} </h3>
+            {%endif%}
+            {%if spectacle.resume %}
             <p class="card-text">{{spectacle.resume}}</p>
+            {%endif%}
           </div>
         </div>
-        <div class="card col-md-4">
+
+        <div class="card-img col-md-4">
             <img class="card-img" src="{{paths[0]}}">
-          
         </div>
       </div>
     </div>
+
 
 
   <p>SPECTACLE {{spectacle.nom}} </p>
@@ -99,7 +105,7 @@
   <script>
     window.jQuery || document.write('<script src="static/assets/js/vendor/jquery.min.js"><\/script>')
   </script>
-  <script src="static/boot4/js/bootstrap.min.js"></script>
+  <script src="/static/boot4/js/bootstrap.min.js"></script>
 </body>
 
 </html>
