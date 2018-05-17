@@ -71,18 +71,12 @@ def set_spectacle(nomSpectacle):
             print(thisDates)
             return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact)
         if request.method=="POST":
-            if request.form["button"] == "boutonAddContact":
-                print("je suis un bouton add contact")
-                cont = request.form
-                contact = Contact(nom=cont["nomUser"],prenom=cont["prenomUser"], telephone=cont["telephone"], adresseMail=cont["adressemail"], annee=cont["anneeSelect"], depart=cont["departSelect"])
-                insert_spectacle(contact)
-                return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle = "nouveauSpectacle"))
-            elif request.form["button"] == "valider":
+            if request.form["nom"] != "":
                 cont = request.form
                 print("\n\n"+ str(cont) +"\n\n")
                 spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0,
                     directeur=cont["directeur"],auteur=cont["auteur"],participants=cont["participants"],infoComplementaire=cont["infoComplementaire"],tarif=cont["tarif"],
-                    duree=cont["duree"],typeSpectacle=cont["typeSpectacle"])
+                    duree=cont["duree"],typeSpectacle=cont["typeSpectacle"],idContact=cont["ajoutContactDB"])
                 print("\n\n"+ str(cont) +"\n\n")
                 alreadyIn = get_spectacle(spectacle.nom)
                 if alreadyIn:
@@ -130,5 +124,13 @@ def set_spectacle(nomSpectacle):
                         insert_date(date)
                     db.session.commit();
                 return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=request.form["nom"]))
+            else :
+                return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle="nouveauSpectacle"))
     else :
         return abort(403)
+
+@gestion_spectacle.route('/api/ajoutContact/<string:nomUser>/<string:prenomUser>/<int:tel>/<string:mail>/<int:anneeSelect>/<string:departSelect>')
+def ajoutContact(nomUser):
+    contact = Contact(nom=nomUser,prenom=prenomUser,telephone=tel,adresseMail=mail,annee=anneeSelect, depart=departSelect)
+    insert_contact(contact)
+    return jsonify(get_contact)

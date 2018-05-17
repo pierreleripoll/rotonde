@@ -85,14 +85,12 @@
     }
     div.appendChild(depart);
 
-    var bouton = document.createElement("button");
-    bouton.setAttribute("name", "button");
+    var bouton = document.createElement("input");
+    bouton.setAttribute("name", "boutonContact");
     bouton.setAttribute("id", "boutonContact");
-    bouton.setAttribute("value", "boutonAddContact");
-    bouton.setAttribute("type","boutonContact");
-    var t = document.createTextNode("Valider Contact");
-
-    bouton.appendChild(t);
+    bouton.setAttribute("value", "Valider Contact");
+    bouton.setAttribute("type","button");
+    bouton.setAttribute("onclick","envoieContact()");
 
     div.appendChild(bouton);
 
@@ -100,11 +98,15 @@
       contactAffiche=1
       document.getElementById("contact").appendChild(div);
       document.getElementById("addContactbutton").innerHTML = "Annuler Contact";
-    } else if (i == 1) {
+    } else if (contactAffiche == 1) {
       contactAffiche=0
       document.getElementById("addContactbutton").innerHTML = "Ajouter Contact";
       document.getElementById("contact").innerHTML = "";
     }
+  }
+
+  function envoieContact() {
+    addNewContact();
   }
 
   var i = 0;
@@ -240,8 +242,7 @@
           <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
         </div>
         <div class="form-group">
-          <label for="ajoutContactDB">Contact:</label><br>
-          <select type="number"name="ajoutContactDB">
+          <select name="ajoutContactDB">
             {%for c in contact:%}
             <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
             {%endfor%}
