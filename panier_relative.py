@@ -16,7 +16,7 @@ panier_relative = Blueprint('panier_relative', __name__,template_folder='templat
 
 #Remplacer #mail et #mdp par des vraies valeurs
 def sendMail (adressedest, cart, nomUser):
-	fromaddr = mailrotonde
+	fromaddr = "rotondeinsatest@gmail.com"
 	toaddr = adressedest
 	msg = MIMEMultipart()
 	msg['From'] = fromaddr
@@ -28,7 +28,7 @@ def sendMail (adressedest, cart, nomUser):
 
 	server = smtplib.SMTP('smtp.gmail.com', 587)
 	server.starttls()
-	server.login(fromaddr, mdprotonde)
+	server.login(fromaddr, "motdepasse1!")
 	text = msg.as_string()
 	server.sendmail(fromaddr, toaddr, text)
 	server.quit()
