@@ -15,6 +15,7 @@ from email.mime.text import MIMEText
 panier_relative = Blueprint('panier_relative', __name__,template_folder='templates',static_folder = 'static')
 
 #Remplacer #mail et #mdp par des vraies valeurs
+
 def sendMail (adressedest, cart, nomUser):
 	fromaddr = "rotondeinsatest@gmail.com"
 	toaddr = adressedest
