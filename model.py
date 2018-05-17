@@ -212,9 +212,10 @@ def get_all_dates ():
     return dates
 
 def initContact():
-    contact = Contact(nom="---",prenom="---",annee="",depart="")
-    db.session.add(contact)
-    db.session.commit()
+    if Contact.query.filter_by(nom = "---").all() == []:
+        contact = Contact(nom="---",prenom="---",annee="",depart="")
+        db.session.add(contact)
+        db.session.commit()
     return
 
 def get_sessions():

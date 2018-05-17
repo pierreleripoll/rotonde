@@ -26,7 +26,7 @@ db.init_app(app)
 # SI DECOMMENTER FLASK CREER LES TABLES
 with app.app_context() :
 	db.create_all()
-
+	initContact()
 
 #PAGE DE TEST JAVASCRIPT
 @app.route('/javascript')
