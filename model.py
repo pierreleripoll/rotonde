@@ -1,4 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy#,CheckConstraint
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import CheckConstraint
 from datetime import datetime
 import re
 import os
@@ -11,12 +12,19 @@ UPLOAD_FOLDER = './static/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 class Spectacle(db.Model):
-    nom = db.Column(db.String(80), primary_key = True)
+    nom = db.Column(db.String(80), primary_key = True,nullable=False)
     resume = db.Column(db.Text, nullable = True)
     photos = db.Column(db.Integer, nullable = True)
-    liens = db.Column(db.String, nullable = True)
-    admin = db.Column(db.String, nullable =True)
-    idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = False)
+    liens = db.Column(db.String(150), nullable = True)
+    admin = db.Column(db.String(20), nullable =True)
+    idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = True)
+    directeur = db.Column(db.String(30),nullable=True)
+    auteur = db.Column(db.String(30),nullable=True)
+    participants = db.Column(db.String(30),nullable=True)
+    infoComplementaire = db.Column(db.String(100),nullable=True)
+    tarif = db.Column(db.Integer,nullable=True)
+    duree = db.Column(db.Integer,nullable=True)
+    typeSpectacle = db.Column(db.String(20),nullable=True)
     def __repr__(self):
         return '<Spectacle: %r>' % self.nom
 
@@ -36,7 +44,7 @@ class Calendrier(db.Model):
     nom = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False)
     placesRestantes = db.Column(db.Integer, nullable = False)
     spectacle = db.relationship('Spectacle', backref = db.backref('calendriers', lazy = True)) # Peut etre a changer, pas sur de ce que je fais
-    #CheckConstraint('placesRestantes >= 0', name='pos')
+    CheckConstraint('placesRestantes >= 0', name='pos')
     def __repr__(self):
         return '<Calendrier: %r>' % self.date
 
@@ -45,7 +53,7 @@ class Place(db.Model):
     nomSpectacle = db.Column(db.String(80), db.ForeignKey('spectacle.nom'), nullable = False)
     date = db.Column(db.DateTime, db.ForeignKey('calendrier.date'), nullable = False)
     nomUser = db.Column(db.String(80), nullable = False)
-
+    adresseMail = db.Column(db.String(100),nullable=True)
     calendrier = db.relationship('Calendrier', backref = db.backref('places', lazy = True)) #idem qu'au dessus
     def __repr__(self):
         return '<Place: %r>' % self.idPlace
@@ -62,7 +70,8 @@ class Place(db.Model):
 class Session(db.Model):
     login = db.Column(db.String(80), nullable = False, primary_key = True)
     password = db.Column(db.String(300), nullable = False) # TODO: encrypter le mdp avec passlib
-
+    typeAdmin = db.Column(db.String(30),nullable=False)
+    idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = True)
     def __repr__(self):
         return '<Session: %r %r>' % (self.login, self.password)
 
@@ -96,10 +105,19 @@ def get_all_places():
     places = Place.query.all()
     return places
 
-# Renvoie les places correspondant a un nom 
+# Renvoie les places correspondant a un nom
 def get_places_user_name(userName):
 	places = Place.query.filter_by(nomUser=userName).all()
 	return places
+
+# Renvoie les places correspondant a un mail
+def get_places_mail(mail):
+	places = Place.query.filter_by(adresseMail=mail).all()
+	return places
+
+def get_contact():
+    contact = Contact.query.all()
+    return contact
 
 # Renvoie le spectacle portant le nom specifife
 def get_spectacle(nomSpectacle):
@@ -118,12 +136,15 @@ def insert_place(place):
 
 def commit_place_insertion():
     db.session.commit()
-
     return
 
 def insert_date(date):
     db.session.add(date)
+    return
 
+def insert_contact(contact):
+    db.session.add(contact)
+    db.session.commit()
     return
 
 def insert_spectacle(spectacle):
@@ -156,11 +177,13 @@ def update_date(newDate):
 
 #update le nombre de places sur une date
 def update_placesRestantes (date, placesPrises):
-	date.placesRestantes=date.placesRestantes - placesPrises
-
-	db.session.commit()
-
-	return
+    if (date.placesRestantes - placesPrises < 0):
+        db.session.rollback()
+        return -1
+    else:
+        date.placesRestantes=date.placesRestantes - placesPrises
+        db.session.commit()
+    return 1
 
 #Convertir une date html en python
 def dateHTMLtoPy(date_in):

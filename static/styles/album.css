@@ -1,0 +1,96 @@
+
+body {
+  padding-top: 80px;
+}
+
+:root {
+  --jumbotron-padding-y: 3rem;
+}
+
+.presentation-spectacle .card{
+  margin: 30px;
+}
+
+.jumbotron {
+  padding-top: var(--jumbotron-padding-y);
+  padding-bottom: var(--jumbotron-padding-y);
+  margin-bottom: 0;
+  background-color: #fff;
+}
+
+
+
+.jumbotron p:last-child {
+  margin-bottom: 0;
+}
+
+.jumbotron-heading {
+  font-weight: 300;
+}
+
+.jumbotron .container {
+  max-width: 40rem;
+}
+
+footer {
+  padding-top: 3rem;
+  margin-top: 0;
+  background-color: #e3e4e4;
+  color: #87888a;
+  margin-bottom: 0;
+}
+
+footer p {
+  margin-bottom: .25rem;
+}
+
+.box-shadow {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.card-img-top-pers {
+  width: 100%;
+  border-top-left-radius: calc(0.25rem - 1px);
+  border-top-right-radius: calc(0.25rem - 1px);
+}
+
+.card-columns .card {
+  margin-bottom: .75rem;
+  margin-left: .100rem;
+}
+
+@media (min-width: 150px) {
+    .card-columns {
+        column-count: 1;
+    }
+}
+
+@media (min-width: 576px) {
+    .card-columns {
+        column-count: 2;
+    }
+}
+
+@media (min-width: 808px) {
+    .card-columns {
+        column-count: 3;
+    }
+}
+
+@media (min-width: 1100) {
+    .card-columns {
+        column-count: 4;
+    }
+}
+
+@media (min-width: 1700) {
+    .card-columns {
+        column-count: 5;
+    }
+}
+
+@media (min-width: 2400) {
+    .card-columns {
+        column-count: 6;
+    }
+}

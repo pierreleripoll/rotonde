@@ -12,13 +12,12 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-panier_relative = Blueprint('panier_relative', __name__,
-                        template_folder='templates',static_folder = 'static')
+panier_relative = Blueprint('panier_relative', __name__,template_folder='templates',static_folder = 'static')
 
 #Remplacer #mail et #mdp par des vraies valeurs
-#Adresse gmail et il faut changer les paramètres du compte pour autoriser l'utilisation par des applis moins sécurisées
+
 def sendMail (adressedest, cart, nomUser):
-	fromaddr = "rotondeinsatest@gmail.com"
+	fromaddr = mailrotonde
 	toaddr = adressedest
 	msg = MIMEMultipart()
 	msg['From'] = fromaddr
@@ -30,7 +29,7 @@ def sendMail (adressedest, cart, nomUser):
 
 	server = smtplib.SMTP('smtp.gmail.com', 587)
 	server.starttls()
-	server.login(fromaddr, "motdepasse1!")
+	server.login(fromaddr, mdprotonde)
 	text = msg.as_string()
 	server.sendmail(fromaddr, toaddr, text)
 	server.quit()
@@ -127,20 +126,19 @@ def panier():
                     print("requesting date")
                     date = dateJSONToPy(str(show['date']))
                     added=0
-                    place = Place(nomSpectacle=show['nomSpectacle'],nomUser=name,date=date)
+                    place = Place(nomSpectacle=show['nomSpectacle'],nomUser=name,date=date, adresseMail=mail)
                     datemodif=get_date(date=date)
                     for i in range(1, show['qte']+1):
                         added+=1
                         print(i)
                         insert_place(place)
                     try:
-                        commit_place_insertion()
                         update_placesRestantes(datemodif, added)
                         session.pop('panier')
                     except:
                         print("error")
                         pass
-                    places=get_places_user_name(name)
+                    places=get_places_mail(mail)
                     sendMail(mail, places, name)
                 return redirect(url_for('logout'))
 

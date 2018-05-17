@@ -65,14 +65,24 @@ def set_spectacle(nomSpectacle):
         if request.method=="GET":
             thisSpectacle = get_spectacle(nomSpectacle)
             thisDates = get_dates(nomSpectacle)
+            thisContact = get_contact()
             for calendrier in thisDates:
                 calendrier.date = datePytoHTML(calendrier.date)
             print(thisDates)
-            return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates))
+            return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact)
         if request.method=="POST":
-            if "nom" in request.form :
+            if request.form["button"] == "boutonAddContact":
+                print("je suis un bouton add contact")
                 cont = request.form
-                spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0, idContact=cont["contact"])
+                contact = Contact(nom=cont["nomUser"],prenom=cont["prenomUser"], telephone=cont["telephone"], adresseMail=cont["adressemail"], annee=cont["anneeSelect"], depart=cont["departSelect"])
+                insert_spectacle(contact)
+                return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle = "nouveauSpectacle"))
+            elif request.form["button"] == "valider":
+                cont = request.form
+                print("\n\n"+ str(cont) +"\n\n")
+                spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0,
+                    directeur=cont["directeur"],auteur=cont["auteur"],participants=cont["participants"],infoComplementaire=cont["infoComplementaire"],tarif=cont["tarif"],
+                    duree=cont["duree"],typeSpectacle=cont["typeSpectacle"])
                 print("\n\n"+ str(cont) +"\n\n")
                 alreadyIn = get_spectacle(spectacle.nom)
                 if alreadyIn:
@@ -118,7 +128,7 @@ def set_spectacle(nomSpectacle):
                             alreadyIn = "true"
                     if alreadyIn == "false":
                         insert_date(date)
-
+                    db.session.commit();
                 return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=request.form["nom"]))
     else :
         return abort(403)

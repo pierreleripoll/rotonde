@@ -5,8 +5,7 @@
   {{ super() }}
 
   <script>
-  var i = 0
-
+  var contactAffiche = 0
   function addNewContact() {
     var div = document.createElement("div");
     var inputName = document.createElement("INPUT");
@@ -22,7 +21,7 @@
     inputPrenom.setAttribute("type", "text");
     inputPrenom.setAttribute("id", "prenomUser");
     inputPrenom.setAttribute("class", "form-control");
-    inputPrenom.setAttribute("name", "nomUser");
+    inputPrenom.setAttribute("name", "prenomUser");
     inputPrenom.setAttribute("placeholder","Prenom");
 
     div.appendChild(inputPrenom);
@@ -44,43 +43,61 @@
 
     div.appendChild(adressemail);
 
-    var annee = document.createElement("input");
-    annee.setAttribute("type", "integer");
-    annee.setAttribute("id", "annee");
-    annee.setAttribute("name", "annee");
-    annee.setAttribute("min","1954");
-    annee.setAttribute("max","2100");
-    annee.setAttribute("placeholder","Année");
+    var annee = document.createElement("select");
+    annee.id = "anneeSelect";
+    annee.name="anneeSelect";
 
+    for (var x = 0; x < 6; x++) {
+        var option = document.createElement("option");
+        option.value = x;
+        option.text = x;
+        annee.appendChild(option);
+    }
     div.appendChild(annee);
 
-    var depart = document.createElement("input");
-    depart.setAttribute("type", "text");
-    depart.setAttribute("id", "depart");
-    depart.setAttribute("class", "form-control");
-    depart.setAttribute("name", "depart");
-    depart.setAttribute("placeholder","Departement");
 
+    var depart = document.createElement("select");
+    depart.id = "departSelect";
+    depart.name="departSelect";
+
+    departement = ["exterieur","Bioscience","GCU","GE","GEN","GI","GM","IF","PC","SGM","TC"];
+    for (var x = 0; x < departement.length; x++) {
+        var option = document.createElement("option");
+        option.value = departement[x];
+        option.text = departement[x];
+        depart.appendChild(option);
+    }
     div.appendChild(depart);
 
-    if (i == 0) {
-      i=1
+    var bouton = document.createElement("button");
+    bouton.setAttribute("name", "button");
+    bouton.setAttribute("id", "boutonContact");
+    bouton.setAttribute("value", "boutonAddContact");
+    bouton.setAttribute("type","boutonContact");
+    var t = document.createTextNode("Valider Contact");
+
+    bouton.appendChild(t);
+
+    div.appendChild(bouton);
+
+    if (contactAffiche == 0) {
+      contactAffiche=1
       document.getElementById("contact").appendChild(div);
-      document.getElementById("addContactbutton").innerHTML = "Valider Contact";
+      document.getElementById("addContactbutton").innerHTML = "Annuler Contact";
     } else if (i == 1) {
-      i=0
+      contactAffiche=0
       document.getElementById("addContactbutton").innerHTML = "Ajouter Contact";
       document.getElementById("contact").innerHTML = "";
     }
   }
-  </script>
 
-  <script>
   var i = 0;
+  var datesLength = {{nDates}};
+  init(datesLength);
+
   function init(val) {
     i = val;
   }
-
   function addOneDate() {
     var lastDate = document.getElementById("datetime" + i.toString());
     var lastNPlaces = document.getElementById("nPlaces" + i.toString());
@@ -143,14 +160,51 @@
           <label for="liens">Liens:</label><br>
           <input type="url" name="liens" class="form-control" value='{{spectacle.liens}}'><br>
         </div>
-        <div>
-          <p>Contacts : </p>
-          <select>
-            {%for contact in contacts:%}
-            <option value="{{contact.nom}}">{{contact.nom}}</option>
+        <div class="form-group">
+          <label for="directeur">Par:</label><br>
+          <input type="text" name="directeur" class="form-control" value='{{spectacle.directeur}}'><br>
+        </div>
+        <div class="form-group">
+          <label for="auteur">Auteur:</label><br>
+          <input type="text" name="auteur" class="form-control" value='{{spectacle.auteur}}'><br>
+        </div>
+        <div class="form-group">
+          <label for="participants">Avec:</label><br>
+          <input type="text" name="participants" class="form-control" value='{{spectacle.participants}}'><br>
+        </div>
+        <div class="form-group">
+          <label for="typeSpectacle">Genre:</label><br>
+          <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}'>
+              <option value="Théâtre">Théâtre</option>
+              <option value="Musique">Musique</option>
+              <option value="Danse">Danse</option>
+              <option value="Impro">Impro</option>
+              <option value="Conférence">Conférence</option>
+              <option value="Cirque">Cirque</option>
+              <option value="Performance">Performance</option>
+              <option value="Autre">Autre</option>
+          </select><br>
+        </div>
+        <div class="form-group">
+          <label for="duree">Durée (en minutes):</label><br>
+          <input type="number" name="duree" class="form-control" value='{{spectacle.duree}}'><br>
+        </div>
+        <div class="form-group">
+          <label for="tarif">Tarif:</label><br>
+          <input type="number" name="tarif" class="form-control" value='{{spectacle.tarif}}'><br>
+        </div>
+        <div class="form-group">
+          <label for="infoComplementaire">Info complémentaire:</label><br>
+          <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
+        </div>
+        <div class="form-group">
+          <label for="ajoutContactDB">Contact:</label><br>
+          <select type="number"name="ajoutContactDB">
+            {%for c in contact:%}
+            <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
             {%endfor%}
           </select>
-          <button type="button" id="addContactbutton" onclick="addNewContact();" name="ajouterContact">Ajouter Contact</button>
+          <button type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
           <br>
           <br>
           <div id="contact">
@@ -159,12 +213,9 @@
         <br>
         <div>
           <label for="dates">Dates :  </label>
-          <button type="button" id="addDate" onclick="addOneDate()" name="addDate">Add</button><br>
+          <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button><br>
           <script>
-          console.log("TEST");
-          var datesLength = {{ nDates}};
-          init(datesLength);
-          console.log("Number of dates already in:" + datesLength);
+
           </script>
           <div id="date-div">
             {%for date in dates:%}
@@ -178,7 +229,7 @@
 
         <div>
           <br><br>
-          <button name="foo" id="submit" value="valider" type="submit" }>Valider</button>
+          <button name="button" id="valide" value="valider" type="valide" }>Valider</button>
 
         </div>
       </form>
