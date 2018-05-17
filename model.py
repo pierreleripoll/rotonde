@@ -19,6 +19,7 @@ class Spectacle(db.Model):
     idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = False)
     def __repr__(self):
         return '<Spectacle: %r>' % self.nom
+#de - par - avec - infoComplementaire - tarif - duree
 
 class Contact(db.Model):
     id = db.Column(db.Integer, autoincrement = True, primary_key = True)
