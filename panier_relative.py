@@ -132,7 +132,6 @@ def panier():
                         print(i)
                         insert_place(place)
                     try:
-                        commit_place_insertion()
                         update_placesRestantes(datemodif, added)
                         session.pop('panier')
                     except:
