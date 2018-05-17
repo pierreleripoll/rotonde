@@ -11,15 +11,21 @@ UPLOAD_FOLDER = './static/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 class Spectacle(db.Model):
-    nom = db.Column(db.String(80), primary_key = True)
+    nom = db.Column(db.String(80), primary_key = True,nullable=False)
     resume = db.Column(db.Text, nullable = True)
     photos = db.Column(db.Integer, nullable = True)
-    liens = db.Column(db.String, nullable = True)
-    admin = db.Column(db.String, nullable =True)
+    liens = db.Column(db.String(150), nullable = True)
+    admin = db.Column(db.String(20), nullable =True)
     idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = False)
+    directeur = db.Column(db.String(30),nullable=True)
+    auteur = db.Column(db.String(30),nullable=True)
+    participants = db.Column(db.String(30),nullable=True)
+    infoComplementaire = db.Column(db.String(100),nullable=True)
+    tarif = db.Column(db.Integer,nullable=True)
+    duree = db.Column(db.Integer,nullable=True)
+    typeSpectacle = db.Column(db.String(20),nullable=True)
     def __repr__(self):
         return '<Spectacle: %r>' % self.nom
-#de - par - avec - infoComplementaire - tarif - duree
 
 class Contact(db.Model):
     id = db.Column(db.Integer, autoincrement = True, primary_key = True)
@@ -46,7 +52,7 @@ class Place(db.Model):
     nomSpectacle = db.Column(db.String(80), db.ForeignKey('spectacle.nom'), nullable = False)
     date = db.Column(db.DateTime, db.ForeignKey('calendrier.date'), nullable = False)
     nomUser = db.Column(db.String(80), nullable = False)
-
+    adresseMail = db.Column(db.String(100),nullable=True)
     calendrier = db.relationship('Calendrier', backref = db.backref('places', lazy = True)) #idem qu'au dessus
     def __repr__(self):
         return '<Place: %r>' % self.idPlace
@@ -63,7 +69,8 @@ class Place(db.Model):
 class Session(db.Model):
     login = db.Column(db.String(80), nullable = False, primary_key = True)
     password = db.Column(db.String(300), nullable = False) # TODO: encrypter le mdp avec passlib
-
+    typeAdmin = db.Column(db.String(30),nullable=False)
+    idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = False)
     def __repr__(self):
         return '<Session: %r %r>' % (self.login, self.password)
 
