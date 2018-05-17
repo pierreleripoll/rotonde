@@ -182,7 +182,7 @@ def update_placesRestantes (date, placesPrises):
         return 1
     except:
         print("error not enough")
-        db.session.rollback()
+        #db.session.rollback()
     return -1
 
 #Convertir une date html en python
