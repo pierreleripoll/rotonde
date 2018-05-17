@@ -133,6 +133,16 @@
     document.getElementById("date-div").appendChild(br);
     document.getElementById("date-div").appendChild(div);
   }
+    
+  function ValidateSize(file, maxsize) {
+		for (var i=0; i<file.files.length; i++){
+			var FileSize = file.files[i].size; 
+			if (FileSize > maxsize) {
+				alert('Image '+file.files[i].name+' trop grande: taille limitée à '+maxsize+' octets');
+			}
+		}
+		
+  }
   </script>
 
 {% endblock %}
@@ -154,7 +164,7 @@
         </div>
         <div class="form-group">
           <label for="photos">Photos:</label><br>
-          <input type="file" class="form-control-file" name="photos" accept=".png, .jpg, .jpeg" multiple><br>
+          <input type="file" class="form-control-file" name="photos" oninput="ValidateSize(this, {{maxsize}})" accept=".png, .jpg, .jpeg" multiple><br>
         </div>
         <div class="form-group">
           <label for="liens">Liens:</label><br>
