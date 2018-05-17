@@ -5,6 +5,10 @@ body {
   flex-direction: column;
 }
 
+super-small {
+    font-size: 5px;
+}
+
 :root {
   height: 100%;
   --jumbotron-padding-y: 3rem;
