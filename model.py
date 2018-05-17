@@ -109,6 +109,11 @@ def get_places_user_name(userName):
 	places = Place.query.filter_by(nomUser=userName).all()
 	return places
 
+# Renvoie les places correspondant a un mail
+def get_places_mail(mail):
+	places = Place.query.filter_by(adresseMail=mail).all()
+	return places
+
 def get_contact():
     contact = Contact.query.all()
     return contact
