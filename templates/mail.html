@@ -1,24 +1,19 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% extends "layout.html" %}
+{% set active_page = 'mail' %}
+{% block title %}Mail{% endblock %}
 
-<html>
 
-
-<body>
-
-  <p>Bonjour {{nomUser}}, vous avez reserve les spectacles : 
+{% block content %}
+  <p>Bonjour {{nomUser}}, vous avez reserve les spectacles :
 
       <table class="table table-striped">
         {% for place in places %}
         <tr>
-		  <td>Place numero: {{place.idPlace}}</td>
+      <td>Place numero: {{place.idPlace}}</td>
           <td> {{place.nomSpectacle}}</td>
           <td> {{place.date}}</td>
         </tr>
         {% endfor %}
       </table>
-  </p>    
-
-
-</body>
-
-</html>
+  </p>
+{% endblock %}

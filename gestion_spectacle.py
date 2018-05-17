@@ -69,7 +69,7 @@ def set_spectacle(nomSpectacle):
             for calendrier in thisDates:
                 calendrier.date = datePytoHTML(calendrier.date)
             print(thisDates)
-            return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact)
+            return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
         if request.method=="POST":
             if request.form["nom"] != "":
                 cont = request.form
@@ -122,7 +122,7 @@ def set_spectacle(nomSpectacle):
                             alreadyIn = "true"
                     if alreadyIn == "false":
                         insert_date(date)
-                    db.session.commit();
+                db.session.commit();
                 return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=request.form["nom"]))
             else :
                 return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle="nouveauSpectacle"))
