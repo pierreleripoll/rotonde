@@ -16,7 +16,7 @@ class Spectacle(db.Model):
     photos = db.Column(db.Integer, nullable = True)
     liens = db.Column(db.String(150), nullable = True)
     admin = db.Column(db.String(20), nullable =True)
-    idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = False)
+    idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = True)
     directeur = db.Column(db.String(30),nullable=True)
     auteur = db.Column(db.String(30),nullable=True)
     participants = db.Column(db.String(30),nullable=True)
@@ -70,7 +70,7 @@ class Session(db.Model):
     login = db.Column(db.String(80), nullable = False, primary_key = True)
     password = db.Column(db.String(300), nullable = False) # TODO: encrypter le mdp avec passlib
     typeAdmin = db.Column(db.String(30),nullable=False)
-    idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = False)
+    idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = True)
     def __repr__(self):
         return '<Session: %r %r>' % (self.login, self.password)
 

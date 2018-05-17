@@ -79,7 +79,9 @@ def set_spectacle(nomSpectacle):
                 return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle = "nouveauSpectacle"))
             elif request.form["button"] == "valider":
                 cont = request.form
-                spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0, idContact=cont["ajoutContactDB"])
+                spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0, idContact=cont["ajoutContactDB"],
+                directeur=cont["directeur"],auteur=cont["auteur"],participants=cont["participants"],infoComplementaire=cont["infoComplementaire"],tarf=cont["tarif"],
+                duree=cont["duree"],typeSpectacle=cont["typeSpectacle"])
                 print("\n\n"+ str(cont) +"\n\n")
                 alreadyIn = get_spectacle(spectacle.nom)
                 if alreadyIn:
