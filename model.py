@@ -1,4 +1,5 @@
-from flask_sqlalchemy import SQLAlchemy#,CheckConstraint
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import CheckConstraint
 from datetime import datetime
 import re
 import os
@@ -43,7 +44,7 @@ class Calendrier(db.Model):
     nom = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False)
     placesRestantes = db.Column(db.Integer, nullable = False)
     spectacle = db.relationship('Spectacle', backref = db.backref('calendriers', lazy = True)) # Peut etre a changer, pas sur de ce que je fais
-    #CheckConstraint('placesRestantes >= 0', name='pos')
+    CheckConstraint('placesRestantes >= 0', name='pos')
     def __repr__(self):
         return '<Calendrier: %r>' % self.date
 
@@ -135,7 +136,6 @@ def insert_place(place):
 
 def commit_place_insertion():
     db.session.commit()
-
     return
 
 def insert_date(date):
@@ -177,11 +177,13 @@ def update_date(newDate):
 
 #update le nombre de places sur une date
 def update_placesRestantes (date, placesPrises):
-	date.placesRestantes=date.placesRestantes - placesPrises
-
-	db.session.commit()
-
-	return
+    if (date.placesRestantes - placesPrises < 0):
+        db.session.rollback()
+        return -1
+    else:
+        date.placesRestantes=date.placesRestantes - placesPrises
+        db.session.commit()
+    return 1
 
 #Convertir une date html en python
 def dateHTMLtoPy(date_in):

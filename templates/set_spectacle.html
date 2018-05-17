@@ -21,8 +21,7 @@
   <link href="../static/styles/charte.css" rel="stylesheet">
 
   <script>
-  var i = 0
-
+  var contactAffiche = 0
   function addNewContact() {
     var div = document.createElement("div");
     var inputName = document.createElement("INPUT");
@@ -97,24 +96,24 @@
 
     div.appendChild(bouton);
 
-    if (i == 0) {
-      i=1
+    if (contactAffiche == 0) {
+      contactAffiche=1
       document.getElementById("contact").appendChild(div);
       document.getElementById("addContactbutton").innerHTML = "Annuler Contact";
     } else if (i == 1) {
-      i=0
+      contactAffiche=0
       document.getElementById("addContactbutton").innerHTML = "Ajouter Contact";
       document.getElementById("contact").innerHTML = "";
     }
   }
-  </script>
 
-  <script>
   var i = 0;
+  var datesLength = {{nDates}};
+  init(datesLength);
+
   function init(val) {
     i = val;
   }
-
   function addOneDate() {
     var lastDate = document.getElementById("datetime" + i.toString());
     var lastNPlaces = document.getElementById("nPlaces" + i.toString());
@@ -258,10 +257,7 @@
           <label for="dates">Dates :  </label>
           <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button><br>
           <script>
-          console.log("TEST");
-          var datesLength = {{ nDates}};
-          init(datesLength);
-          console.log("Number of dates already in:" + datesLength);
+
           </script>
           <div id="date-div">
             {%for date in dates:%}
