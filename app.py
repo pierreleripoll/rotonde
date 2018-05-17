@@ -53,7 +53,7 @@ def logout():
 	print("\nSession en cours : \n",session,"\n")
 
 	NomsSpectacles = []
-	spectacles = get_spectacles()
+	#spectacles = get_spectacles()
 
 
 	if request.method=='GET':
