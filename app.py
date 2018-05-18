@@ -14,7 +14,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER']= UPLOAD_FOLDER
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///baseRotonde.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
-app.config['MAX_CONTENT_LENGTH'] =  512 * 1024
+app.config['MAX_CONTENT_LENGTH'] =  1024 * 1024
 app.secret_key = 'iswuygdedgv{&75619892__01;;>..zzqwQIHQIWS'
 
 app.register_blueprint(gestion_spectacle)
@@ -24,13 +24,15 @@ app.register_blueprint(admin_relative)
 db.init_app(app)
 
 # SI DECOMMENTER FLASK CREER LES TABLES
+
 # with app.app_context() :
 # 	db.create_all()
 #
 # 	ami = Session(login='ami',password='boring',typeAdmin='normal');
 # 	db.session.add(ami);
 # 	db.session.commit();
-
+# 	db.create_all()
+# 	initContact()
 
 #PAGE DE TEST JAVASCRIPT
 @app.route('/javascript')

@@ -69,14 +69,12 @@
     }
     div.appendChild(depart);
 
-    var bouton = document.createElement("button");
-    bouton.setAttribute("name", "button");
+    var bouton = document.createElement("input");
+    bouton.setAttribute("name", "boutonContact");
     bouton.setAttribute("id", "boutonContact");
-    bouton.setAttribute("value", "boutonAddContact");
-    bouton.setAttribute("type","boutonContact");
-    var t = document.createTextNode("Valider Contact");
-
-    bouton.appendChild(t);
+    bouton.setAttribute("value", "Valider Contact");
+    bouton.setAttribute("type","button");
+    bouton.setAttribute("onclick","envoieContact()");
 
     div.appendChild(bouton);
 
@@ -84,11 +82,29 @@
       contactAffiche=1
       document.getElementById("contact").appendChild(div);
       document.getElementById("addContactbutton").innerHTML = "Annuler Contact";
-    } else if (i == 1) {
+    } else if (contactAffiche == 1) {
       contactAffiche=0
       document.getElementById("addContactbutton").innerHTML = "Ajouter Contact";
       document.getElementById("contact").innerHTML = "";
     }
+  }
+
+  function envoieContact() {
+    var nomUser = $("#nomUser").val();
+    var prenomUser = $("#prenomUser").val();
+    var tel = $("#telephone").val();
+    var mail = $("#adressemail").val();
+    var anneeSelect = $("#anneeSelect").val();
+    var departSelect = $("#departSelect").val();
+  $.ajax({
+    url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect,
+    success: function(data) {
+      addNewContact();
+    },
+    error: function() {
+      
+    }
+  });
   }
 
   var i = 0;
@@ -133,16 +149,43 @@
     document.getElementById("date-div").appendChild(br);
     document.getElementById("date-div").appendChild(div);
   }
-    
-  function ValidateSize(file, maxsize) {
-		for (var i=0; i<file.files.length; i++){
-			var FileSize = file.files[i].size; 
-			if (FileSize > maxsize) {
-				alert('Image '+file.files[i].name+' trop grande: taille limitée à '+maxsize+' octets');
-			}
-		}
-		
-  }
+
+ function add_new_file(field, maxsize){
+ 	var FileSize = field.files[0].size;
+	if (FileSize > maxsize) {
+		alert('Image '+field.files[i].name+' trop grande: taille limitée à '+maxsize+' octets');
+	} else {
+		var count = parseInt(document.getElementById('file_count').value);
+
+		var file_name = document.getElementById("new_file["+count+"]").value;
+
+		document.getElementById('new_file_row').style.display = "none";
+		document.getElementById('new_file_row').id = "new_file_row["+count+"]";
+		var table = document.getElementById('files_table');
+
+		var row = table.insertRow(table.rows.length);
+		row.id = "inserted_file["+count+"]";
+		var cell0 = row.insertCell(0);
+		cell0.innerHTML = '<input type="text" name="inserted_file['+count+']" value="'+file_name+'" /><input type="button" name="delete['+count+']" value="Delete" onclick="delete_inserted(this)"/>';
+
+		++count;
+
+		var row = table.insertRow(table.rows.length);
+		row.id = "new_file_row";
+		var cell0 = row.insertCell(0);
+		cell0.innerHTML = '<input type="file" name="photos" id="new_file['+count+']" readonly="readonly" onchange="add_new_file(this,'+maxsize+')" accept=".png, .jpg, .jpeg"/>';
+
+		document.getElementById('file_count').value = count;
+	}
+   }
+
+    function delete_inserted(field){
+	    var name = field.name;
+	    var id = name.substr(name.indexOf('[') + 1, name.indexOf(']') - name.indexOf('[') - 1);
+	    document.getElementById("inserted_file["+id+"]").style.display = "none";
+	    var control = document.getElementById("new_file["+id+"]");
+	    control.parentNode.removeChild(control);
+    }
   </script>
 
 {% endblock %}
@@ -164,7 +207,14 @@
         </div>
         <div class="form-group">
           <label for="photos">Photos:</label><br>
-          <input type="file" class="form-control-file" name="photos" oninput="ValidateSize(this, {{maxsize}})" accept=".png, .jpg, .jpeg" multiple><br>
+          <input type="hidden" name="file_count" id="file_count" value="0" />
+    	  <table id="files_table" border="0" cellpadding="0" cellspacing="0">
+          <tr id="new_file_row">
+            <td>
+                <input type="file" name="photos" id="new_file[0]" readonly="readonly" onchange="add_new_file(this, {{maxsize}})" accept=".png, .jpg, .jpeg"><br>
+            </td>
+         </tr>
+         </table>
         </div>
         <div class="form-group">
           <label for="liens">Liens:</label><br>
@@ -208,8 +258,7 @@
           <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
         </div>
         <div class="form-group">
-          <label for="ajoutContactDB">Contact:</label><br>
-          <select type="number"name="ajoutContactDB">
+          <select name="ajoutContactDB">
             {%for c in contact:%}
             <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
             {%endfor%}

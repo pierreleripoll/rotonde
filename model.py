@@ -193,7 +193,7 @@ def update_placesRestantes (date, placesPrises):
         return 1
     except:
         print("error not enough")
-        db.session.rollback()
+        #db.session.rollback()
     return -1
 
 #Convertir une date html en python
@@ -221,6 +221,13 @@ def get_all_dates ():
     dates = Calendrier.query.all()
 
     return dates
+
+def initContact():
+    if Contact.query.filter_by(nom = "---").all() == []:
+        contact = Contact(nom="---",prenom="---",annee="",depart="")
+        db.session.add(contact)
+        db.session.commit()
+    return
 
 def get_sessions():
 
