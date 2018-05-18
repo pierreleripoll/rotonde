@@ -130,7 +130,7 @@ def set_spectacle(nomSpectacle):
         return abort(403)
 
 @gestion_spectacle.route('/api/ajoutContact/<string:nomUser>/<string:prenomUser>/<int:tel>/<string:mail>/<int:anneeSelect>/<string:departSelect>')
-def ajoutContact(nomUser):
+def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
     contact = Contact(nom=nomUser,prenom=prenomUser,telephone=tel,adresseMail=mail,annee=anneeSelect, depart=departSelect)
     insert_contact(contact)
-    return jsonify(get_contact)
+    return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))

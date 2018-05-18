@@ -24,9 +24,15 @@ app.register_blueprint(admin_relative)
 db.init_app(app)
 
 # SI DECOMMENTER FLASK CREER LES TABLES
-with app.app_context() :
-	db.create_all()
-	initContact()
+
+# with app.app_context() :
+# 	db.create_all()
+#
+# 	ami = Session(login='ami',password='boring',typeAdmin='normal');
+# 	db.session.add(ami);
+# 	db.session.commit();
+# 	db.create_all()
+# 	initContact()
 
 #PAGE DE TEST JAVASCRIPT
 @app.route('/javascript')

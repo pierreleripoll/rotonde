@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import CheckConstraint
+from passlib.hash import bcrypt
 from datetime import datetime
 import re
 import os
@@ -66,11 +66,22 @@ class Place(db.Model):
 
     # TODO: Remettre le setNombre si besoin ?
 
+
 class Session(db.Model):
     login = db.Column(db.String(80), nullable = False, primary_key = True)
     password = db.Column(db.String(300), nullable = False) # TODO: encrypter le mdp avec passlib
     typeAdmin = db.Column(db.String(30),nullable=False)
     idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = True)
+
+    contact = db.relationship('Contact', backref = db.backref('sessions', lazy = True))
+
+    def __init__(self, **kwargs):
+        super(Session, self).__init__(**kwargs)
+        self.password = bcrypt.encrypt(self.password)
+
+    def validate_password(self, password):
+        return bcrypt.verify(password, self.password)
+
     def __repr__(self):
         return '<Session: %r %r>' % (self.login, self.password)
 
@@ -217,6 +228,10 @@ def initContact():
         db.session.add(contact)
         db.session.commit()
     return
+
+def getID_contact(nomU, prenomU):
+    contact = Contact.query.filter_by(nom=nomU,prenom=prenomU).first()
+    return contact.id
 
 def get_sessions():
 
