@@ -22,7 +22,7 @@
                   </a>
           <div class="card-body">
             <h5 class="card-title">{{spectacle.nom}} </h5>
-            <p class="card-text">{{spectacle.resume}}</p>
+            
             <div class="d-flex justify-content-between align-items-center">
               <div class="btn-group">
                 <a href="/spectacle/{{spectacle.nom}}" class="btn btn-primary">Voir</a> {%if session.admin == 'true' and session.pseudo == spectacle.admin%}

@@ -6,24 +6,39 @@
 {% block content %}
 
 
-    <div class="presentation-spectacle">
+    <div class="container">
       <div class="row">
-        <div class="card col-md-6 ">
+        <div class="col-md-8 ">
+          <div class="card">
           <div class="card-body">
-            <h5 class="card-title">{{spectacle.nom}} </h5>
+            <h2 class="card-title">{{spectacle.nom.upper()}} </h2>
             {%if spectacle.auteur%}
-            <h3 class="card-title">{{spectacle.nom.upper()}} </h3>
+            <h4 class="card-title">{{spectacle.auteur.upper()}} </h4>
             {%endif%}
             {%if spectacle.resume %}
-            <p class="card-text">{{spectacle.resume}}</p>
+            <p class="card-resume">{{spectacle.resume}}</p>
             {%endif%}
           </div>
         </div>
-        <div class="card-img col-md-4">
-            <img class="card-img" src="{{paths[0]}}">
         </div>
+        <div class="col-md-4 ">
+          <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{spectacle.directeur.upper()}} </h5>
+            <p class="card-participants">Avec {{spectacle.participants}}</p>
+
+          </div>
+        </div>
+
       </div>
+
+      <div class="row">
+        <div class="card-img col-md-12 ">
+            <img class="card-img" src="{{paths[0]}}">
+      </div>
+
     </div>
+  </div>
 
 
   <p>SPECTACLE {{spectacle.nom}} </p>

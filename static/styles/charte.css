@@ -26,6 +26,12 @@ super-small {
   margin-bottom: 0;
 }
 
+.card {
+    -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
+    -moz-column-gap: 40px; /* Firefox */
+    column-gap: 40px;
+}
+
 .jumbotron-heading {
   font-weight: 300;
 }
@@ -44,6 +50,20 @@ super-small {
   background-color: #e3e4e4;
   color: #87888a;
   margin-bottom: 0;
+}
+
+.row{
+  margin:0px;
+  padding:2%;
+}
+
+.card-resume{
+  text-align: justify;
+  text-justify: inter-character;
+}
+
+.card-participants{
+  font-size: 90%;
 }
 
 footer p {
