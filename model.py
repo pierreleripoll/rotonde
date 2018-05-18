@@ -218,6 +218,10 @@ def initContact():
         db.session.commit()
     return
 
+def getID_contact(nomU, prenomU):
+    contact = Contact.query.filter_by(nom=nomU,prenom=prenomU).first()
+    return contact.id
+
 def get_sessions():
 
     sessions = Session.query.all()

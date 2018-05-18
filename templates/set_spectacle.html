@@ -100,7 +100,7 @@
     url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect,
     success: function(data) {
       var option = document.createElement("option");
-      option.value = 164;
+      option.value = data.id;
       option.text = data.nom+" "+data.prenom+" "+data.an+data.dep;
       document.getElementById("ajoutContactDB").appendChild(option);
       addNewContact();

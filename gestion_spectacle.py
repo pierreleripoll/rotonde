@@ -133,4 +133,4 @@ def set_spectacle(nomSpectacle):
 def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
     contact = Contact(nom=nomUser,prenom=prenomUser,telephone=tel,adresseMail=mail,annee=anneeSelect, depart=departSelect)
     insert_contact(contact)
-    return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect)
+    return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
