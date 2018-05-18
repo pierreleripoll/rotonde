@@ -64,7 +64,7 @@ def admin_log():
         password = request.form["password"]
 
         for sess in sessions :
-            if login == sess.login and password == sess.password:
+            if login == sess.login and sess.validate_password(password):
                 welcomeString = "WELCOME "+login.upper()
                 print("\n\n")
                 print(len(welcomeString)*'*')
