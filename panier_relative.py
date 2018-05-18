@@ -44,6 +44,7 @@ def isInCart(item, cart):
 	return -1
 
 def calculCart(items):
+
 	print("entering calculCart with items = "+str(items))
 	display_cart = []
 	for item in items:
@@ -56,6 +57,7 @@ def calculCart(items):
 		else:
 			display_cart[idx]['qte']+=1
 	return display_cart
+
 
 def udpateQte(cont):
 	global display_cart
@@ -90,7 +92,6 @@ def udpateQte(cont):
 ## PANIER
 @panier_relative.route('/panier', methods=['POST','GET'])
 def panier():
-
 	if "panier" not in session:
 		#flash("There is nothing in your cart.")
 		return render_template("panier.html", display_cart = {}, total = 0)
