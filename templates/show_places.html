@@ -1,20 +1,15 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% extends "layout.html" %}
+{% set active_page = 'admin' %}
+{% block title %}Accueil{% endblock %}
 
-<html>
 
-<head>
-  <title>PLACES</title>
-</head>
-
-<body>
-  <p><a href="/">Accueil</a></p>
+{% block content %}
+<main role="main">
   <ul>
     {%for place in places|reverse %}
       <li>{{place.nomSpectacle}}     {{place.nomUser}}     {{place.date}} </li>
 
     {% endfor %}
   <ul>
-
-</body>
-
-</html>
+</main>
+{% endblock %}
