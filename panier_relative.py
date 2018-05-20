@@ -127,12 +127,12 @@ def panier():
 				print(panier)
 				name = request.form['nom']
 				mail = request.form['mail']
+				display_cart = calculCart(session['panier'])
 				for show in display_cart:
 					print("requesting date")
 					date = dateJSONToPy(str(show['date']))
 					added=0
 					datemodif=get_date(date=date)
-					display_cart = calculCart(session['panier'])
 					for i in range(1, show['qte']+1):
 						added+=1
 						print(i)
