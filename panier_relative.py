@@ -131,11 +131,11 @@ def panier():
 						print("requesting date")
 						date = dateJSONToPy(str(show['date']))
 						added=0
-						place = Place(nomSpectacle=show['nomSpectacle'],nomUser=name,date=date, adresseMail=mail)
 						datemodif=get_date(date=date)
 						for i in range(1, show['qte']+1):
 							added+=1
 							print(i)
+							place = Place(nomSpectacle=show['nomSpectacle'],nomUser=name,date=date, adresseMail=mail)
 							insert_place(place)
 						res=update_placesRestantes(datemodif,added)
 						if(res==-1):
