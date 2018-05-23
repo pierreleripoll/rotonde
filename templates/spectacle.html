@@ -6,32 +6,31 @@
 {% block content %}
 
 
-  <div class="container">
+    <div class="container">
       <div class="row">
         <div class="col-md-8 ">
-          <div class="card card-eq-height">
-          <div class="card-body">
-            <h2 class="card-title">{{spectacle.nom.upper()}} </h2>
-            {%if spectacle.auteur%}
-            <h4 class="card-title">{{spectacle.auteur.upper()}} </h4>
-            {%endif%}
-            {%if spectacle.resume %}
-            <p class="card-resume">{{spectacle.resume}}</p>
-            {%endif%}
+          <div class="card">
+            <div class="card-body">
+              <h2 class="card-title">{{spectacle.nom.upper()}} </h2>
+              {%if spectacle.auteur%}
+              <h4 class="card-title">{{spectacle.auteur.upper()}} </h4>
+              {%endif%}
+              {%if spectacle.resume %}
+              <p class="card-resume">{{spectacle.resume}}</p>
+              {%endif%}
+            </div>
           </div>
         </div>
-        </div>
-        <div class="col-md-4 ">
+        <div class="col-md-4">
           <div class="card card-eq-height">
-          <div class="card-body">
-            <h5 class="card-title">{{spectacle.directeur.upper()}} </h5>
-            <p class="card-participants">Avec {{spectacle.participants}}</p>
-
+            <div class="card-with-background ">
+              <div class="card-body">
+                <h5 class="card-title">{{spectacle.directeur.upper()}} </h5>
+                <p class="card-participants">Avec {{spectacle.participants}}</p>
+              </div>
+            </div>
           </div>
         </div>
-
-      </div>
-    </div>
 
       <div class="row">
         <div class="card-img col-md-12 ">
@@ -40,12 +39,8 @@
 
     </div>
   </div>
-</div>
 
 
-  <p>SPECTACLE {{spectacle.nom}} </p>
-  <p>Résumé : </p>
-  <p>{{spectacle.resume}}</p>
   <p>Administrateur à contacter : {{spectacle.admin}}</p>
 
   <form action="" method="POST">
@@ -59,10 +54,8 @@
       {% endfor %}
     </ul>
       <ul>
-        <button name="submit" value="valider" type="submit">Valider</button>
-         {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
-        <button name="submit" value="modify" type="submit">Modifier</button>
-        {%endif%}
+        <button name="submit" value="valider" type="submit">Valider</button> {%if session.admin == 'true' and session.pseudo == spectacle.admin%}
+        <button name="submit" value="modify" type="submit">Modifier</button> {%endif%}
         <br></br>
         {%for url in paths%}
         <img src="{{url}}" width=500 alt="Flowers in Chania"><br> {%endfor%}

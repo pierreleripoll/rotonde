@@ -3,10 +3,21 @@ body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
+  font-family: lato;
+  color:rgb(60, 60, 60);
 }
 
 super-small {
     font-size: 5px;
+}
+
+.row > [class*='card'] {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-eq-height {
+  height: 100%;
 }
 
 :root {
@@ -18,7 +29,7 @@ super-small {
   padding-top: var(--jumbotron-padding-y);
   padding-bottom: var(--jumbotron-padding-y);
   margin-bottom: 0;
-  background-color: #fff;
+  /* background-color: #fff; */
 }
 
 
@@ -30,6 +41,8 @@ super-small {
     -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
     -moz-column-gap: 40px; /* Firefox */
     column-gap: 40px;
+    border: 1px solid;
+
 }
 
 .jumbotron-heading {
@@ -55,27 +68,25 @@ super-small {
 .row{
   margin:0px;
   padding:2%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display:         flex;
-}
-.row > [class*='card'] {
-  display: flex;
-  flex-direction: column;
-}
-
-.card-eq-height {
-  height: 100%;
 }
 
 .card-resume{
   text-align: justify;
   text-justify: inter-character;
+
 }
 
 .card-participants{
   font-size: 90%;
+  color:rgb(240,240,240);
+}
+
+.card-with-background{
+  background-color: rgb(60,60,60);
+  color:rgb(240,240,240);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 footer p {
