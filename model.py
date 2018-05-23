@@ -166,8 +166,18 @@ def insert_spectacle(spectacle):
 # Update un spectacle
 def update_spectacle(spectacle):
     oldSpectacle = Spectacle.query.filter_by(nom=spectacle.nom).first()
-    oldSpectacle = spectacle;
-    print("OLD Spectacle",oldSpectacle.auteur,oldSpectacle.directeur)
+    oldSpectacle.resume = spectacle.resume;
+    oldSpectacle.photos = spectacle.photos;
+    oldSpectacle.liens = spectacle.liens;
+    oldSpectacle.idContact = spectacle.idContact;
+    oldSpectacle.directeur = spectacle.directeur;
+    oldSpectacle.auteur = spectacle.auteur;
+    oldSpectacle.participants = spectacle.participants;
+    oldSpectacle.infoComplementaire = spectacle.infoComplementaire;
+    oldSpectacle.tarif = spectacle.tarif;
+    oldSpectacle.duree = spectacle.duree;
+    oldSpectacle.resume = spectacle.resume;
+    oldSpectacle.typeSpectacle = spectacle.typeSpectacle;
 
     db.session.commit()
 

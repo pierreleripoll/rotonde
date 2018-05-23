@@ -1,5 +1,28 @@
 {% extends "layout.html" %}
 {% set active_page = 'spectacle' %}
+{%block head%}
+{{super()}}
+  <script>
+    var paths = new Array({{paths|length}});
+    var i =0;
+    {%for path in paths%}
+    paths[i] ="{{path}}" ;
+    console.log(paths[i]);
+    i++;
+    {%endfor%}
+    i=0;
+
+    function chgPhoto(){
+      var image = document.getElementById("imgSpectacle");
+      i++;
+      if(i>=paths.length)i=0;
+      image.setAttribute("src",paths[i]);
+      var row = document.getElementById("showImage");
+      row.appendChild(image);
+      console.log(paths[i]);
+    }
+  </script>
+{%endblock%}
 {% block title %}{{spectacle.nom.upper()}}{% endblock %}
 
 
@@ -34,8 +57,8 @@
     </div>
 
       <div class="row">
-        <div class="card-img col-md-12 ">
-            <img class="card-img" src="{{paths[0]}}">
+        <div id="showImage"  class="card-img col-md-12 ">
+              <img onclick="chgPhoto()" id="imgSpectacle" class="card-img" src="{{paths[0]}}">
       </div>
 
     </div>

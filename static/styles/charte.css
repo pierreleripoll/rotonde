@@ -40,6 +40,8 @@ super-small {
   max-width: 40rem;
 }
 
+
+
 #footer {
   flex: 0 0 50px;
   width: 100%;
@@ -72,6 +74,7 @@ super-small {
 .card-resume{
   text-align: justify;
   text-justify: inter-character;
+  
 }
 
 .card-participants{
