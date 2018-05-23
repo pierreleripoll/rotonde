@@ -222,12 +222,6 @@ def get_all_dates ():
 
     return dates
 
-def initContact():
-    if Contact.query.filter_by(nom = "---").all() == []:
-        contact = Contact(nom="---",prenom="---",annee="",depart="")
-        db.session.add(contact)
-        db.session.commit()
-    return
 
 def getID_contact(nomU, prenomU):
     contact = Contact.query.filter_by(nom=nomU,prenom=prenomU).first()
