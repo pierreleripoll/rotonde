@@ -8,7 +8,8 @@ Site de réservation de places à la Rotonde
 - [ ] rendre clean le html (jinja2, extends, import...)
 - [MATHILDE] mail de confirmation
 - [ARTHUR] gérer le dépassement de places (vérif côté serveur etc)
-- [JN] rajouter infos sur le spectacle
+- [x] rajouter infos sur le spectacle
+- [JN] rendre plus beau contact
 - [ ] gestion des vignettes (trop grande, trop petite, mauvais format) -> image par déf
 - [ ] gestion des dates à modifier (#firefox not working...)
 - [ ] interface pour spectacle | gestion spectacle

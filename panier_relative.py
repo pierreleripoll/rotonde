@@ -78,14 +78,14 @@ def udpateQte(cont):
 							session['panier'].pop(j)
 							change += 1
 							break
-						else:
-							place = Place(nomSpectacle=show['nomSpectacle'],date=show['date'],nomUser="")
-							placeJSON = place.serialize()
-							print("on ajoute une places : "+str(placeJSON))
-							session['panier'].append(placeJSON)
-							change -= 1
-							print("voici le panier de la session : "+ str(session['panier']))
-							session.update()
+				else:
+					place = Place(nomSpectacle=show['nomSpectacle'],date=show['date'],nomUser="")
+					placeJSON = place.serialize()
+					print("on ajoute une places : "+str(placeJSON))
+					session['panier'].append(placeJSON)
+					change -= 1
+	print("voici le panier de la session : "+ str(session['panier']))
+	session.update()
 
 
 
@@ -119,31 +119,32 @@ def panier():
 				print("\n\n\n\n"+str(cont)+"\n\n\n\n")
 				print(display_cart)
 				udpateQte(cont);
-				if 'nom' not in request.form or request.form['nom'] == "":
-					return redirect(url_for('panier_relative.panier'))
-				else:
-					print("on m'appelle")
-					panier = session['panier']
-					print(panier)
-					name = request.form['nom']
-					mail = request.form['mail']
-					for show in display_cart:
-						print("requesting date")
-						date = dateJSONToPy(str(show['date']))
-						added=0
+			if 'nom' not in request.form or request.form['nom'] == "":
+				return redirect(url_for('panier_relative.panier'))
+			else:
+				print("on m'appelle")
+				panier = session['panier']
+				print(panier)
+				name = request.form['nom']
+				mail = request.form['mail']
+				display_cart = calculCart(session['panier'])
+				for show in display_cart:
+					print("requesting date")
+					date = dateJSONToPy(str(show['date']))
+					added=0
+					datemodif=get_date(date=date)
+					for i in range(1, show['qte']+1):
+						added+=1
+						print(i)
 						place = Place(nomSpectacle=show['nomSpectacle'],nomUser=name,date=date, adresseMail=mail)
-						datemodif=get_date(date=date)
-						for i in range(1, show['qte']+1):
-							added+=1
-							print(i)
-							insert_place(place)
-						res=update_placesRestantes(datemodif,added)
-						if(res==-1):
-							return redirect(url_for('panier_relative.panier'))
-					session.pop('panier')
-					places=get_places_mail(mail)
-					sendMail(mail, places, name)
-	return redirect(url_for('logout'))
+						insert_place(place)
+					res=update_placesRestantes(datemodif,added)
+					if(res==-1):
+						return redirect(url_for('panier_relative.panier'))
+				session.pop('panier')
+				places=get_places_mail(mail)
+				sendMail(mail, places, name)
+			return redirect(url_for('logout'))
 
 
 @panier_relative.route('/add_to_cart/<int:id>', methods=['POST','GET']) #Provisoire, enlever le get
