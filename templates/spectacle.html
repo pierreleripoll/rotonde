@@ -6,7 +6,7 @@
 {% block content %}
 
 
-    <div class="container">
+  <div class="container">
       <div class="row">
         <div class="col-md-8 ">
           <div class="card">
@@ -31,6 +31,7 @@
         </div>
 
       </div>
+    </div>
 
       <div class="row">
         <div class="card-img col-md-12 ">
@@ -39,6 +40,7 @@
 
     </div>
   </div>
+</div>
 
 
   <p>SPECTACLE {{spectacle.nom}} </p>
@@ -57,8 +59,10 @@
       {% endfor %}
     </ul>
       <ul>
-        <button name="submit" value="valider" type="submit">Valider</button> {%if session.admin == 'true' and session.pseudo == spectacle.admin%}
-        <button name="submit" value="modify" type="submit">Modifier</button> {%endif%}
+        <button name="submit" value="valider" type="submit">Valider</button>
+         {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
+        <button name="submit" value="modify" type="submit">Modifier</button>
+        {%endif%}
         <br></br>
         {%for url in paths%}
         <img src="{{url}}" width=500 alt="Flowers in Chania"><br> {%endfor%}

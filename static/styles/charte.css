@@ -57,6 +57,15 @@ super-small {
   padding:2%;
 }
 
+.row-eq-height {
+  margin: 0px;
+  padding: 2%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display:         flex;
+}
+
 .card-resume{
   text-align: justify;
   text-justify: inter-character;

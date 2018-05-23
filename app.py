@@ -27,12 +27,17 @@ db.init_app(app)
 
 # with app.app_context() :
 # 	db.create_all()
-#
+#	initContact()
+
+
+# with app.app_context():
+# 	superadmin = Session(login='superadmin',password='larotonde',typeAdmin='super');
+# 	db.session.add(superadmin);
+# 	db.session.commit();
 # 	ami = Session(login='ami',password='boring',typeAdmin='normal');
 # 	db.session.add(ami);
-# 	db.session.commit();
-# 	db.create_all()
-# 	initContact()
+# 	db.session.commit()
+
 
 #PAGE DE TEST JAVASCRIPT
 @app.route('/javascript')

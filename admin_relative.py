@@ -72,7 +72,7 @@ def admin_log():
                 print(len(welcomeString)*'*')
                 print("\n\n")
                 session['pseudo']=login.upper()
-                session['admin']="true"
+                session['admin']=sess.typeAdmin
                 print(session)
 
         return redirect(url_for('admin_relative.admin'))

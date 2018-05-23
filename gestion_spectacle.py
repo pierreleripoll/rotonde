@@ -69,9 +69,13 @@ def set_spectacle(nomSpectacle):
             for calendrier in thisDates:
                 calendrier.date = datePytoHTML(calendrier.date)
             print(thisDates)
-            return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
+            if thisSpectacle.admin == session['pseudo'] or session['admin']=="super":
+                return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
+            else:
+                return abort(403);
         if request.method=="POST":
             if request.form["nom"] != "":
+
                 cont = request.form
                 print("\n\n"+ str(cont) +"\n\n")
                 spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0,
@@ -80,7 +84,7 @@ def set_spectacle(nomSpectacle):
                 print("\n\n"+ str(cont) +"\n\n")
                 alreadyIn = get_spectacle(spectacle.nom)
                 if alreadyIn:
-                    if alreadyIn.admin != session['pseudo']:
+                    if not( alreadyIn.admin == session['pseudo'] or session['admin']=="super"):
                         return abort(403)
                     spectacle.photos = alreadyIn.photos
                 # check if the post request has the file part
