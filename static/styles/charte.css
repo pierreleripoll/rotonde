@@ -55,15 +55,18 @@ super-small {
 .row{
   margin:0px;
   padding:2%;
-}
-
-.row-eq-height {
-  margin: 0px;
-  padding: 2%;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display:         flex;
+}
+.row > [class*='card'] {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-eq-height {
+  height: 100%;
 }
 
 .card-resume{
