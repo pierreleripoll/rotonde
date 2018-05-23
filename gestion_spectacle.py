@@ -84,7 +84,9 @@ def set_spectacle(nomSpectacle):
                 print("\n\n"+ str(cont) +"\n\n")
                 alreadyIn = get_spectacle(spectacle.nom)
                 if alreadyIn:
+                    print("\nSPECTACLE ALREADY IN\n")
                     if not( alreadyIn.admin == session['pseudo'] or session['admin']=="super"):
+                        print("\n\nNOT ALLOWED MODIFY THIS SPECTACLE\n\n")
                         return abort(403)
                     spectacle.photos = alreadyIn.photos
                 # check if the post request has the file part
@@ -109,6 +111,7 @@ def set_spectacle(nomSpectacle):
                             numberPhotos +=1
                     spectacle.photos=numberPhotos
                 if alreadyIn :
+                    print("CALL update_spectacle")
                     update_spectacle(spectacle)
                 else:
                     insert_spectacle(spectacle)

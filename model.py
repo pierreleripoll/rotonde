@@ -28,6 +28,7 @@ class Spectacle(db.Model):
     def __repr__(self):
         return '<Spectacle: %r>' % self.nom
 
+
 class Contact(db.Model):
     id = db.Column(db.Integer, autoincrement = True, primary_key = True)
     nom = db.Column(db.String(80))
@@ -165,10 +166,8 @@ def insert_spectacle(spectacle):
 # Update un spectacle
 def update_spectacle(spectacle):
     oldSpectacle = Spectacle.query.filter_by(nom=spectacle.nom).first()
-
-    oldSpectacle.resume = spectacle.resume
-    oldSpectacle.photos = spectacle.photos
-    oldSpectacle.liens = spectacle.liens
+    oldSpectacle = spectacle;
+    print("OLD Spectacle",oldSpectacle.auteur,oldSpectacle.directeur)
 
     db.session.commit()
 
