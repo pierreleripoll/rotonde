@@ -1,20 +1,27 @@
-{% extends "layout.html" %}
-{% set active_page = 'calendrier' %}
-{% block title %}Calendrier{% endblock %}
+<!DOCTYPE html>
+	<html>
+	<head>
+		<title>Minimum Setup</title>
+		<link rel="stylesheet" href="/static/boot4/css/bootstrap.css">
+		<link rel="stylesheet" href="/static/styles/calendar.css">
+	</head>
+	<body>
 
+		<div id="calendar"></div>
 
-{% block content %}
-  <p>CALENDRIER </p>
-  <form action="" method="POST">
-    <ul>
-      {%for date in dates %}
-      <p>{{date.date}} {{date.nom}}</p>
-      <p>Il reste {{date.placesRestantes}} places</p>
-      <input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"> </li>
-
-      {% endfor %}
-    </ul>
-    <button name="foo" value="valider" type="submit">Ajouter au panier</button>
-    <button name="foo" value="accueil" type="submit">Accueil</button>
-  </form>
-{% endblock %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+      window.jQuery || document.write('<script src="/static/assets/js/vendor/jquery.min.js"><\/script>')
+    </script>
+    <script src="/static/boot4/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="/static/assets/js/vendor/underscore-min.js"></script>
+		<script type="text/javascript" src="/static/assets/js/src/calendar.js"></script>
+		<script type="text/javascript">
+			var calendar = $("#calendar").calendar(
+				{
+					tmpl_path: "/templates/",
+					events_source: function () { return []; }
+				});
+		</script>
+	</body>
+	</html>
