@@ -2,7 +2,10 @@
 {% set active_page = 'spectacle' %}
 {%block head%}
 {{super()}}
+  <script src="/static/color-thief.js"></script>
   <script>
+
+
     var paths = new Array({{paths|length}});
     var i =0;
     {%for path in paths%}
@@ -12,15 +15,28 @@
     {%endfor%}
     i=0;
 
+    var colorThief = new ColorThief();
+
     function chgPhoto(){
       var image = document.getElementById("imgSpectacle");
+      image.onload = function(){
+        var c = colorThief.getColor(image);
+        image.style.backgroundColor = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
+      }
       i++;
       if(i>=paths.length)i=0;
       image.setAttribute("src",paths[i]);
-      var row = document.getElementById("showImage");
-      row.appendChild(image);
+
+
       console.log(paths[i]);
     }
+
+
+    function chgColorPhoto(image){
+
+    }
+
+
   </script>
 {%endblock%}
 {% block title %}{{spectacle.nom.upper()}}{% endblock %}
@@ -57,19 +73,12 @@
     </div>
 
       <div class="row">
-        <div id="showImage"  class="card-img col-md-12 ">
-              <img onclick="chgPhoto()" id="imgSpectacle" class="card-img" src="{{paths[0]}}">
+        <div id="showImage"  class=" col-md-12 ">
+              <img onclick="chgPhoto()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
       </div>
 
     </div>
   </div>
-</div>
-
-
-  <p>SPECTACLE {{spectacle.nom}} </p>
-  <p>Résumé : </p>
-  <p>{{spectacle.resume}}</p>
-  <p>Administrateur à contacter : {{spectacle.admin}}</p>
 
   <form action="" method="POST">
     <p> Quelles dates souhaitez vous réserver ?</p>
@@ -87,8 +96,6 @@
         <button name="submit" value="modify" type="submit">Modifier</button>
         {%endif%}
         <br></br>
-        {%for url in paths%}
-        <img src="{{url}}" width=500 alt="Flowers in Chania"><br> {%endfor%}
       </ul>
   </form>
 {% endblock %}
