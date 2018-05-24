@@ -48,4 +48,4 @@ pip-delete-this-directory.txt
 *.spec
 *.pot
 .webassets-cache
-.db
+*.db
