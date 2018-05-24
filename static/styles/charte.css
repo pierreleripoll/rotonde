@@ -27,6 +27,7 @@ super-small {
 }
 
 .card {
+  border-radius: 0px;
     -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
     -moz-column-gap: 40px; /* Firefox */
     column-gap: 40px;
@@ -91,21 +92,27 @@ super-small {
   height : 80vh;
   background-color: white;
   object-fit: contain;
-  border-radius: calc(0.3rem - 1px);
+
 }
 
 footer p {
   margin-bottom: .25rem;
 }
 
+.btn{
+  border-radius: 0px;
+}
+
+.form-control{
+  border-radius : 0px;
+}
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
 .card-img-top-pers {
   width: 100%;
-  border-top-left-radius: calc(0.25rem - 1px);
-  border-top-right-radius: calc(0.25rem - 1px);
+
 }
 
 .card-columns .card {

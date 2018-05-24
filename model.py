@@ -58,6 +58,7 @@ class Place(db.Model):
     def __repr__(self):
         return '<Place: %r>' % self.idPlace
 
+
     def serialize(self):
         dic = {}
         dic["nomSpectacle"]=self.nomSpectacle
@@ -85,6 +86,16 @@ class Session(db.Model):
 
     def __repr__(self):
         return '<Session: %r %r>' % (self.login, self.password)
+
+class Photo(db.Model):
+    path = db.Column(db.String(80), nullable = False, primary_key = True)
+    spectacle = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False) # TODO: encrypter le mdp avec passlib
+    red = db.Column(db.Integer, nullable = False)
+    blue = db.Column(db.Integer, nullable = False)
+    green = db.Column(db.Integer, nullable = False)
+
+    def __repr__(self):
+        return '<Photo: %r %r>' % (self.path, self.spectacle)
 
 
 def allowed_file(filename):
