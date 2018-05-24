@@ -39,6 +39,10 @@ db.init_app(app)
 # 	db.session.commit()
 
 
+@app.route('/templates/<name>')
+def month(name):
+	return render_template(name)
+
 #PAGE DE TEST JAVASCRIPT
 @app.route('/javascript')
 def javascript():
