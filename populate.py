@@ -1,5 +1,9 @@
 from app import app
 from model import *
+import os
+
+os.remove("baseRotonde.db")
+
 
 ami = Session(login='ami',password='friendly',typeAdmin='normal')
 cgr = Session(login='cgr',password='cafards',typeAdmin='super')
