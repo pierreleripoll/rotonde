@@ -3,7 +3,24 @@ body {
   min-height: 100%;
   display: flex;
   flex-direction: column;
+  font-family:lato;
 }
+
+.navbar-custom{
+  background-color: rgb(50,50,50);
+  color: rgb(220,220,220);
+  font-family:Lato;
+}
+
+.navbar-nav li a{
+  /*background-color: rgb(30,30,30);*/
+  color: rgb(220,220,220);
+  font-family:Lato;
+  font-size:120%;
+  height: 30px;
+  alt="logo"
+}
+
 
 super-small {
     font-size: 5px;
