@@ -86,7 +86,7 @@ super-small {
 }
 
 .card-imgSpectacle{
-
+  cursor: pointer;
   width:100%;
   height : 80vh;
   background-color: white;
