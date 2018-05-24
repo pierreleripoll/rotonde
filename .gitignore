@@ -49,4 +49,3 @@ pip-delete-this-directory.txt
 *.pot
 .webassets-cache
 .db
-.pyc
