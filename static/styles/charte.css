@@ -40,6 +40,10 @@ super-small {
   max-width: 40rem;
 }
 
+.card-img {
+  cursor :pointer;
+}
+
 
 
 #footer {
@@ -74,11 +78,20 @@ super-small {
 .card-resume{
   text-align: justify;
   text-justify: inter-character;
-  
+
 }
 
 .card-participants{
   font-size: 90%;
+}
+
+.card-imgSpectacle{
+
+  width:100%;
+  height : 80vh;
+  background-color: white;
+  object-fit: contain;
+  border-radius: calc(0.3rem - 1px);
 }
 
 footer p {
