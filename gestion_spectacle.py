@@ -70,7 +70,7 @@ def set_spectacle(nomSpectacle):
             for calendrier in thisDates:
                 calendrier.date = datePytoHTML(calendrier.date)
             print(thisDates)
-            if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" : 
+            if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
                 return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
             else:
                 return abort(403);
@@ -157,8 +157,8 @@ def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
 def deleteFile (filename, number, nom):
 	tiret=filename.find('_');
 	spectacle=filename[:tiret]
-	print "spectacle" +spectacle
-	
+	print ("spectacle" +spectacle)
+
 	pathUpload =app.config['UPLOAD_FOLDER']+'/'+spectacle
 	os.remove(os.path.join(pathUpload,spectacle+"_"+str(number)))
 	spectacle=get_spectacle(nom)
