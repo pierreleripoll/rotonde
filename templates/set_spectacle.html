@@ -4,6 +4,7 @@
 {% block head %}
   {{ super() }}
 
+  <script src="/static/color-thief.js"></script>
   <script>
   var contactAffiche = 0
   function addNewContact() {
@@ -155,6 +156,7 @@
   }
 
  function add_new_file(field, maxsize){
+  var colorThief = new ColorThief();
  	var FileSize = field.files[0].size;
 	if (FileSize > maxsize) {
 		alert('Image '+field.files[i].name+' trop grande: taille limitée à '+maxsize+' octets');

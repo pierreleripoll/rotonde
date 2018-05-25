@@ -33,7 +33,7 @@ def spectacle(nomSpectacle):
             print("Paths :",paths)
         return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths)
     if request.method == "POST":
-        if request.form["submit"] == "modify" and session['pseudo'] == thisSpectacle.admin:
+        if request.form["submit"] == "modify" :#and session['pseudo'] == thisSpectacle.admin:
             return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle=nomSpectacle))
         if request.form["submit"] == "valider" :
             print(request.form)
@@ -70,10 +70,11 @@ def set_spectacle(nomSpectacle):
             for calendrier in thisDates:
                 calendrier.date = datePytoHTML(calendrier.date)
             print(thisDates)
-            if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" : 
-                return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
-            else:
-                return abort(403);
+            #if nomSpectacle == "nouveauSpectacle" :#or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
+            return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
+            # else:
+            #     print("yo cocky")
+            #     return abort(403);
         if request.method=="POST":
             if request.form["nom"] != "":
 
@@ -86,9 +87,9 @@ def set_spectacle(nomSpectacle):
                 alreadyIn = get_spectacle(spectacle.nom)
                 if alreadyIn:
                     print("\nSPECTACLE ALREADY IN\n")
-                    if not( alreadyIn.admin == session['pseudo'] or session['admin']=="super"):
-                        print("\n\nNOT ALLOWED MODIFY THIS SPECTACLE\n\n")
-                        return abort(403)
+                    # if not( alreadyIn.admin == session['pseudo'] or session['admin']=="super"):
+                    #     print("\n\nNOT ALLOWED MODIFY THIS SPECTACLE\n\n")
+                    #     return abort(403)
                     spectacle.photos = alreadyIn.photos
                 # check if the post request has the file part
                 if 'photos' not in request.files:
@@ -134,6 +135,7 @@ def set_spectacle(nomSpectacle):
             else :
                 return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle="nouveauSpectacle"))
     else :
+        print("yo bitch")
         return abort(403)
 
 @gestion_spectacle.route('/api/ajoutContact/<string:nomUser>/<string:prenomUser>/<int:tel>/<string:mail>/<int:anneeSelect>/<string:departSelect>')

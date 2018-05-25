@@ -62,7 +62,8 @@ def utility_processor():
 @app.route('/', methods=['GET','POST'])
 def logout():
 	print("\nSession en cours : \n",session,"\n")
-
+	session['admin']="ami"
+	session['pseudo']="ami"
 	NomsSpectacles = []
 	spectacles = get_spectacles()
 
@@ -122,6 +123,7 @@ def calendrier():
 @app.route('/uploads/<nomSpectacle>', methods=['GET'])
 def uploads(nomSpectacle):
 	if 'admin' in session:
+
 		if request.method=="GET":
 			path = app.config['UPLOAD_FOLDER']+'/'+urlify(nomSpectacle)
 			if not os.path.isdir(path) :
@@ -134,6 +136,7 @@ def uploads(nomSpectacle):
 				print("Paths :",paths)
 				return render_template('uploaded.html',paths = paths)
 	else :
+		print("yo")
 		return abort(403)
 
 
