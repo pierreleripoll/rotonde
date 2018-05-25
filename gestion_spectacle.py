@@ -3,7 +3,6 @@ from flask import current_app as app
 from sqlalchemy import *
 from sqlalchemy.sql import *
 from werkzeug.utils import secure_filename
-from json import dumps
 import os
 import re
 from model import*
@@ -121,6 +120,7 @@ def set_spectacle(nomSpectacle):
                             numberPhotos +=1
                     spectacle.photos=numberPhotos
                 if alreadyIn :
+                    print("CALL update_spectacle")
                     update_spectacle(spectacle)
                 else:
                     insert_spectacle(spectacle)

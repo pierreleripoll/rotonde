@@ -1,9 +1,5 @@
 from app import app
 from model import *
-import os
-
-os.remove("baseRotonde.db")
-
 
 ami = Session(login='ami',password='friendly',typeAdmin='normal')
 cgr = Session(login='cgr',password='cafards',typeAdmin='super')
@@ -20,7 +16,6 @@ Session(login='superadmin',password='larotonde',typeAdmin='super'),
 Contact(nom="---",prenom="---",annee="",depart=""),
 
 Spectacle(nom='Candide',resume=lorem,admin='AMI',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Théâtre'),
-Spectacle(nom='Spectacle sans photo',resume=lorem,admin='AMI',photos=0,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Théâtre'),
 Spectacle(nom='Chroniques Nocturne',resume=lorem,admin='AMI',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Théâtre'),
 Spectacle(nom='Hamlet 60',resume=lorem,admin='AMI',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Théâtre'),
 Spectacle(nom='Jeanne de Derteil',resume=lorem,admin='AMI',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Théâtre'),
