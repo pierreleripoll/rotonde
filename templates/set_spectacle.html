@@ -230,14 +230,16 @@
     {%for path in paths%}
     urls.push('{{path}}');
     {%endfor%}
-
+    var uploadPath = "/api/uploadFile/";
+    console.log("Test");
+    var nomSpectacleURL = encodeURI("{{spectacle.nom}}");
+    console.log(nomSpectacleURL);
     var filenames = [];
     var file_name = "";
     {%for i in range(paths|length)%}
     file_name = urls[{{i}}];
     file_name = file_name.substr(file_name.lastIndexOf('/')+1);
     filenames.push(file_name);
-    console.log(file_name);
     {%endfor%}
 
     $("#input-25").fileinput({
@@ -245,11 +247,14 @@
         initialPreviewAsData: true,
         initialPreviewConfig: [
             {%for i in range(paths|length)%}
-            {caption: filenames[{{i}}], filename: filenames[{{i}}],uploadUrl:'/api/uploadFile/{{spectacle.nom}}', downloadUrl: urls[{{i}}],url:'/api/deleteFile/{{spectacle.nom}}/'+filenames[{{i}}], key:{{i}} },
+            {caption: filenames[{{i}}], filename: filenames[{{i}}],url:'/api/deleteFile/{{spectacle.nom}}/'+filenames[{{i}}], key:{{i}} },
             {%endfor%}
         ],
+        uploadUrl: "/api/uploadFile/"+nomSpectacleURL+'/',
+        showUpload:true,
         overwriteInitial: false,
-        maxFileSize: 1000
+        maxFileSize: 1000,
+        allowedFileExtensions: ["jpg","png","gif"]
     });
   });
 

@@ -16,7 +16,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///baseRotonde.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 app.config['MAX_CONTENT_LENGTH'] =  1024 * 1024
 app.secret_key = 'iswuygdedgv{&75619892__01;;>..zzqwQIHQIWS'
-
+app.jinja_env.filters['urlify']=urlify
 app.register_blueprint(gestion_spectacle)
 app.register_blueprint(panier_relative)
 app.register_blueprint(admin_relative)
