@@ -11,15 +11,14 @@
     <th>Date</th>
     <th>Nom du spectacle</th>
     <th>Places diponibles</th>
-    <th>Prix</th>
-
+    <th></th>
   </tr>
   {% for date in dates %}
   <tr>
-    <td>{{date.date}}</td>
-    <td>{{date.nom}}</td>
-    <td>{{place.placesRestantes}}</td>
-    <td>0</td>
+    <td>{{ date.date|datetime }}</td>
+    <td><a href="/spectacle/{{date.nom}}">{{date.nom}}</a></td>
+    <td>{{date.placesRestantes}}</td>
+    <td>Réserver</td>
   </tr>
   {% endfor %}
 
