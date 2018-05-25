@@ -199,7 +199,7 @@ function delete_inserted(field, alreadysaved){
 function showFiles(spectacle, number, niceurl){
 		var table = document.getElementById('files_table');
 		var count = parseInt(document.getElementById('file_count').value);
-		for(var i=0; i<number+3;i++){
+		for(var i=0; i<number;i++){
 			console.log("le fichier existe");
 			var row = table.insertRow(table.rows.length);
 			row.id = "inserted_file["+count+"]";
