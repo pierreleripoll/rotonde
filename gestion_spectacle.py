@@ -70,8 +70,16 @@ def set_spectacle(nomSpectacle):
             for calendrier in thisDates:
                 calendrier.date = datePytoHTML(calendrier.date)
             print(thisDates)
-            if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" : 
-                return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
+
+            if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
+                path = app.config['UPLOAD_FOLDER']+'/'+urlify(nomSpectacle)
+                paths = []
+                if not os.path.isdir(path) :
+                    print(path+" no uploads dir for this spectacle")
+                else:
+                    for fileName in os.listdir(path):
+                        paths.append('.'+path+'/'+fileName)
+                return render_template('set_spectacle.html',paths=paths,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
             else:
                 return abort(403);
         if request.method=="POST":
