@@ -22,9 +22,12 @@
       image.onload = function(){
         var c = colorThief.getColor(image);
         var p = colorThief.getPalette(image);
+
         console.log(p);
-        image.style.backgroundColor = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
-        document.getElementsByClassName('color-box1')[0].style.backgroundColor = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
+        var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')'
+        document.documentElement.style.setProperty('--color-theme', color);
+        image.style.backgroundColor = color;
+        document.getElementsByClassName('color-box1')[0].style.backgroundColor = color;
         for(j=0; j<9; j++){
           var cobox = "color-box"+(j+2)
           console.log(cobox);

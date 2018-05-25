@@ -1,3 +1,5 @@
+
+
 body {
   padding-top: 80px;
   min-height: 100%;
@@ -7,7 +9,7 @@ body {
 }
 
 .navbar-custom{
-  background-color: rgb(50,50,50);
+  background-color: var(--color-theme);
   color: rgb(220,220,220);
   font-family:Lato;
   padding-top:1px;
@@ -32,7 +34,9 @@ super-small {
 
 :root {
   height: 100%;
+  --color-theme: rgb(50,50,50);
   --jumbotron-padding-y: 3rem;
+
 }
 
 .jumbotron {
@@ -48,12 +52,12 @@ super-small {
 }
 
 .card-body-tarifs-dates{
-  color: rgb(50,50,50);
+  color: var(--color-theme);
   font-size: 100%;
 }
 
 card-title-tarifs-dates{
-  color: rgb(50,50,50);
+  color: var(--color-theme);
   font-size: 150%;
 }
 
@@ -61,7 +65,7 @@ card-title-tarifs-dates{
   height:40%;
   color: rgb(220,220,220);
   font-size: 150%;
-  background-color: rgb(50,50,50);
+  background-color: var(--color-theme);
 }
 
 .card {
