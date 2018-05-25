@@ -48,9 +48,21 @@ super-small {
   margin-bottom: 0;
 }
 
+.card-body-tarifs-dates{
+  color: rgb(50,50,50);
+  font-size: 100%;
+}
+
+card-title-tarifs-dates{
+  color: rgb(50,50,50);
+  font-size: 150%;
+}
+
 .card-footer-billet{
   height:40%;
-  background-color: rgb(60,60,60);
+  color: rgb(220,220,220);
+  font-size: 150%;
+  background-color: rgb(50,50,50);
 }
 
 .card {
