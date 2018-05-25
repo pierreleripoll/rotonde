@@ -18,7 +18,13 @@
         {%for spectacle in spectacles%}
         <div class="card mb-4">
           <a href="/spectacle/{{spectacle.nom}}">
-                  <img class="card-img-top" class="img-thumbnail" src="static/uploads/{{niceUrl(spectacle.nom)}}/{{niceUrl(spectacle.nom)}}_0" alt="{{niceUrl(spectacle.nom)}}_0"  >
+                  <img class="card-img-top-pers" class="img-thumbnail"
+                  {%if spectacle.photos != 0 %} src="static/uploads/{{niceUrl(spectacle.nom)}}/{{niceUrl(spectacle.nom)}}_0" alt="{{niceUrl(spectacle.nom)}}_0"
+                  {%else%}
+                    src="static/uploads/placeholder/placeholder_0.jpg"
+                    alt="placeholder_0"
+                  {%endif%}
+                  >
                   </a>
           <div class="card-body">
             <h5 class="card-title">{{spectacle.nom}} </h5>
