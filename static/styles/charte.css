@@ -26,7 +26,6 @@ body {
   height: 30px;
 }
 
-
 super-small {
     font-size: 5px;
 }
@@ -134,8 +133,79 @@ card-title-tarifs-dates{
   object-fit: contain;
   border-color:black;
   border:1px solid;
-
 }
+
+.content{
+  opacity:0;
+  Width:100%;
+  transition: all 0.8s ease-in-out 0s;
+}
+
+.content:hover{
+  opacity:1;
+}
+
+.color-box1{
+  background-color: #FF850A;
+  Width:5%;
+  Height:2vh;
+  margin-right: 4%;
+}
+.color-box2{
+  background-color: #FF850B;
+  Width:5%;
+  Height:2vh;
+  margin-right: 4%;
+}
+.color-box3{
+  background-color: #FF850C;
+  Width:5%;
+  Height:2vh;
+  margin-right: 4%;
+}
+.color-box4{
+  background-color: #FF850C;
+  Width:5%;
+  Height:2vh;
+  margin-right: 4%;
+}
+.color-box5 {
+  background-color: #FF850C;
+  Width:5%;
+  Height:2vh;
+  margin-right: 4%;
+}
+.color-box6 {
+  background-color: #FF850C;
+  Width:5%;
+  Height:2vh;
+  margin-right: 4%;
+}
+.color-box7 {
+  background-color: #FF850C;
+  Width:5%;
+  Height:2vh;
+  margin-right: 4%;
+}
+.color-box8 {
+  background-color: #FF850C;
+  Width:5%;
+  Height:2vh;
+  margin-right: 4%;
+}
+.color-box9 {
+  background-color: #FF850C;
+  Width:5%;
+  Height:2vh;
+  margin-right: 4%;
+}
+.color-box10 {
+  background-color: #FF850C;
+  Width:5%;
+  Height:2vh;
+  margin-right: 4%;
+}
+
 
 footer p {
   margin-bottom: .25rem;

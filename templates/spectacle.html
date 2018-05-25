@@ -24,6 +24,13 @@
         var p = colorThief.getPalette(image);
         console.log(p);
         image.style.backgroundColor = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
+        document.getElementsByClassName('color-box1')[0].style.backgroundColor = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
+        for(j=0; j<9; j++){
+          var cobox = "color-box"+(j+2)
+          console.log(cobox);
+          document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
+        }
+
       }
       i++;
       if(i>=paths.length)i=0;
@@ -81,22 +88,62 @@
       <div class="row">
         <div class="col-md-4 ">
           <div class="card card-eq-height">
-          <div class="card-body card-body-tarifs-dates">
-            <h5 class="card-title card-title-tarifs-dates">Du JJ au JJ MM </h5>
-            <p>Tarifs\nVA :\nEEE euros\nNON VA :\nEEE euros</p>
-          </div>
-          <div class="card-footer card-footer-billet" onclick="afficheBillets()">
+            <div class="card-body card-body-tarifs-dates">
+              <h5 class="card-title card-title-tarifs-dates">Du JJ au JJ MM </h5>
+              <p>Tarifs\nVA :\nEEE euros\nNON VA :\nEEE euros</p>
+            </div>
+            <div class="card-footer card-footer-billet" onclick="afficheBillets()">
             <p>BILLETS | DATES</p>
+            </div>
           </div>
         </div>
 
+        <script>
+        function mouseEnter(){
+          var e=document.getElementsByClassName("content")[0].style.opacity=1;
+          console.log("HOVER : ",e);
+        }
+        function mouseLeave(){
+          var e=document.getElementsByClassName("content")[0].style.opacity=0;
+          console.log("HOVER : ",e);
+        }
+
+
+        </script>
+        <div id="showImage"  class="col-md-8 ">
+          <div class="imageSpectacle" onmouseleave="mouseLeave()" onmouseenter="mouseEnter()">
+            <img onclick="chgPhoto()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
+          </div>
+        </div>
+        <div class="content" onmouseleave="mouseLeave()">
+          <div class="row ">
+              <div class="color-box1"></div>
+              <div class="color-box2"></div>
+              <div class="color-box3"></div>
+              <div class="color-box4"></div>
+              <div class="color-box5"></div>
+              <div class="color-box6"></div>
+              <div class="color-box7"></div>
+              <div class="color-box8"></div>
+              <div class="color-box9"></div>
+              <div class="color-box10"></div>
+          </div>
+        </div>
       </div>
-        <div id="showImage"  class=" col-md-8 ">
-              <img onclick="chgPhoto()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
-      </div>
+
 
     </div>
   </div>
+
+  <!-- <div class="row">
+    <div class="col-md-1">
+      <div class="color-box">a</div>
+    </div>
+    <div class="col-md-1">
+      <div class="color-box">a  </div>
+    </div>
+  </div> -->
+
 
   <form action="" method="POST">
     <p> Quelles dates souhaitez vous réserver ?</p>
