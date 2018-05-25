@@ -28,6 +28,7 @@
 <!-- script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/themes/fa/theme.min.js"></script -->
 
 <script src="/static/color-thief.js"></script>
+<script src="/static/jquery.js"></script>
 <script src="/static/jquery.guillotine.js"></script>
 <script src="/static/jquery.guillotine.min.js"></script>
   <script>
@@ -258,6 +259,8 @@ function delete_inserted(field, alreadysaved){
         maxFileSize: 1000,
         allowedFileExtensions: ["jpg","png","gif"]
     });
+
+    console.log($("#input-25"));
   });
 
 
@@ -274,6 +277,15 @@ function delete_inserted(field, alreadysaved){
     <label for="input-25">Photos:</label>
     <div class="file-loading">
         <input id="input-25" name="photos" type="file" multiple>
+    </div>
+
+    <script>
+      var picture = $('#thepicture');  // Must be already loaded or cached!
+      picture.guillotine({width: 400, height: 300});
+    </script>
+
+    <div id="theparent" style="width: 80%;">
+      <img id="thepicture" src="url/to/image">
     </div>
 
     <form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
