@@ -23,14 +23,9 @@ def spectacle(nomSpectacle):
         print(thisDates)
         if thisSpectacle == None :
             return abort(404)
-        path = app.config['UPLOAD_FOLDER']+'/'+urlify(nomSpectacle)
-        paths = []
-        if not os.path.isdir(path) :
-            print(path+" no uploads dir for this spectacle")
-        else:
-            for fileName in os.listdir(path):
-                paths.append('.'+path+'/'+fileName)
-            print("Paths :",paths)
+
+        paths = get_paths_photos(thisSpectacle.nom)
+        print("Paths :",paths)
         return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths)
     if request.method == "POST":
         if request.form["submit"] == "modify" and session['pseudo'] == thisSpectacle.admin:
@@ -73,13 +68,10 @@ def set_spectacle(nomSpectacle):
             print(thisDates)
 
             if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
-                path = app.config['UPLOAD_FOLDER']+'/'+urlify(nomSpectacle)
                 paths = []
-                if not os.path.isdir(path) :
-                    print(path+" no uploads dir for this spectacle")
-                else:
-                    for fileName in os.listdir(path):
-                        paths.append('.'+path+'/'+fileName)
+                if nomSpectacle != "nouveauSpectacle":
+                    paths = get_paths_photos(nomSpectacle)
+                    print("Set spectacle : ",paths)
                 return render_template('set_spectacle.html',paths=paths,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
             else:
                 return abort(403);
@@ -100,28 +92,7 @@ def set_spectacle(nomSpectacle):
                         return abort(403)
                     spectacle.photos = alreadyIn.photos
                 # check if the post request has the file part
-                if 'photos' not in request.files:
-                    print("No photo")
-                else:
-                    print("There is photos :")
-                    name = urlify(spectacle.nom)
-                    pathUpload = app.config['UPLOAD_FOLDER']+'/'+name
-                    if not os.path.isdir(pathUpload):
-                        os.mkdir(pathUpload)
-                    numberPhotos = spectacle.photos
 
-                    for f in request.files.getlist('photos'):
-                        print(f.filename)
-                        # if user does not select file, browser also
-                        # submit a empty part without filename
-                        if f.filename == '':
-                            flash('No selected file')
-                        if f and allowed_file(f.filename):
-                            filename = secure_filename(f.filename)
-                            f.save(os.path.join(pathUpload, urlify(spectacle.nom)+"_"+str(numberPhotos)))
-                            numberPhotos +=1
-                            print("Number photos add, state :",numberPhotos)
-                    spectacle.photos=numberPhotos
                 if alreadyIn :
                     update_spectacle(spectacle)
                 else:
@@ -163,18 +134,11 @@ def deleteFile (nomSpectacle,filename):
             nomSpectacle = urlify(nomSpectacle)
             print ("spectacle"+nomSpectacle)
             pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
-            os.remove(os.path.join(pathUpload,filename))
-            numero = int(filename[-1])
-            print(numero,' a supprime')
+            pathPhoto = os.path.join(pathUpload,filename)
+            os.remove("."+pathPhoto)
             print("Spectacle.photos :",spectacle.photos)
-            for j in range (numero+1, spectacle.photos):
-                if os.path.exists(pathUpload+nomSpectacle+"_"+str(j)):
-                    print(pathUpload+nomSpectacle+'_'+str(j)+' EXISTS')
-                    old_name=os.path.join(pathUpload,nomSpectacle+"_"+str(j))
-                    new_name=os.path.join(pathUpload,nomSpectacle+"_"+str(j-1))
-                    os.rename(old_name, new_name)
-                else :
-                    print(pathUpload+nomSpectacle+'_'+str(j)+' NOT EXISTS')
+            photo = get_photo(pathPhoto)
+            delete(photo)
             spectacle.photos -= 1
             db.session.commit()
             dic = {"succes":"total"}
@@ -192,24 +156,20 @@ def uploadFile (nomSpectacle):
             nomSpectacle = urlify(nomSpectacle)
             print ("spectacle"+nomSpectacle)
             pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
-            if not os.path.isdir(pathUpload):
-                os.mkdir(pathUpload)
+
+            if not os.path.isdir("."+pathUpload):
+                os.mkdir("."+pathUpload)
             print("Spectacle.photos :",spectacle.photos)
             print(request.files)
 
             if 'photos' in request.files :
                 for f in request.files.getlist('photos'):
                     numero = -1
-                    for j in range (0, spectacle.photos):
-                        if not os.path.exists(pathUpload+nomSpectacle+"_"+str(j)):
-                            print(pathUpload+nomSpectacle+"_"+str(j)," NOT EXISTS")
-                            numero = j
-                            print("Insert in ",j,"position")
-                            break
-                    if numero == -1:
-                        numero=spectacle.photos;
-                    nomFichier = nomSpectacle+'_'+str(numero)
-                    f.save(os.path.join(pathUpload,nomFichier))
+                    nomFichier = f.filename
+                    path = os.path.join(pathUpload,nomFichier)
+                    f.save("."+path)
+                    photo = Photo(path=path,spectacle=spectacle.nom,ordre=spectacle.photos)
+                    insert_photo(photo)
                     spectacle.photos +=1
                     print("Number photos add, state :",spectacle.photos)
 

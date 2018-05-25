@@ -18,10 +18,10 @@
         <div class="card mb-4">
           <a href="/spectacle/{{spectacle.nom}}">
                   <img class="card-img-top-pers" class="img-thumbnail"
-                  {%if spectacle.photos != 0 %} src="static/uploads/{{niceUrl(spectacle.nom)}}/{{niceUrl(spectacle.nom)}}_0" alt="{{niceUrl(spectacle.nom)}}_0"
+                  {%if spectacle.photos != 0 %} src="{{spectacle.nom|mainPhoto}}" alt="{{spectacle.nom|mainPhoto}}"
                   {%else%}
-                    src="static/uploads/placeholder/placeholder_0.jpg"
-                    alt="placeholder_0"
+                    src="static/uploads/placeholder/GrandeSalleTheatre.jpg"
+                    alt="GrandeSalleTheatre.jpg"
                   {%endif%}
                   >
                   </a>

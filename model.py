@@ -27,10 +27,10 @@ class Spectacle(db.Model):
     typeSpectacle = db.Column(db.String(20),nullable=True)
     def __repr__(self):
         return '<Spectacle: %r>' % self.nom
-    def getPhoto(ordre):
-        return get_photo(this.nom,ordre)
-    def getAllPhotos():
-        return get_all_photos(this.nom)
+    def getPhoto(self,ordre):
+        return get_photoSpectacle(self.nom,ordre)
+    def getAllPhotos(self):
+        return get_all_photos(self.nom)
 
 class Contact(db.Model):
     id = db.Column(db.Integer, autoincrement = True, primary_key = True)
@@ -98,8 +98,8 @@ class Photo(db.Model):
     ordre = db.Column(db.Integer,nullable=False)
     def __repr__(self):
         return '<Photo: %r %r>' % (self.path, self.spectacle)
-    def getMainColor():
-        return get_main_color(this.id)
+    def getMainColor(self):
+        return get_main_color(self.id)
 
 class Color(db.Model):
     hexa = db.Column(db.String(6),nullable=False,primary_key=True)
@@ -136,11 +136,22 @@ def get_spectacles():
     return spectacles
 
 def get_all_photos(nomSpectacle):
-    photos = Photo.query.filer_by(spectacle=nomSpectacle).all()
+    photos = Photo.query.filter_by(spectacle=nomSpectacle).order_by(Photo.ordre).all()
     return photos
 
-def get_photo(nomSpectacle,ordre=0):
+def get_paths_photos(nomSpectacle):
+    photos = get_all_photos(nomSpectacle);
+    paths = [];
+    for photo in photos:
+        paths.append(photo.path)
+    return paths
+
+def get_photoSpectacle(nomSpectacle,ordre=0):
     photo = Photo.query.filter_by(spectacle=nomSpectacle,ordre=ordre).first()
+    return photo
+
+def get_photo(path):
+    photo = Photo.query.filter_by(path=path).first()
     return photo
 
 def get_main_color(idPhoto):
