@@ -226,15 +226,18 @@
     }
 
     $(document).ready(function() {
+    var urls = [];
+    {%for path in paths%}
+    urls.push('{{path}}');
+    {%endfor%}
 
-    var urls = {{paths}};
-    console.log(urls);
     $("#input-25").fileinput({
-        initialPreview: [url],
+        initialPreview: [{%for path in paths%} '{{path}}', {%endfor%}],
         initialPreviewAsData: true,
         initialPreviewConfig: [
-            {caption: "Moon.jpg", filename: "MoonFull.jpg", downloadUrl: url1, size: 930321, width: "120px", key: 1},
-            {caption: "Earth.jpg", filename: "EarthFull.jpg", downloadUrl: url2, size: 1218822, width: "120px", key: 2}
+            {%for path in paths%}
+            {caption: '{{path}}', filename: "{{path}}", downloadUrl: '{{path}}',deleteUrl:"/site/file-delete/"},
+            {%endfor%}
         ],
         deleteUrl: "/site/file-delete",
         overwriteInitial: true,
