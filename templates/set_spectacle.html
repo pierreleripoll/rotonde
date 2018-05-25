@@ -270,104 +270,99 @@ function delete_inserted(field, alreadysaved){
         <input id="input-25" name="input25[]" type="file" multiple>
     </div>
 
-
-
-      <form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
-        <div class="form-group">
-          <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
-          <input type="text" id="nom" class="form-control" name="nom" value='{{spectacle.nom}}'><br>
-        </div>
-        <div class="form-group">
-          <label for="resume">Résumé:</label><br>
-          <textarea type="text" id="resume" row="4" class="form-control" name="resume" >{{spectacle.resume}}</textarea>
-        </div>
-        <div class="form-group">
-          <label for="photos">Photos:</label><br>
-          <input type="hidden" name="file_count" id="file_count" value="0">
-          <button type="button" id="showfiles"  name="showfiles" onclick="showFiles('{{spectacle.nom}}',{{spectacle.photos}},'{{niceUrl(spectacle.nom)}}')">Show files</button>
-    	  <table id="files_table" border="0" cellpadding="0" cellspacing="0">
+    <form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
+        <input type="text" id="nom" class="form-control" name="nom" value='{{spectacle.nom}}'><br>
+      </div>
+      <div class="form-group">
+        <label for="resume">Résumé:</label><br>
+        <textarea type="text" id="resume" row="4" class="form-control" name="resume" >{{spectacle.resume}}</textarea>
+      </div>
+      <div class="form-group">
+        <label for="photos">Photos:</label><br>
+        <input type="hidden" name="file_count" id="file_count" value="0">
+        <button type="button" id="showfiles"  name="showfiles" onclick="showFiles('{{spectacle.nom}}',{{spectacle.photos}},'{{niceUrl(spectacle.nom)}}')">Show files</button>
+        <table id="files_table" border="0" cellpadding="0" cellspacing="0">
           <tr id="new_file_row">
             <td>
-                <input type="file" name="photos" id="new_file[0]" readonly="readonly" onchange="add_new_file(this, {{maxsize}})" accept=".png, .jpg, .jpeg"><br>
+              <input type="file" name="photos" id="new_file[0]" readonly="readonly" onchange="add_new_file(this, {{maxsize}})" accept=".png, .jpg, .jpeg"><br>
             </td>
-         </tr>
-         </table>
+          </tr>
+        </table>
+      </div>
 
-        </div>
-
-        <div class="form-group">
-          <label for="liens">Liens:</label><br>
-          <input type="url" name="liens" class="form-control" value='{%if spectacle.liens != None%}{{spectacle.liens}}{%endif%}'><br>
-        </div>
-        <div class="form-group">
-          <label for="directeur">Par:</label><br>
-          <input type="text" name="directeur" class="form-control" value='{{spectacle.directeur}}'><br>
-        </div>
-        <div class="form-group">
-          <label for="auteur">Auteur:</label><br>
-          <input type="text" name="auteur" class="form-control" value='{{spectacle.auteur}}'><br>
-        </div>
-        <div class="form-group">
-          <label for="participants">Avec:</label><br>
-          <input type="text" name="participants" class="form-control" value='{{spectacle.participants}}'><br>
-        </div>
-        <div class="form-group">
-          <label for="typeSpectacle">Genre:</label><br>
-          <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}'>
-              <option value="Théâtre">Théâtre</option>
-              <option value="Musique">Musique</option>
-              <option value="Danse">Danse</option>
-              <option value="Impro">Impro</option>
-              <option value="Conférence">Conférence</option>
-              <option value="Cirque">Cirque</option>
-              <option value="Performance">Performance</option>
-              <option value="Autre">Autre</option>
-          </select><br>
-        </div>
-        <div class="form-group">
-          <label for="duree">Durée (en minutes):</label><br>
-          <input type="number" name="duree" class="form-control" value='{{spectacle.duree}}'><br>
-        </div>
-        <div class="form-group">
-          <label for="tarif">Tarif:</label><br>
-          <input type="number" name="tarif" class="form-control" value='{{spectacle.tarif}}'><br>
-        </div>
-        <div class="form-group">
-          <label for="infoComplementaire">Info complémentaire:</label><br>
-          <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
-        </div>
-        <div class="form-group">
-          <select name="ajoutContactDB" id="ajoutContactDB">
-            {%for c in contact:%}
-            <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
-            {%endfor%}
-          </select>
-          <button type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
-          <br>
-          <br>
-          <div id="contact">
-          </div>
-        </div>
+      <div class="form-group">
+        <label for="liens">Liens:</label><br>
+        <input type="url" name="liens" class="form-control" value='{%if spectacle.liens != None%}{{spectacle.liens}}{%endif%}'><br>
+      </div>
+      <div class="form-group">
+        <label for="directeur">Par:</label><br>
+        <input type="text" name="directeur" class="form-control" value='{{spectacle.directeur}}'><br>
+      </div>
+      <div class="form-group">
+        <label for="auteur">Auteur:</label><br>
+        <input type="text" name="auteur" class="form-control" value='{{spectacle.auteur}}'><br>
+      </div>
+      <div class="form-group">
+        <label for="participants">Avec:</label><br>
+        <input type="text" name="participants" class="form-control" value='{{spectacle.participants}}'><br>
+      </div>
+      <div class="form-group">
+        <label for="typeSpectacle">Genre:</label><br>
+        <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}'>
+          <option value="Théâtre">Théâtre</option>
+          <option value="Musique">Musique</option>
+          <option value="Danse">Danse</option>
+          <option value="Impro">Impro</option>
+          <option value="Conférence">Conférence</option>
+          <option value="Cirque">Cirque</option>
+          <option value="Performance">Performance</option>
+          <option value="Autre">Autre</option>
+        </select><br>
+      </div>
+      <div class="form-group">
+        <label for="duree">Durée (en minutes):</label><br>
+        <input type="number" name="duree" class="form-control" value='{{spectacle.duree}}'><br>
+      </div>
+      <div class="form-group">
+        <label for="tarif">Tarif:</label><br>
+        <input type="number" name="tarif" class="form-control" value='{{spectacle.tarif}}'><br>
+      </div>
+      <div class="form-group">
+        <label for="infoComplementaire">Info complémentaire:</label><br>
+        <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
+      </div>
+      <div class="form-group">
+        <select name="ajoutContactDB" id="ajoutContactDB">
+          {%for c in contact:%}
+          <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
+          {%endfor%}
+        </select>
+        <button type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
         <br>
-        <div>
-          <label for="dates">Dates :  </label>
-          <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button><br>
-          <div id="date-div">
-            {%for date in dates:%}
-            <div id="date{{loop.index}}">
-              <input type="datetime-local" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}">
-              <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
-            </div>
-            {%endfor%}
+        <br>
+        <div id="contact"></div>
+      </div>
+      <br>
+      <div>
+        <label for="dates">Dates :  </label>
+        <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button><br>
+        <div id="date-div">
+          {%for date in dates:%}
+          <div id="date{{loop.index}}">
+            <input type="datetime-local" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}">
+            <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
           </div>
+          {%endfor%}
         </div>
+      </div>
 
-        <div>
-          <br><br>
-          <button name="button" id="valide" value="valider" type="valide" }>Valider</button>
-
-        </div>
-      </form>
-    </div>
+      <div>
+        <br><br>
+        <button name="button" id="valide" value="valider" type="valide" }>Valider</button>
+      </div>
+    </form>
+  </div>
 
 {% endblock %}
