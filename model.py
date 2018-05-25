@@ -27,7 +27,10 @@ class Spectacle(db.Model):
     typeSpectacle = db.Column(db.String(20),nullable=True)
     def __repr__(self):
         return '<Spectacle: %r>' % self.nom
-
+    def getPhoto(ordre):
+        return get_photo(this.nom,ordre)
+    def getAllPhotos():
+        return get_all_photos(this.nom)
 
 class Contact(db.Model):
     id = db.Column(db.Integer, autoincrement = True, primary_key = True)
@@ -50,6 +53,7 @@ class Calendrier(db.Model):
 
 class Place(db.Model):
     idPlace = db.Column(db.Integer, autoincrement = True, primary_key = True)
+    ordre = db.Column(db.Integer, nullable=False)
     nomSpectacle = db.Column(db.String(80), db.ForeignKey('spectacle.nom'), nullable = False)
     date = db.Column(db.DateTime, db.ForeignKey('calendrier.date'), nullable = False)
     nomUser = db.Column(db.String(80), nullable = False)
@@ -88,14 +92,22 @@ class Session(db.Model):
         return '<Session: %r %r>' % (self.login, self.password)
 
 class Photo(db.Model):
-    path = db.Column(db.String(80), nullable = False, primary_key = True)
-    spectacle = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False) # TODO: encrypter le mdp avec passlib
-    red = db.Column(db.Integer, nullable = False)
-    blue = db.Column(db.Integer, nullable = False)
-    green = db.Column(db.Integer, nullable = False)
-
+    id = db.Column(db.Integer,autoincrement= True, primary_key=True)
+    path = db.Column(db.String(80), nullable = False)
+    spectacle = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False)
+    ordre = db.Column(db.Integer,nullable=False)
     def __repr__(self):
         return '<Photo: %r %r>' % (self.path, self.spectacle)
+    def getMainColor():
+        return get_main_color(this.id)
+
+class Color(db.Model):
+    hexa = db.Column(db.String(6),nullable=False,primary_key=True)
+    photo = db.Column(db.Integer,db.ForeignKey('photo.id'),nullable=False)
+    actif = db.Column(db.Boolean)
+
+    def __repr__(self):
+        return '<Color: %r>' % (self.hexa)
 
 
 def allowed_file(filename):
@@ -122,6 +134,24 @@ def connect():
 def get_spectacles():
     spectacles = Spectacle.query.all()
     return spectacles
+
+def get_all_photos(nomSpectacle):
+    photos = Photo.query.filer_by(spectacle=nomSpectacle).all()
+    return photos
+
+def get_photo(nomSpectacle,ordre=0):
+    photo = Photo.query.filter_by(spectacle=nomSpectacle,ordre=ordre).first()
+    return photo
+
+def get_main_color(idPhoto):
+    colors = get_all_colors(idPhoto)
+    for color in colors:
+        if color.actif == 1:
+            return color
+
+def get_all_colors(idPhoto):
+    colors =  Color.query.filter_by(photo=id).all()
+    return colors
 
 def get_all_places():
     places = Place.query.all()
@@ -173,6 +203,19 @@ def insert_spectacle(spectacle):
     db.session.add(spectacle)
     db.session.commit()
     return
+
+def insert_photo(photo):
+    db.session.add(photo)
+    db.session.commit()
+    return
+
+def update_photo(newPhoto):
+    oldPhoto =  Photo.query.filter_by(id=newPhoto.id).first()
+    oldPhoto.path = newPhoto.path
+    oldPhoto.ordre = newPhoto.ordre
+    db.session.commit()
+    return
+
 
 # Update un spectacle
 def update_spectacle(spectacle):
@@ -241,6 +284,12 @@ def get_all_dates ():
     dates = Calendrier.query.all()
 
     return dates
+
+
+def delete(elem):
+    db.session.delete(elem)
+    db.session.commit()
+    return
 
 
 def getID_contact(nomU, prenomU):
