@@ -226,22 +226,21 @@
     }
 
     $(document).ready(function() {
-
-    var urls = {{paths}};
-    console.log(urls);
-    $("#input-25").fileinput({
-        initialPreview: [url],
-        initialPreviewAsData: true,
-        initialPreviewConfig: [
-            {caption: "Moon.jpg", filename: "MoonFull.jpg", downloadUrl: url1, size: 930321, width: "120px", key: 1},
-            {caption: "Earth.jpg", filename: "EarthFull.jpg", downloadUrl: url2, size: 1218822, width: "120px", key: 2}
-        ],
-        deleteUrl: "/site/file-delete",
-        overwriteInitial: true,
-        maxFileSize: 100,
-        initialCaption: "The Moon and the Earth"
+      var urls = {{paths}};
+      console.log(urls);
+      $("#input-25").fileinput({
+          initialPreview: [urls],
+          initialPreviewAsData: true,
+          initialPreviewConfig: [
+              {caption: "Moon.jpg", filename: "MoonFull.jpg", downloadUrl: url1, size: 930321, width: "120px", key: 1},
+              {caption: "Earth.jpg", filename: "EarthFull.jpg", downloadUrl: url2, size: 1218822, width: "120px", key: 2}
+          ],
+          deleteUrl: "/site/file-delete",
+          overwriteInitial: true,
+          maxFileSize: 100,
+          initialCaption: "The Moon and the Earth"
+      });
     });
-  });
 
 
   </script>

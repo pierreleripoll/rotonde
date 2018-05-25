@@ -79,6 +79,7 @@ def set_spectacle(nomSpectacle):
                 else:
                     for fileName in os.listdir(path):
                         paths.append('.'+path+'/'+fileName)
+                    print(paths)
                 return render_template('set_spectacle.html',paths=paths,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
             else:
                 return abort(403);
