@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import bcrypt
 from datetime import datetime
@@ -101,6 +103,14 @@ def urlify(s):
 
      return s.lower()
 
+def prettify_date(date, format='calendar'):
+    moiss = [ 'janvier', 'fevrier', 'mars', 'avril', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'decembre']
+    mois = moiss[date.month-1]
+    if format == 'calendar':
+        string = "%d %s, %dh%d" % (date.day, mois, date.hour, date.minute)
+    if format == 'mail':
+        string = 'le %d %s à %dh%d' % (date.day, mois, date.hour, date.minute)
+    return string
 
 def connect():
     conn = engine.connect()

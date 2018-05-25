@@ -21,6 +21,8 @@ app.register_blueprint(gestion_spectacle)
 app.register_blueprint(panier_relative)
 app.register_blueprint(admin_relative)
 
+app.jinja_env.filters['datetime'] = prettify_date
+
 db.init_app(app)
 
 # SI DECOMMENTER FLASK CREER LES TABLES
@@ -139,4 +141,4 @@ def uploads(nomSpectacle):
 
 if __name__ == '__main__':
 	app.run(debug='true')
-#app.run(host="192.168.43.6",port=2000)
+    # app.run(host="192.168.0.21",port=2000)
