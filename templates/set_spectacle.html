@@ -183,18 +183,49 @@
 		document.getElementById('file_count').value = count;
 	}
    }
-
-    function delete_inserted(field){
+function delete_inserted(field, alreadysaved){
 	    var name = field.name;
 	    var id = name.substr(name.indexOf('[') + 1, name.indexOf(']') - name.indexOf('[') - 1);
 	    document.getElementById("inserted_file["+id+"]").style.display = "none";
-	    var control = document.getElementById("new_file["+id+"]");
-	    control.parentNode.removeChild(control);
+	    if(alreadysaved == 0){
+			var control = document.getElementById("new_file["+id+"]");
+			control.parentNode.removeChild(control);
+		}
     }
 
     function validateForm(){
       return true;
     }
+function showFiles(spectacle, number, niceurl){
+		var table = document.getElementById('files_table');
+		var count = parseInt(document.getElementById('file_count').value);
+		for(var i=0; i<number;i++){
+			console.log("le fichier existe");
+			var row = table.insertRow(table.rows.length);
+			row.id = "inserted_file["+count+"]";
+			var cell0 = row.insertCell(0);
+			var file=new String ('inserted_file['+count+']im');
+			cell0.innerHTML = "<img class='card-img-top' id='inserted_file["+count+"]im' name='inserted_file["+count+"]' class='img-thumbnail' src='http://localhost:5000/static/uploads/{{niceUrl(spectacle.nom)}}/{{niceUrl(spectacle.nom)}}_"+i+"' alt='{{niceUrl(spectacle.nom)}}_"+i+"' \><input type='button' id='delete["+count+"]' value='Delete' onclick='delete_saved_file((\""+file+"\"),"+ i+",\""+spectacle+"\")'/>";
+			++count;
+			
+		}
+    }
+    
+    function delete_saved_file(file, id, spectacle){
+		var src=document.getElementById(file).src;
+		var filename = src.substring(src.lastIndexOf('/')+1);
+		delete_inserted(document.getElementById(file),1);
+		$.ajax({
+				url: '/deleteFile/'+filename+'/'+id+'/'+spectacle,
+				success: function(response){
+				console.log(response);
+				},
+				error: function(error){
+				console.log(error);
+				}
+		});
+		
+	}
   </script>
 
 {% endblock %}
@@ -216,7 +247,8 @@
         </div>
         <div class="form-group">
           <label for="photos">Photos:</label><br>
-          <input type="hidden" name="file_count" id="file_count" value="0" />
+          <input type="hidden" name="file_count" id="file_count" value="0">
+          <button type="button" id="showfiles"  name="showfiles" onclick="showFiles('{{spectacle.nom}}',{{spectacle.photos}},'{{niceUrl(spectacle.nom)}}')">Show files</button>
     	  <table id="files_table" border="0" cellpadding="0" cellspacing="0">
           <tr id="new_file_row">
             <td>
