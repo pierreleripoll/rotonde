@@ -154,58 +154,71 @@ def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
 
 @gestion_spectacle.route('/api/deleteFile/<string:nomSpectacle>/<string:filename>',methods=['POST'])
 def deleteFile (nomSpectacle,filename):
-    spectacle=get_spectacle(nomSpectacle)
-
-    nomSpectacle = urlify(nomSpectacle)
-    print ("spectacle"+nomSpectacle)
-    pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
-    os.remove(os.path.join(pathUpload,filename))
-    numero = int(filename[-1])
-    print(numero,' a supprime')
-    print("Spectacle.photos :",spectacle.photos)
-    for j in range (numero+1, spectacle.photos):
-        if os.path.exists(pathUpload+"/"+nomSpectacle+"_"+str(j)):
-            print(nomSpectacle+'/'+str(j)+' EXISTS')
-            old_name=os.path.join(pathUpload,nomSpectacle+"_"+str(j))
-            new_name=os.path.join(pathUpload,nomSpectacle+"_"+str(j-1))
-            os.rename(old_name, new_name)
-
-
-    spectacle.photos -= 1
-    db.session.commit()
-    dic = {"succes":"total"}
-    return json.dumps(dic)
+    if 'admin' not in session :
+        return abort(401)
+    else :
+        spectacle=get_spectacle(nomSpectacle)
+        if session['pseudo']==spectacle.admin or session['admin']=='super':
+            nomSpectacle = urlify(nomSpectacle)
+            print ("spectacle"+nomSpectacle)
+            pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
+            os.remove(os.path.join(pathUpload,filename))
+            numero = int(filename[-1])
+            print(numero,' a supprime')
+            print("Spectacle.photos :",spectacle.photos)
+            for j in range (numero+1, spectacle.photos):
+                if os.path.exists(pathUpload+nomSpectacle+"_"+str(j)):
+                    print(pathUpload+nomSpectacle+'_'+str(j)+' EXISTS')
+                    old_name=os.path.join(pathUpload,nomSpectacle+"_"+str(j))
+                    new_name=os.path.join(pathUpload,nomSpectacle+"_"+str(j-1))
+                    os.rename(old_name, new_name)
+                else :
+                    print(pathUpload+nomSpectacle+'_'+str(j)+' NOT EXISTS')
+            spectacle.photos -= 1
+            db.session.commit()
+            dic = {"succes":"total"}
+            return json.dumps(dic)
+        else:
+            return abort(401)
 
 @gestion_spectacle.route('/api/uploadFile/<string:nomSpectacle>/',methods=['POST'])
 def uploadFile (nomSpectacle):
-    spectacle=get_spectacle(nomSpectacle)
+    if 'admin' in session :
+        spectacle=get_spectacle(nomSpectacle)
 
-    nomSpectacle = urlify(nomSpectacle)
-    print ("spectacle"+nomSpectacle)
-    pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
+        if session['pseudo']==spectacle.admin or session['admin']=='super':
 
-    print("Spectacle.photos :",spectacle.photos)
+            nomSpectacle = urlify(nomSpectacle)
+            print ("spectacle"+nomSpectacle)
+            pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
+            if not os.path.isdir(pathUpload):
+                os.mkdir(pathUpload)
+            print("Spectacle.photos :",spectacle.photos)
+            print(request.files)
 
-    print(request.files)
+            if 'photos' in request.files :
+                for f in request.files.getlist('photos'):
+                    numero = -1
+                    for j in range (0, spectacle.photos):
+                        if not os.path.exists(pathUpload+nomSpectacle+"_"+str(j)):
+                            print(pathUpload+nomSpectacle+"_"+str(j)," NOT EXISTS")
+                            numero = j
+                            print("Insert in ",j,"position")
+                            break
+                    if numero == -1:
+                        numero=spectacle.photos;
+                    nomFichier = nomSpectacle+'_'+str(numero)
+                    f.save(os.path.join(pathUpload,nomFichier))
+                    spectacle.photos +=1
+                    print("Number photos add, state :",spectacle.photos)
 
-    if 'photos' in request.files :
-        for f in request.files.getlist('photos'):
-            numero = 0
-            for j in range (numero, spectacle.photos):
-                if not os.path.exists(pathUpload+"/"+nomSpectacle+"_"+str(j)):
-                    numero = j
-                    break
-            if numero == 0:
-                numero=spectacle.photos;
-            nomSpectacle=urlify(nomSpectacle)
-            nomFichier = nomSpectacle+'_'+str(numero)
-            f.save(os.path.join(pathUpload,nomFichier))
-            spectacle.photos +=1
-            print("Number photos add, state :",spectacle.photos)
+            print(request.form)
+            print(request.files)
+            db.session.commit()
+            dic = {"succes":"total"}
+            return json.dumps(dic)
 
+        else:
+            return abort(401)
 
-    print(request.form)
-    print(request.files)
-    db.session.commit()
-    dic = {"succes":"total"}
-    return json.dumps(dic)
+    return abort(401)
