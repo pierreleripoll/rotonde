@@ -61,6 +61,12 @@ card-title-tarifs-dates{
   font-size: 150%;
 }
 
+.col-avec{
+  color: rgb(220,220,220);
+  font-size: 150%;
+  background-color: var(--color-theme);
+}
+
 .card-footer-billet{
   height:40%;
   color: rgb(220,220,220);
