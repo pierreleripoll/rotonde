@@ -131,16 +131,26 @@ def deleteFile (nomSpectacle,filename):
     else :
         spectacle=get_spectacle(nomSpectacle)
         if session['pseudo']==spectacle.admin or session['admin']=='super':
+            photos = get_all_photos(nomSpectacle)
             nomSpectacle = urlify(nomSpectacle)
             print ("spectacle"+nomSpectacle)
             pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
             pathPhoto = os.path.join(pathUpload,filename)
             os.remove("."+pathPhoto)
             print("Spectacle.photos :",spectacle.photos)
+
+
             photo = get_photo(pathPhoto)
+
+            for p in photos:
+                if p.ordre>photo.ordre:
+                    p.ordre -=1
+
             delete(photo)
+
             spectacle.photos -= 1
             db.session.commit()
+            print(photos)
             dic = {"succes":"total"}
             return json.dumps(dic)
         else:

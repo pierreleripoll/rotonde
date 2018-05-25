@@ -97,7 +97,7 @@ class Photo(db.Model):
     spectacle = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False)
     ordre = db.Column(db.Integer,nullable=False)
     def __repr__(self):
-        return '<Photo: %r %r>' % (self.path, self.spectacle)
+        return '<Photo: %r %r N.%d>' % (self.path, self.spectacle, self.ordre)
     def getMainColor(self):
         return get_main_color(self.id)
 
