@@ -190,7 +190,7 @@
 		var file_name = document.getElementById("new_file["+count+"]").value;
     var colorThief = new ColorThief();
     console.log(file_name);
-    file_name = file_name.substr(file_name.lastIndexOf('\\')+1)
+    file_name = file_name.substr(file_name.lastIndexOf('\\')+1);
 
 
 		document.getElementById('new_file_row').style.display = "none";
@@ -231,15 +231,23 @@
     urls.push('{{path}}');
     {%endfor%}
 
+    var filenames = [];
+    var file_name = "";
+    {%for i in range(paths|length)%}
+    file_name = urls[{{i}}];
+    file_name = file_name.substr(file_name.lastIndexOf('/')+1);
+    filenames.push(file_name);
+    console.log(file_name);
+    {%endfor%}
+
     $("#input-25").fileinput({
         initialPreview: [{%for path in paths%} '{{path}}', {%endfor%}],
         initialPreviewAsData: true,
         initialPreviewConfig: [
-            {%for path in paths%}
-            {caption: '{{path}}', filename: "{{path}}", downloadUrl: '{{path}}',deleteUrl:"/site/file-delete/"},
+            {%for i in range(paths|length)%}
+            {caption: filenames[{{i}}], filename: filenames[{{i}}], downloadUrl: urls[{{i}}],url:'/api/deleteFile/{{spectacle.nom}}/'+filenames[{{i}}], key:{{i}} },
             {%endfor%}
         ],
-        deleteUrl: "/site/file-delete",
         overwriteInitial: true,
         maxFileSize: 100,
         initialCaption: "The Moon and the Earth"

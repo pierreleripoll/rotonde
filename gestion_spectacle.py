@@ -148,16 +148,15 @@ def set_spectacle(nomSpectacle):
 def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
     contact = Contact(nom=nomUser,prenom=prenomUser,telephone=tel,adresseMail=mail,annee=anneeSelect, depart=departSelect)
     insert_contact(contact)
- return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
+    return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
 
-@gestion_spectacle.route('/api/deleteFile/<string:filename>/<int:number>/<string:nom>')
-def deleteFile (filename, number, nom):
-	tiret=filename.find('_');
-	spectacle=filename[:tiret]
-	print "spectacle" +spectacle
-	
-	pathUpload =app.config['UPLOAD_FOLDER']+'/'+spectacle
-	os.remove(os.path.join(pathUpload,spectacle+"_"+str(number)))
-	spectacle=get_spectacle(nom)
-	spectacle.photos -= 1
-	return "succes!"
+@gestion_spectacle.route('/api/deleteFile/<string:nomSpectacle>/<string:filename>',methods=['POST'])
+def deleteFile (nomSpectacle,filename):
+    spectacle=get_spectacle(nomSpectacle)
+    spectacle.photos -= 1
+    nomSpectacle = urlify(nomSpectacle)
+    print ("spectacle"+nomSpectacle)
+    pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
+    os.remove(os.path.join(pathUpload,filename))
+
+    return "succes!"
