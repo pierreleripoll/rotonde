@@ -2,21 +2,26 @@ from app import app
 from model import *
 import os
 import shutil
+import time
 
 if os.path.exists("baseRotonde.db"):
     os.remove("baseRotonde.db")
 
 folder = 'static/uploads'
-for the_file in os.listdir(folder):
-    file_path = os.path.join(folder, the_file)
-    try:
-        if os.path.isfile(file_path):
-            os.unlink(file_path)
-        elif os.path.isdir(file_path):
-            if os.path.basename(file_path) not in ['placeholder','hamlet-60','candide',"chroniques-nocturne","rapa-nui","jeanne-de-derteil"]:
-                shutil.rmtree(file_path)
-    except Exception as e:
-        print(e)
+sauvegarde = 'sauvegarde'
+
+if os.path.exists(folder):
+    shutil.rmtree(folder)
+time.sleep(1)
+folders = os.listdir(sauvegarde)
+
+for fol in folders:
+    if os.path.isdir(sauvegarde+'/'+fol):
+        print('dir',fol)
+        shutil.copytree(sauvegarde+'/'+fol, folder+'/'+fol)
+
+
+
 
 ami = Session(login='ami',password='friendly',typeAdmin='normal')
 cgr = Session(login='cgr',password='cafards',typeAdmin='super')
