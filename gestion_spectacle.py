@@ -69,8 +69,7 @@ def set_spectacle(nomSpectacle):
             for calendrier in thisDates:
                 calendrier.date = datePytoHTML(calendrier.date)
             print(thisDates)
-<<<<<<< HEAD
-
+            
             if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
                 path = app.config['UPLOAD_FOLDER']+'/'+urlify(nomSpectacle)
                 paths = []
@@ -81,10 +80,6 @@ def set_spectacle(nomSpectacle):
                         paths.append('.'+path+'/'+fileName)
                     print(paths)
                 return render_template('set_spectacle.html',paths=paths,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
-=======
-            if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
-                return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
->>>>>>> d71bba5bf11782a895c52bbe94d3eeeef56ed6a1
             else:
                 return abort(403);
         if request.method=="POST":
@@ -155,8 +150,6 @@ def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
     contact = Contact(nom=nomUser,prenom=prenomUser,telephone=tel,adresseMail=mail,annee=anneeSelect, depart=departSelect)
     insert_contact(contact)
     return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
-<<<<<<< HEAD
-=======
 
 @gestion_spectacle.route('/deleteFile/<string:filename>/<int:number>/<string:nom>')
 def deleteFile (filename, number, nom):
@@ -169,4 +162,3 @@ def deleteFile (filename, number, nom):
 	spectacle=get_spectacle(nom)
 	spectacle.photos -= 1
 	return "succes!"
->>>>>>> d71bba5bf11782a895c52bbe94d3eeeef56ed6a1
