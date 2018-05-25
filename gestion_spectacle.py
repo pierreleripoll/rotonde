@@ -109,17 +109,7 @@ def set_spectacle(nomSpectacle):
                     if not os.path.isdir(pathUpload):
                         os.mkdir(pathUpload)
                     numberPhotos = spectacle.photos
-                    #update of deleted files
-                    for i in range (numberPhotos):
-                      if not os.path.exists(pathUpload+"/"+name+"_"+str(i)):
-                        k=i
-                        for j in range (k+1, numberPhotos):
-                          if os.path.exists(pathUpload+"/"+name+"_"+str(j)):
-                            old_name=os.path.join(pathUpload,name+"_"+str(j))
-                            new_name=os.path.join(pathUpload,name+"_"+str(k))
-                            os.rename(old_name, new_name)
-                            k+=1
-                        numberPhotos -= 1
+
                     for f in request.files.getlist('photos'):
                         print(f.filename)
                         # if user does not select file, browser also
@@ -130,6 +120,7 @@ def set_spectacle(nomSpectacle):
                             filename = secure_filename(f.filename)
                             f.save(os.path.join(pathUpload, urlify(spectacle.nom)+"_"+str(numberPhotos)))
                             numberPhotos +=1
+                            print("Number photos add, state :",numberPhotos)
                     spectacle.photos=numberPhotos
                 if alreadyIn :
                     update_spectacle(spectacle)
@@ -162,14 +153,47 @@ def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
     insert_contact(contact)
     return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
 
-@gestion_spectacle.route('/deleteFile/<string:filename>/<int:number>/<string:nom>')
-def deleteFile (filename, number, nom):
-	tiret=filename.find('_');
-	spectacle=filename[:tiret]
-	print ("spectacle" +spectacle)
+@gestion_spectacle.route('/api/deleteFile/<string:nomSpectacle>/<string:filename>',methods=['POST'])
+def deleteFile (nomSpectacle,filename):
+    spectacle=get_spectacle(nomSpectacle)
 
-	pathUpload =app.config['UPLOAD_FOLDER']+'/'+spectacle
-	os.remove(os.path.join(pathUpload,spectacle+"_"+str(number)))
-	spectacle=get_spectacle(nom)
-	spectacle.photos -= 1
-	return "succes!"
+    nomSpectacle = urlify(nomSpectacle)
+    print ("spectacle"+nomSpectacle)
+    pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
+    os.remove(os.path.join(pathUpload,filename))
+    numero = int(filename[-1])
+    print(numero,' a supprime')
+    print("Spectacle.photos :",spectacle.photos)
+    for j in range (numero+1, spectacle.photos):
+        if os.path.exists(pathUpload+"/"+nomSpectacle+"_"+str(j)):
+            print(nomSpectacle+'/'+str(j)+' EXISTS')
+            old_name=os.path.join(pathUpload,nomSpectacle+"_"+str(j))
+            new_name=os.path.join(pathUpload,nomSpectacle+"_"+str(j-1))
+            os.rename(old_name, new_name)
+
+
+    spectacle.photos -= 1
+    db.session.commit()
+    dic = {"succes":"total"}
+    return json.dumps(dic)
+
+@gestion_spectacle.route('/api/uploadFile/<string:nomSpectacle>/',methods=['POST'])
+def uploadFile (nomSpectacle):
+    spectacle=get_spectacle(nomSpectacle)
+
+    nomSpectacle = urlify(nomSpectacle)
+    print ("spectacle"+nomSpectacle)
+    pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
+
+    print("Spectacle.photos :",spectacle.photos)
+    numero = 0
+    for j in range (numero, spectacle.photos):
+        if not os.path.exists(pathUpload+"/"+nomSpectacle+"_"+str(j)):
+            numero = i
+            break
+    nomSpectacle=urlify(nomSpectacle)
+    nomFichier = nomSpectacle+'_'+str(numero)
+
+    db.session.commit()
+    dic = {"succes":"total"}
+    return json.dumps(dic)
