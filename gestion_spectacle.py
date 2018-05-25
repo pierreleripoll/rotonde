@@ -108,6 +108,17 @@ def set_spectacle(nomSpectacle):
                     if not os.path.isdir(pathUpload):
                         os.mkdir(pathUpload)
                     numberPhotos = spectacle.photos
+		    #update of deleted files
+                    for i in range (numberPhotos):
+			if not os.path.exists(pathUpload+"/"+name+"_"+str(i)):
+				k=i
+				for j in range (k+1, numberPhotos):
+					if os.path.exists(pathUpload+"/"+name+"_"+str(j)):
+						old_name=os.path.join(pathUpload,name+"_"+str(j))
+						new_name=os.path.join(pathUpload,name+"_"+str(k))
+						os.rename(old_name, new_name)
+						k+=1
+				numberPhotos -= 1
                     for f in request.files.getlist('photos'):
                         print(f.filename)
                         # if user does not select file, browser also
