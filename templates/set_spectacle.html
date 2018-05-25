@@ -4,6 +4,11 @@
 {% block head %}
   {{ super() }}
 
+
+
+<script src="/static/color-thief.js"></script>
+<script src="/static/jquery.guillotine.js"></script>
+<script src="/static/jquery.guillotine.min.js"></script>
   <script>
   var contactAffiche = 0
   function addNewContact() {
@@ -163,6 +168,7 @@
 
 		var file_name = document.getElementById("new_file["+count+"]").value;
 
+
 		document.getElementById('new_file_row').style.display = "none";
 		document.getElementById('new_file_row').id = "new_file_row["+count+"]";
 		var table = document.getElementById('files_table');
@@ -190,8 +196,13 @@
 	    var control = document.getElementById("new_file["+id+"]");
 	    control.parentNode.removeChild(control);
     }
-  </script>
 
+    function validateForm(){
+      return true;
+    }
+
+
+  </script>
 {% endblock %}
 
 {% block title %}Modification spectacle{% endblock %}
@@ -199,8 +210,10 @@
 {% block content %}
   <div class="container-fluid">
     <p>Bienvenue sur la page de modification/création de spectacle : </p>
-    <p>{{spectacle.nom}}
-      <form action="" method="POST" enctype="multipart/form-data">
+    <p>{{spectacle.nom}}</p>
+
+
+      <form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
         <div class="form-group">
           <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
           <input type="text" id="nom" class="form-control" name="nom" value='{{spectacle.nom}}'><br>
@@ -219,7 +232,9 @@
             </td>
          </tr>
          </table>
+
         </div>
+
         <div class="form-group">
           <label for="liens">Liens:</label><br>
           <input type="url" name="liens" class="form-control" value='{{spectacle.liens}}'><br>
@@ -294,4 +309,5 @@
         </div>
       </form>
     </div>
+
 {% endblock %}
