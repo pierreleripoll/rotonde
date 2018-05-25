@@ -245,12 +245,11 @@
         initialPreviewAsData: true,
         initialPreviewConfig: [
             {%for i in range(paths|length)%}
-            {caption: filenames[{{i}}], filename: filenames[{{i}}], downloadUrl: urls[{{i}}],url:'/api/deleteFile/{{spectacle.nom}}/'+filenames[{{i}}], key:{{i}} },
+            {caption: filenames[{{i}}], filename: filenames[{{i}}],uploadUrl:'/api/uploadFile/{{spectacle.nom}}', downloadUrl: urls[{{i}}],url:'/api/deleteFile/{{spectacle.nom}}/'+filenames[{{i}}], key:{{i}} },
             {%endfor%}
         ],
-        overwriteInitial: true,
-        maxFileSize: 100,
-        initialCaption: "The Moon and the Earth"
+        overwriteInitial: false,
+        maxFileSize: 1000
     });
   });
 
@@ -296,7 +295,7 @@
 
         <div class="form-group">
           <label for="liens">Liens:</label><br>
-          <input type="url" name="liens" class="form-control" value='{{spectacle.liens}}'><br>
+          <input type="url" name="liens" class="form-control" value='{%if spectacle.liens != None%}{{spectacle.liens}}{%endif%}'><br>
         </div>
         <div class="form-group">
           <label for="directeur">Par:</label><br>
