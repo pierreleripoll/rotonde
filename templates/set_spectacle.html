@@ -162,8 +162,7 @@
 		var count = parseInt(document.getElementById('file_count').value);
 
 		var file_name = document.getElementById("new_file["+count+"]").value;
-    file_name = file_name.substr(file_name.lastIndexOf('\\')+1)
-    console.log(file_name);
+
 		document.getElementById('new_file_row').style.display = "none";
 		document.getElementById('new_file_row').id = "new_file_row["+count+"]";
 		var table = document.getElementById('files_table');
@@ -183,49 +182,14 @@
 		document.getElementById('file_count').value = count;
 	}
    }
-function delete_inserted(field, alreadysaved){
+
+    function delete_inserted(field){
 	    var name = field.name;
 	    var id = name.substr(name.indexOf('[') + 1, name.indexOf(']') - name.indexOf('[') - 1);
 	    document.getElementById("inserted_file["+id+"]").style.display = "none";
-	    if(alreadysaved == 0){
-			var control = document.getElementById("new_file["+id+"]");
-			control.parentNode.removeChild(control);
-		}
+	    var control = document.getElementById("new_file["+id+"]");
+	    control.parentNode.removeChild(control);
     }
-
-    function validateForm(){
-      return true;
-    }
-function showFiles(spectacle, number, niceurl){
-		var table = document.getElementById('files_table');
-		var count = parseInt(document.getElementById('file_count').value);
-		for(var i=0; i<number;i++){
-			console.log("le fichier existe");
-			var row = table.insertRow(table.rows.length);
-			row.id = "inserted_file["+count+"]";
-			var cell0 = row.insertCell(0);
-			var file=new String ('inserted_file['+count+']im');
-			cell0.innerHTML = "<img class='card-img-top' id='inserted_file["+count+"]im' name='inserted_file["+count+"]' class='img-thumbnail' src='http://localhost:5000/static/uploads/{{niceUrl(spectacle.nom)}}/{{niceUrl(spectacle.nom)}}_"+i+"' alt='{{niceUrl(spectacle.nom)}}_"+i+"' \><input type='button' id='delete["+count+"]' value='Delete' onclick='delete_saved_file((\""+file+"\"),"+ i+",\""+spectacle+"\")'/>";
-			++count;
-			
-		}
-    }
-    
-    function delete_saved_file(file, id, spectacle){
-		var src=document.getElementById(file).src;
-		var filename = src.substring(src.lastIndexOf('/')+1);
-		delete_inserted(document.getElementById(file),1);
-		$.ajax({
-				url: '/deleteFile/'+filename+'/'+id+'/'+spectacle,
-				success: function(response){
-				console.log(response);
-				},
-				error: function(error){
-				console.log(error);
-				}
-		});
-		
-	}
   </script>
 
 {% endblock %}
@@ -236,7 +200,7 @@ function showFiles(spectacle, number, niceurl){
   <div class="container-fluid">
     <p>Bienvenue sur la page de modification/création de spectacle : </p>
     <p>{{spectacle.nom}}
-      <form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
+      <form action="" method="POST" enctype="multipart/form-data">
         <div class="form-group">
           <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
           <input type="text" id="nom" class="form-control" name="nom" value='{{spectacle.nom}}'><br>
@@ -247,8 +211,7 @@ function showFiles(spectacle, number, niceurl){
         </div>
         <div class="form-group">
           <label for="photos">Photos:</label><br>
-          <input type="hidden" name="file_count" id="file_count" value="0">
-          <button type="button" id="showfiles"  name="showfiles" onclick="showFiles('{{spectacle.nom}}',{{spectacle.photos}},'{{niceUrl(spectacle.nom)}}')">Show files</button>
+          <input type="hidden" name="file_count" id="file_count" value="0" />
     	  <table id="files_table" border="0" cellpadding="0" cellspacing="0">
           <tr id="new_file_row">
             <td>
