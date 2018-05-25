@@ -186,14 +186,27 @@ def uploadFile (nomSpectacle):
     pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
 
     print("Spectacle.photos :",spectacle.photos)
-    numero = 0
-    for j in range (numero, spectacle.photos):
-        if not os.path.exists(pathUpload+"/"+nomSpectacle+"_"+str(j)):
-            numero = i
-            break
-    nomSpectacle=urlify(nomSpectacle)
-    nomFichier = nomSpectacle+'_'+str(numero)
 
+    print(request.files)
+
+    if 'photos' in request.files :
+        for f in request.files.getlist('photos'):
+            numero = 0
+            for j in range (numero, spectacle.photos):
+                if not os.path.exists(pathUpload+"/"+nomSpectacle+"_"+str(j)):
+                    numero = j
+                    break
+            if numero == 0:
+                numero=spectacle.photos;
+            nomSpectacle=urlify(nomSpectacle)
+            nomFichier = nomSpectacle+'_'+str(numero)
+            f.save(os.path.join(pathUpload,nomFichier))
+            spectacle.photos +=1
+            print("Number photos add, state :",spectacle.photos)
+
+
+    print(request.form)
+    print(request.files)
     db.session.commit()
     dic = {"succes":"total"}
     return json.dumps(dic)
