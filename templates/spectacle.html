@@ -1,84 +1,47 @@
 {% extends "layout.html" %}
 {% set active_page = 'spectacle' %}
-{%block head%}
-{{super()}}
-  <script src="/static/color-thief.js"></script>
-  <script>
-
-
-    var paths = new Array({{paths|length}});
-    var i =0;
-    {%for path in paths%}
-    paths[i] ="{{path}}" ;
-    console.log(paths[i]);
-    i++;
-    {%endfor%}
-    i=0;
-
-    var colorThief = new ColorThief();
-
-    function chgPhoto(){
-      var image = document.getElementById("imgSpectacle");
-      image.onload = function(){
-        var c = colorThief.getColor(image);
-        image.style.backgroundColor = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
-      }
-      i++;
-      if(i>=paths.length)i=0;
-      image.setAttribute("src",paths[i]);
-
-
-      console.log(paths[i]);
-    }
-
-
-    function chgColorPhoto(image){
-
-    }
-
-
-  </script>
-{%endblock%}
 {% block title %}{{spectacle.nom.upper()}}{% endblock %}
 
 
 {% block content %}
 
 
-  <div class="container">
+    <div class="container">
       <div class="row">
         <div class="col-md-8 ">
-          <div class="card card-eq-height">
-          <div class="card-body">
-            <h2 class="card-title">{{spectacle.nom.upper()}} </h2>
-            {%if spectacle.auteur%}
-            <h4 class="card-title">{{spectacle.auteur.upper()}} </h4>
-            {%endif%}
-            {%if spectacle.resume %}
-            <p class="card-resume">{{spectacle.resume}}</p>
-            {%endif%}
+          <div class="card">
+            <div class="card-body">
+              <h2 class="card-title">{{spectacle.nom.upper()}} </h2>
+              {%if spectacle.auteur%}
+              <h4 class="card-title">{{spectacle.auteur.upper()}} </h4>
+              {%endif%}
+              {%if spectacle.resume %}
+              <p class="card-resume">{{spectacle.resume}}</p>
+              {%endif%}
+            </div>
           </div>
         </div>
-        </div>
-        <div class="col-md-4 ">
+        <div class="col-md-4">
           <div class="card card-eq-height">
-          <div class="card-body">
-            <h5 class="card-title">{{spectacle.directeur.upper()}} </h5>
-            <p class="card-participants">Avec {{spectacle.participants}}</p>
-
+            <div class="card-with-background ">
+              <div class="card-body">
+                <h5 class="card-title">{{spectacle.directeur.upper()}} </h5>
+                <p class="card-participants">Avec {{spectacle.participants}}</p>
+              </div>
+            </div>
           </div>
         </div>
-
-      </div>
-    </div>
 
       <div class="row">
-        <div id="showImage"  class=" col-md-12 ">
-              <img onclick="chgPhoto()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
+        <div class="card-img col-md-12 ">
+            <img class="card-img" src="{{paths[0]}}">
       </div>
 
     </div>
   </div>
+
+
+  <p>Administrateur à contacter : {{spectacle.admin}}</p>
 
   <form action="" method="POST">
     <p> Quelles dates souhaitez vous réserver ?</p>
@@ -91,11 +54,11 @@
       {% endfor %}
     </ul>
       <ul>
-        <button name="submit" value="valider" type="submit">Valider</button>
-         {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
-        <button name="submit" value="modify" type="submit">Modifier</button>
-        {%endif%}
+        <button name="submit" value="valider" type="submit">Valider</button> {%if session.admin == 'true' and session.pseudo == spectacle.admin%}
+        <button name="submit" value="modify" type="submit">Modifier</button> {%endif%}
         <br></br>
+        {%for url in paths%}
+        <img src="{{url}}" width=500 alt="Flowers in Chania"><br> {%endfor%}
       </ul>
   </form>
 {% endblock %}

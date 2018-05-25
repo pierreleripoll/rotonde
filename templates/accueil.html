@@ -9,7 +9,6 @@
       <div class="container">
         <h1 class="jumbotron-heading">Liste des spectacles</h1>
         <p class="lead text-muted">Voici la liste des spectacles joués en ce moment à la Rotonde, pour voir les spectacles joués par jour allez dans Calendrier ! Cliquez sur un spectacle pour plus d'informations ou pour réserver des places.</p>
-
       </div>
     </section>
 
@@ -18,13 +17,7 @@
         {%for spectacle in spectacles%}
         <div class="card mb-4">
           <a href="/spectacle/{{spectacle.nom}}">
-                  <img class="card-img-top" class="img-thumbnail"
-                  {%if spectacle.photos != 0 %} src="static/uploads/{{niceUrl(spectacle.nom)}}/{{niceUrl(spectacle.nom)}}_0" alt="{{niceUrl(spectacle.nom)}}_0"
-                  {%else%}
-                    src="static/uploads/placeholder/placeholder_0.jpg"
-                    alt="placeholder_0"
-                  {%endif%}
-                  >
+                  <img class="card-img-top" class="img-thumbnail" src="static/uploads/{{niceUrl(spectacle.nom)}}/{{niceUrl(spectacle.nom)}}_0" alt="{{niceUrl(spectacle.nom)}}_0"  >
                   </a>
           <div class="card-body">
             <h5 class="card-title">{{spectacle.nom}} </h5>

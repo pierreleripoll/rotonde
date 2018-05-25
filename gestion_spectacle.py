@@ -3,7 +3,6 @@ from flask import current_app as app
 from sqlalchemy import *
 from sqlalchemy.sql import *
 from werkzeug.utils import secure_filename
-from json import dumps
 import os
 import re
 from model import*
@@ -70,8 +69,17 @@ def set_spectacle(nomSpectacle):
             for calendrier in thisDates:
                 calendrier.date = datePytoHTML(calendrier.date)
             print(thisDates)
-            if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" : 
-                return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
+            
+            if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
+                path = app.config['UPLOAD_FOLDER']+'/'+urlify(nomSpectacle)
+                paths = []
+                if not os.path.isdir(path) :
+                    print(path+" no uploads dir for this spectacle")
+                else:
+                    for fileName in os.listdir(path):
+                        paths.append('.'+path+'/'+fileName)
+                    print(paths)
+                return render_template('set_spectacle.html',paths=paths,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
             else:
                 return abort(403);
         if request.method=="POST":
@@ -112,6 +120,7 @@ def set_spectacle(nomSpectacle):
                             numberPhotos +=1
                     spectacle.photos=numberPhotos
                 if alreadyIn :
+                    print("CALL update_spectacle")
                     update_spectacle(spectacle)
                 else:
                     insert_spectacle(spectacle)
@@ -141,3 +150,15 @@ def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
     contact = Contact(nom=nomUser,prenom=prenomUser,telephone=tel,adresseMail=mail,annee=anneeSelect, depart=departSelect)
     insert_contact(contact)
     return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
+
+@gestion_spectacle.route('/deleteFile/<string:filename>/<int:number>/<string:nom>')
+def deleteFile (filename, number, nom):
+	tiret=filename.find('_');
+	spectacle=filename[:tiret]
+	print ("spectacle" +spectacle)
+
+	pathUpload =app.config['UPLOAD_FOLDER']+'/'+spectacle
+	os.remove(os.path.join(pathUpload,spectacle+"_"+str(number)))
+	spectacle=get_spectacle(nom)
+	spectacle.photos -= 1
+	return "succes!"
