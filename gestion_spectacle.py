@@ -151,7 +151,7 @@ def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
     contact = Contact(nom=nomUser,prenom=prenomUser,telephone=tel,adresseMail=mail,annee=anneeSelect, depart=departSelect)
     insert_contact(contact)
     return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
-s
+
 @gestion_spectacle.route('/api/deleteFile/<string:nomSpectacle>/<string:filename>',methods=['POST'])
 def deleteFile (nomSpectacle,filename):
     spectacle=get_spectacle(nomSpectacle)
@@ -185,14 +185,27 @@ def uploadFile (nomSpectacle):
     pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
 
     print("Spectacle.photos :",spectacle.photos)
-    numero = 0
-    for j in range (numero, spectacle.photos):
-        if not os.path.exists(pathUpload+"/"+nomSpectacle+"_"+str(j)):
-            numero = i
-            break
-    nomSpectacle=urlify(nomSpectacle)
-    nomFichier = nomSpectacle+'_'+str(numero)
 
+    print(request.files)
+
+    if 'photos' in request.files :
+        for f in request.files.getlist('photos'):
+            numero = 0
+            for j in range (numero, spectacle.photos):
+                if not os.path.exists(pathUpload+"/"+nomSpectacle+"_"+str(j)):
+                    numero = j
+                    break
+            if numero == 0:
+                numero=spectacle.photos;
+            nomSpectacle=urlify(nomSpectacle)
+            nomFichier = nomSpectacle+'_'+str(numero)
+            f.save(os.path.join(pathUpload,nomFichier))
+            spectacle.photos +=1
+            print("Number photos add, state :",spectacle.photos)
+
+
+    print(request.form)
+    print(request.files)
     db.session.commit()
     dic = {"succes":"total"}
     return json.dumps(dic)

@@ -251,6 +251,7 @@
             {%endfor%}
         ],
         uploadUrl: "/api/uploadFile/"+nomSpectacleURL+'/',
+        multiple:true,
         showUpload:true,
         overwriteInitial: false,
         maxFileSize: 1000,
@@ -271,7 +272,7 @@
 
     <label for="input-25">Photos:</label>
     <div class="file-loading">
-        <input id="input-25" name="input25[]" type="file" multiple>
+        <input id="input-25" name="photos" type="file" multiple>
     </div>
 
 
