@@ -1,5 +1,5 @@
 {% extends "layout.html" %}
-{% set active_page = 'set_spectacle' %}
+{% set active_page = 'set_admin' %}
 
 {% block head %}
   {{ super() }}
@@ -104,7 +104,7 @@
     var anneeSelect = $("#anneeSelect").val();
     var departSelect = $("#departSelect").val();
   $.ajax({
-    url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect,
+    url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect+"/"+"{{admin.login}}",
     success: function(data) {
       var option = document.createElement("option");
       option.value = data.id;
@@ -149,13 +149,18 @@
           <input type="checkbox" name="admintype" value="admin"> Admin<br>
   	    <input type="checkbox" name="admintype" value="admin" checked> SuperAdmin<br>
   	   </div>
-      {%endif%}
-      {% if admin.typeAdmin == 'normal'%}
+      {% elif admin.typeAdmin == 'normal'%}
         <div class="form-group">
           <label for="admintype">Cette session est:</label><br>
           <input type="checkbox" name="admintype" value="admin" checked> Admin<br>
         <input type="checkbox" name="admintype" value="admin" > SuperAdmin<br>
        </div>
+       {% else%}
+       <div class="form-group">
+         <label for="admintype">Cette session est:</label><br>
+         <input type="checkbox" name="admintype" value="admin"> Admin<br>
+       <input type="checkbox" name="admintype" value="admin" > SuperAdmin<br>
+      </div>
        {%endif%}
 
 	 <div class="form-group">

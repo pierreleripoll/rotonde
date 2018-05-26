@@ -1,6 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import bcrypt
 from datetime import datetime
+from jinja2 import Template
 import re
 import os
 # Connexion a la DB
@@ -116,6 +117,10 @@ def get_all_places():
     places = Place.query.all()
     return places
 
+def get_all_admins():
+    admins=Session.query.all()
+    return admins
+
 # Renvoie les places correspondant a un nom
 def get_places_user_name(userName):
 	places = Place.query.filter_by(nomUser=userName).all()
@@ -129,6 +134,14 @@ def get_places_mail(mail):
 def get_contact():
     contact = Contact.query.all()
     return contact
+
+def get_contact_admin(adminLogin):
+    admin=get_session(adminLogin)
+    idcontact=admin.idContact
+    print idcontact
+    contacts=Contact.query.filter_by(id=idcontact).all()
+    print contacts
+    return contacts
 
 # Renvoie le spectacle portant le nom specifife
 def get_spectacle(nomSpectacle):

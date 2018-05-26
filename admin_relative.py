@@ -27,12 +27,16 @@ def admin():
                 session.pop("admin",None)
                 session.clear()
                 return redirect(url_for('logout'))
-            if request.form["bouton"]=="create":
+            if request.form["bouton"]=="createspectacle":
                 return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle='nouveauSpectacle'))
             if request.form["bouton"]=="showPlaces":
                 return redirect(url_for('admin_relative.show_places'))
             if request.form["bouton"]=="accueil":
                 return redirect(url_for('logout'))
+            if request.form["bouton"]=="createadmin":
+                return redirect(url_for('admin_relative.set_admin',login="nouveladmin"))
+            if request.form["bouton"]=="adminlist":
+                return redirect(url_for('admin_relative.adminlist'))
 
     else :
         return redirect(url_for('admin_relative.admin_log'))
@@ -110,5 +114,14 @@ def set_admin(login):
                 return redirect(url_for('admin_relative.admin'))
             else :
                 return redirect(url_for('admin_relative.set_admin',login="nouveladmin"))
+    else :
+        return abort(403)
+
+@admin_relative.route('/adminlist', methods=['GET','POST'])
+def adminlist():
+    if session['admin']=="super":
+        if request.method=="GET":
+            admins=get_all_admins()
+            return render_template('adminlist.html', admins=admins)
     else :
         return abort(403)
