@@ -122,19 +122,19 @@
       var mail = $("#adressemail").val();
       var anneeSelect = $("#anneeSelect").val();
       var departSelect = $("#departSelect").val();
-    $.ajax({
-      url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect,
-      success: function(data) {
-        var option = document.createElement("option");
-        option.value = data.id;
-        option.text = data.nom+" "+data.prenom+" "+data.an+data.dep;
-        document.getElementById("ajoutContactDB").appendChild(option);
-        addNewContact();
-      },
-      error: function() {
+      $.ajax({
+        url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect,
+        success: function(data) {
+          var option = document.createElement("option");
+          option.value = data.id;
+          option.text = data.nom+" "+data.prenom+" "+data.an+data.dep;
+          document.getElementById("ajoutContactDB").appendChild(option);
+          addNewContact();
+        },
+        error: function() {
 
-      }
-    });
+        }
+      });
     }
 
     var i = 0;
@@ -179,6 +179,13 @@
       document.getElementById("date-div").appendChild(br);
       document.getElementById("date-div").appendChild(div);
     }
+
+
+    $( document ).ready(function() {
+      var e = document.getElementsByTagName("img");
+      console.log(e, e.length);
+      console.log(e[1]);
+    });
 
     function add_new_file(field, maxsize){
     	var FileSize = field.files[0].size;
@@ -225,6 +232,42 @@
       return true;
     }
 
+    function componentToHex(c) {
+      var hex = c.toString(16);
+      return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    function rgbToHex(r, g, b) {
+      return componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+
+    function createColorBase(id, reader){
+      console.log('YO image : ', id, reader.result);
+      var img = new Image();
+      img.src = reader.result;
+      var c = colorThief.getColor(img);
+      var p = colorThief.getPalette(img);
+      uploadColor(id,c,0);
+      for(j=0; j<9; j++){
+        uploadColor(id,p[j],0);
+      }
+    }
+    
+    function uploadColor(id,color,bool) {
+      var hex = rgbToHex(color[0],color[1],color[2]);
+      console.log(hex)
+      url2 = "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/";
+      console.log("url : ",url2);
+      $.ajax({
+        url: "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/",
+        success: function(data) {
+          console.log("c'est tout bon");
+        },
+        error: function() {
+          console.log("merdo");
+        }
+      });
+    }
 
     $(document).ready(function() {
       colorThief = new ColorThief();
@@ -250,7 +293,6 @@
       {%endfor%}
 
       $("#input-25").fileinput({
-
         initialPreview: [{%for path in paths%} '{{path}}', {%endfor%}],
         initialPreviewAsData: true,
         initialPreviewConfig: [
@@ -264,7 +306,12 @@
         overwriteInitial: false,
         maxFileSize: 1000,
         allowedFileExtensions: ["jpg","png","gif"]
+      }).on('fileuploaded', function(e,params){
+        console.log(e,params);
+        createColorBase(params.response['id'],params.reader);
       });
+
+
       var image = $("#input-25");
       console.log("dernier, affichage de l'objet input-25",image);
     });

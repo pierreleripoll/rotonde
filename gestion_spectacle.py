@@ -142,6 +142,14 @@ def deleteFile (nomSpectacle,filename):
 
             photo = get_photo(pathPhoto)
 
+            id = photo.id
+            print("lol")
+            colors = get_all_colors(id)
+            print(colors);
+            for color in colors:
+                delete(color)
+            colors = get_all_colors(id)
+            print(colors);
             for p in photos:
                 if p.ordre>photo.ordre:
                     p.ordre -=1
@@ -186,7 +194,9 @@ def uploadFile (nomSpectacle):
             print(request.form)
             print(request.files)
             db.session.commit()
+            id = get_id_photo(path).id;
             dic = {"succes":"total"}
+            dic = {"filename":nomFichier,"path":path, "id":id}
             return json.dumps(dic)
 
         else:

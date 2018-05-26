@@ -145,5 +145,5 @@ def uploads(nomSpectacle):
 
 
 if __name__ == '__main__':
-	#app.run(debug='true')
-	app.run(host="192.168.0.14",port=5000)
+	app.run(debug='true')
+	#app.run(host="192.168.0.14",port=5000)

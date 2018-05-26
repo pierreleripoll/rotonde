@@ -135,9 +135,15 @@ def get_spectacles():
     spectacles = Spectacle.query.all()
     return spectacles
 
+
+
 def get_all_photos(nomSpectacle):
     photos = Photo.query.filter_by(spectacle=nomSpectacle).order_by(Photo.ordre).all()
     return photos
+
+def get_id_photo(paht):
+    photo = Photo.query.filter_by(path=paht).first()
+    return photo
 
 def get_paths_photos(nomSpectacle):
     photos = get_all_photos(nomSpectacle);
@@ -161,7 +167,7 @@ def get_main_color(idPhoto):
             return color
 
 def get_all_colors(idPhoto):
-    colors =  Color.query.filter_by(photo=id).all()
+    colors =  Color.query.filter_by(photo=idPhoto).all()
     return colors
 
 def get_all_places():
