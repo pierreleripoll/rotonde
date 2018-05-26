@@ -3,57 +3,8 @@
 {%block head%}
 {{super()}}
   <script src="/static/color-thief.js"></script>
-  <script>
 
 
-    var paths = new Array({{paths|length}});
-    var i =0;
-    {%for path in paths%}
-    paths[i] ="{{path}}" ;
-    console.log(paths[i]);
-    i++;
-    {%endfor%}
-    i=0;
-
-    var colorThief = new ColorThief();
-
-    function chgPhoto(){
-      var image = document.getElementById("imgSpectacle");
-      image.onload = function(){
-        var c = colorThief.getColor(image);
-        var p = colorThief.getPalette(image);
-
-        console.log(p);
-        var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')'
-        document.documentElement.style.setProperty('--color-theme', color);
-        image.style.backgroundColor = color;
-        document.getElementsByClassName('color-box1')[0].style.backgroundColor = color;
-        for(j=0; j<9; j++){
-          var cobox = "color-box"+(j+2)
-          console.log(cobox);
-          document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
-        }
-
-      }
-      i++;
-      if(i>=paths.length)i=0;
-      image.setAttribute("src",paths[i]);
-
-
-      console.log(paths[i]);
-    }
-
-    var month=new Array(12);
-  month[0]="janvier";  month[1]="février";   month[2]="mars";
-  month[3]="avril";    month[4]="mai";       month[5]="juin";
-  month[6]="juillet";  month[7]="août";      month[8]="septembre";
-  month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
-
-
-
-
-
-  </script>
 {%endblock%}
 {% block title %}{{spectacle.nom.upper()}}{% endblock %}
 
@@ -61,83 +12,70 @@
 {% block content %}
 
 
-  <div class="container">
-      <div class="row">
-        <div class="col-md-8 ">
-          <div class="card card-eq-height">
-          <div class="card-body">
-            <h2 class="card-title">{{spectacle.nom.upper()}} </h2>
-            {%if spectacle.auteur%}
-            <h4 class="card-title">{{spectacle.auteur.upper()}} </h4>
-            {%endif%}
-            {%if spectacle.resume %}
-            <p class="card-resume">{{spectacle.resume}}</p>
-            {%endif%}
-          </div>
+<div class="container"> <!-- conteneur de la page -->
+  <div class="row"> <!-- première ligne -->
+    <div class="col-md-8 "> <!-- première colonne de la première ligne -->
+      <div class="card card-eq-height"> <!-- première carte de la première ligne -->
+        <div class="card-body"> <!-- corps de la carte -->
+          <h2 class="card-title">{{spectacle.nom.upper()}} </h2> <!-- titre de la carte -->
+          {%if spectacle.auteur%}
+          <h4 class="card-title">{{spectacle.auteur.upper()}} </h4>
+          {%endif%}
+          {%if spectacle.resume %}
+          <p class="card-resume">{{spectacle.resume}}</p>
+          {%endif%}
         </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card card-eq-height">
-          <div class="card-body col-avec">
-            <h5 class="card-title">{{spectacle.directeur.upper()}} </h5>
-            <p class="card-participants">Avec {{spectacle.participants}}</p>
-
-          </div>
-        </div>
-
       </div>
     </div>
-
-      <div class="row">
-        <div class="col-md-4 ">
-          <div class="card card-eq-height">
-            <div class="card-body card-body-tarifs-dates">
-              <h5 class="card-title card-title-tarifs-dates">Du JJ au JJ MM </h5>
-              <p>Tarifs\nVA :\nEEE euros\nNON VA :\nEEE euros</p>
-            </div>
-            <div class="card-footer card-footer-billet" onclick="afficheBillets()">
-            <p>BILLETS | DATES</p>
-            </div>
-          </div>
-        </div>
-
-        <script>
-        function mouseEnter(){
-          var e=document.getElementsByClassName("content")[0].style.opacity=1;
-          console.log("HOVER : ",e);
-        }
-        function mouseLeave(){
-          var e=document.getElementsByClassName("content")[0].style.opacity=0;
-          console.log("HOVER : ",e);
-        }
-
-
-        </script>
-        <div id="showImage"  class="col-md-8 ">
-          <div class="imageSpectacle" onmouseleave="mouseLeave()" onmouseenter="mouseEnter()">
-            <img onclick="chgPhoto()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
-          </div>
-        </div>
-        <div class="content" onmouseleave="mouseLeave()">
-          <div class="row ">
-              <div class="color-box1"></div>
-              <div class="color-box2"></div>
-              <div class="color-box3"></div>
-              <div class="color-box4"></div>
-              <div class="color-box5"></div>
-              <div class="color-box6"></div>
-              <div class="color-box7"></div>
-              <div class="color-box8"></div>
-              <div class="color-box9"></div>
-              <div class="color-box10"></div>
-          </div>
+    <div class="col-md-4">
+      <div class="card card-eq-height">
+        <div class="card-body col-avec">
+          <h5 class="card-title">{{spectacle.directeur.upper()}} </h5>
+          <p class="card-participants">Avec {{spectacle.participants}}</p>
         </div>
       </div>
-
-
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-md-4 ">
+      <div class="card card-eq-height">
+        <div class="card-body card-body-tarifs-dates">
+          <h5 class="card-title card-title-tarifs-dates">Du JJ au JJ MM </h5>
+          <p>Tarifs\nVA :\nEEE euros\nNON VA :\nEEE euros</p>
+        </div>
+        <div class="card-footer card-footer-billet" onclick="afficheBillets()">
+          <p>BILLETS | DATES</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="showImage"  class="col-md-8 ">
+      <div class="imageSpectacle">
+        <img onclick="chgPhoto()" onmouseEnter="mouseEnter()"  id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
+      </div>
+
+      <div class="content">
+        <div onmouseleave="mouseLeave()" class="card-group">
+          <div id="color-box" class="card bg-color-box1"></div>
+          <div id="color-box" class="card bg-color-box2"></div>
+          <div id="color-box" class="card bg-color-box3"></div>
+          <div id="color-box" class="card bg-color-box4"></div>
+          <div id="color-box" class="card bg-color-box5"></div>
+          <div id="color-box" class="card bg-color-box6"></div>
+          <div id="color-box" class="card bg-color-box7"></div>
+          <div id="color-box" class="card bg-color-box8"></div>
+          <div id="color-box" class="card bg-color-box9"></div>
+          <div id="color-box" class="card bg-color-box10"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+
+  </div>
+</div>
 
   <form action="" method="POST">
     <p> Quelles dates souhaitez vous réserver ?</p>
@@ -157,4 +95,83 @@
         <br></br>
       </ul>
   </form>
+
+  <script>
+    var paths = new Array({{paths|length}});
+    var i =0;
+    {%for path in paths%}
+    paths[i] ="{{path}}" ;
+    console.log(paths[i]);
+    i++;
+    {%endfor%}
+    i=0;
+
+    var colorThief = new ColorThief();
+
+    function chgPhoto(){
+      var image = document.getElementById("imgSpectacle");
+      console.log(image)
+      image.onload = function(){
+        var c = colorThief.getColor(image);
+        var p = colorThief.getPalette(image);
+
+        console.log(p);
+        var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')'
+        document.documentElement.style.setProperty('--color-theme', color);
+        image.style.backgroundColor = color;
+        document.getElementsByClassName('bg-color-box1')[0].style.backgroundColor = color;
+        for(j=0; j<9; j++){
+          var cobox = "bg-color-box"+(j+2)
+          console.log(cobox);
+          document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
+        }
+
+      }
+      i++;
+      if(i>=paths.length)i=0;
+      image.setAttribute("src",paths[i]);
+
+
+      console.log(paths[i]);
+    }
+    chgPhoto();
+    var month=new Array(12);
+    month[0]="janvier";  month[1]="février";   month[2]="mars";
+    month[3]="avril";    month[4]="mai";       month[5]="juin";
+    month[6]="juillet";  month[7]="août";      month[8]="septembre";
+    month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
+  </script>
+
+  <script>
+    var something=[];
+    var colors=[];
+    var base = 'card bg-color-box';
+    var name = "";
+    for(i=0;i<10;i++){
+      name=base+(i+1);
+      elem=document.getElementsByClassName(name);
+      console.log(elem);
+      style=window.getComputedStyle(elem[0],null);
+      something.push(elem);
+      console.log("hey",style.getPropertyValue('background-color'));
+      something[i][0].style.cursor = 'pointer';
+    }
+    console.log(something[5][0]);
+    for(let i=0;i<10;i++){
+      console.log(i);
+      something[i][0].onclick=function(){
+        console.log("in function",i,colors[i]);
+      };
+    }
+
+    function mouseEnter(){
+      var e=document.getElementById("color-box").style.height="3vh";
+      console.log("HOVER : ",e);
+    }
+    function mouseLeave(){
+      var e=document.getElementById("color-box").style.height="0vh";
+      console.log("HOVER : ",e);
+    }
+  </script>
+
 {% endblock %}
