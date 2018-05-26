@@ -301,9 +301,13 @@ def get_all_dates ():
     return dates
 
 def get_color(hex, id):
-    couleur = Color.query.filter_by(hexa=hex, photo=id)
-    print("voici la couleur demandée ! ", couleur)
+    print("params",hex, id)
+    couleur = Color.query.filter_by(hexa=hex, photo=id).first()
     return couleur
+
+def get_color_hexa(hex, id):
+    couleur = Color.query.filter_by(hexa=hex, photo=id).all()
+    return couleur.hexa
 
 def delete(elem):
     db.session.delete(elem)

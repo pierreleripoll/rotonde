@@ -142,9 +142,8 @@
         for(j=0; j<9; j++){
           var cobox = "bg-color-box"+(j+2);
           document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
-
+          uploadColor(5,p[j],0);
         }
-        uploadColor(5,p[0],0);
       }
 
       i++;

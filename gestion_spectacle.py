@@ -196,11 +196,12 @@ def uploadFile (nomSpectacle):
 
 @gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/')
 def uploadColor(id,hex,bool):
-    print(hex);
     test = get_color(hex,id);
     color = Color(hexa=hex,photo=id,actif=bool);
-    print("les deux :",test, color);
-    if(test != color):
+
+    print("les deux :",test.hexa, color.hexa);
+    if(test.hexa != color.hexa and test.photo != color.photo):
+        print("elles sont différentes");
         insert_color(color)
     else:
         print("couleur déjà registered pour cette image")
