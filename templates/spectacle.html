@@ -87,7 +87,7 @@
       <div class="card card-eq-height">
         <div class="card-body card-body-tarifs-dates">
           <h5 class="card-title card-title-tarifs-dates">Du JJ au JJ MM </h5>
-          <p>Tarifs\nVA :\nEEE euros\nNON VA :\nEEE euros</p>
+          <p>Tarifs<br>VA :EEE euros<br>NON VA :EEE euros</p>
         </div>
         <div class="card-footer card-footer-billet" onclick="afficheBillets()">
           <p>BILLETS | DATES</p>
@@ -124,12 +124,27 @@
           <p>DATES ET HORAIRES</p>
         </div>
         <div class="card-body card-body-billet">
-          {% for date in dates %}
-          <li id="dates-tab">{{date.date}}                {{date.placesRestantes}}
-            <input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"> </li>
-          {%endfor%}
+          <form action="" method="POST">
+            <ul>
+              {%for date in dates %}
+              <li class = "ligne-date">
+                <tr>
+                  <td id="date" style="color:yellow";>{{date.date}}</td>
+                  <td id="places-restantes">{{date.placesRestantes}}</td>
+                  <td id="input-places"><input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"></td>
+                </tr>
+              </li>
+              {% endfor %}
+            </ul>
+              <ul>
+                <button class="btn" name="submit" value="valider" type="submit">Valider</button>
+                 {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
+                <button class="btn" name="submit" value="modify" type="submit">Modifier</button>
+                {%endif%}
+                <br></br>
+              </ul>
+          </form>
         </div>
-
       </div>
     </div>
   </div>
@@ -145,9 +160,9 @@
       {% endfor %}
     </ul>
       <ul>
-        <button name="submit" value="valider" type="submit">Valider</button>
+        <button class="btn" name="submit" value="valider" type="submit">Valider</button>
          {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
-        <button name="submit" value="modify" type="submit">Modifier</button>
+        <button class="btn" name="submit" value="modify" type="submit">Modifier</button>
         {%endif%}
         <br></br>
       </ul>

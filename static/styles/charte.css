@@ -98,6 +98,7 @@ super-small {
   border-radius: 0px;
   background-color: var(--color-theme);
   border-color: var(--color-theme);
+  color: var(--color-font-light);
 }
 
 .btn:active{

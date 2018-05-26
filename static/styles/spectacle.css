@@ -88,7 +88,7 @@
 }
 
 #color-box{
-  Width:5%;
+  Width:auto;
   border-top:0;
   border-color:var(--color-border);
   transition: all 0.8s ease-in-out 0s;
@@ -146,20 +146,24 @@
 
 .card-header-billet{
   border-radius:0px;
-  padding : 5px;
+  padding : 5px 5px 0px 5px;
   font-size:120%;
-  height:4vh;
+  height:auto;
   color: var(--color-font-light);
   background-color: var(--color-theme);
 }
 
 .card-body-billet{
   margin:0;
-  height:auto;
 }
 
-#dates-tab{
+.ligne-date{
   list-style-type: none;
   padding:0;
   margin:1vh;
+}
+
+#date{
+  color: var(--color-insa);
+  margin-right:5vw;
 }
