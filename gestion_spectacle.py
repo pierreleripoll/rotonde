@@ -199,8 +199,7 @@ def uploadColor(id,hex,bool):
     test = get_color(hex,id);
     color = Color(hexa=hex,photo=id,actif=bool);
 
-    print("les deux :",test.hexa, color.hexa);
-    if(test.hexa != color.hexa and test.photo != color.photo):
+    if(test is None):
         print("elles sont différentes");
         insert_color(color)
     else:
