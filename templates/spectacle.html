@@ -179,7 +179,6 @@
       };
     }
 
-
     function scrollToY(distance, duration) {
         var initialY = window.scrollY;
         var y = distance;
@@ -198,14 +197,15 @@
     }
 
     function afficheBillets(){
-
-      var e=document.getElementsByClassName("card-billet")[0].style.opacity;
-      if(e==1){
+      var e=document.getElementsByClassName("card-billet")[0];
+      if(e.style.opacity==1){
         document.getElementsByClassName("card-billet")[0].style.opacity="0";
         window.scrollToY(0,1000);
       }else{
         document.getElementsByClassName("card-billet")[0].style.opacity="1";
-        window.scrollToY(500,1000);
+        let Y=e.getBoundingClientRect().top+pageYOffset;
+        console.log(Y);
+        window.scrollToY(Y,1000);
       }
       console.log("CLICK : ",e);
 
