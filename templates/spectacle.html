@@ -4,6 +4,51 @@
 {{super()}}
   <script src="/static/color-thief.js"></script>
 
+  <script>
+    var paths = new Array({{paths|length}});
+    var i =0;
+    {%for path in paths%}
+    paths[i] ="{{path}}" ;
+    console.log(paths[i]);
+    i++;
+    {%endfor%}
+    i=0;
+
+    var colorThief = new ColorThief();
+
+    function chgPhoto(){
+      var image = document.getElementById("imgSpectacle");
+      console.log(image)
+      image.onload = function(){
+        var c = colorThief.getColor(image);
+        var p = colorThief.getPalette(image);
+
+        console.log(p);
+        var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')'
+        document.documentElement.style.setProperty('--color-theme', color);
+        image.style.backgroundColor = color;
+        document.getElementsByClassName('bg-color-box1')[0].style.backgroundColor = color;
+        for(j=0; j<9; j++){
+          var cobox = "bg-color-box"+(j+2)
+          console.log(cobox);
+          document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
+        }
+
+      }
+      i++;
+      if(i>=paths.length)i=0;
+      image.setAttribute("src",paths[i]);
+
+
+      console.log(paths[i]);
+    }
+    chgPhoto();
+    var month=new Array(12);
+    month[0]="janvier";  month[1]="février";   month[2]="mars";
+    month[3]="avril";    month[4]="mai";       month[5]="juin";
+    month[6]="juillet";  month[7]="août";      month[8]="septembre";
+    month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
+  </script>
 
 {%endblock%}
 {% block title %}{{spectacle.nom.upper()}}{% endblock %}
@@ -72,8 +117,21 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row"> <!--billeterie -->
+    <div class="col-md-12" >
+      <div class="card card-billet">
+        <div class="card-header card-header-billet">
+          <p>DATES ET HORAIRES</p>
+        </div>
+        <div class="card-body card-body-billet">
+          {% for date in dates %}
+          <li id="dates-tab">{{date.date}}                {{date.placesRestantes}}
+            <input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"> </li>
+          {%endfor%}
+        </div>
 
+      </div>
+    </div>
   </div>
 </div>
 
@@ -82,8 +140,7 @@
     <p> Date Places Restantes </p>
     <ul>
       {%for date in dates %}
-      <li>{{date.date}} {{date.placesRestantes}}
-        <input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"> </li>
+
 
       {% endfor %}
     </ul>
@@ -95,52 +152,6 @@
         <br></br>
       </ul>
   </form>
-
-  <script>
-    var paths = new Array({{paths|length}});
-    var i =0;
-    {%for path in paths%}
-    paths[i] ="{{path}}" ;
-    console.log(paths[i]);
-    i++;
-    {%endfor%}
-    i=0;
-
-    var colorThief = new ColorThief();
-
-    function chgPhoto(){
-      var image = document.getElementById("imgSpectacle");
-      console.log(image)
-      image.onload = function(){
-        var c = colorThief.getColor(image);
-        var p = colorThief.getPalette(image);
-
-        console.log(p);
-        var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')'
-        document.documentElement.style.setProperty('--color-theme', color);
-        image.style.backgroundColor = color;
-        document.getElementsByClassName('bg-color-box1')[0].style.backgroundColor = color;
-        for(j=0; j<9; j++){
-          var cobox = "bg-color-box"+(j+2)
-          console.log(cobox);
-          document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
-        }
-
-      }
-      i++;
-      if(i>=paths.length)i=0;
-      image.setAttribute("src",paths[i]);
-
-
-      console.log(paths[i]);
-    }
-    chgPhoto();
-    var month=new Array(12);
-    month[0]="janvier";  month[1]="février";   month[2]="mars";
-    month[3]="avril";    month[4]="mai";       month[5]="juin";
-    month[6]="juillet";  month[7]="août";      month[8]="septembre";
-    month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
-  </script>
 
   <script>
     var something=[];

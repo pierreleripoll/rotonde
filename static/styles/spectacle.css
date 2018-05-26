@@ -1,7 +1,7 @@
 :root {
   height: 100%;
   --color-theme: rgb(50,50,50);
-  --color-font: rgb(240,240,240);
+  --color-font-light: rgb(240,240,240);
   --jumbotron-padding-y: 3rem;
 
 }
@@ -19,12 +19,10 @@
 }
 
 .card-body-tarifs-dates{
-  color: var(--color-theme);
   font-size: 100%;
 }
 
 .card-title-tarifs-dates{
-  color:black;
   font-size: 150%;
 }
 
@@ -46,25 +44,20 @@
 }
 
 .col-avec{
-  color: var(--color-font);
+  color: var(--color-font-light);
   font-size: 150%;
   background-color: var(--color-theme);
 }
 
 .card-footer-billet{
   height:40%;
-  color: var(--color-font);
+  color: var(--color-font-light);
   font-size: 150%;
   background-color: var(--color-theme);
+  border-radius: 0px;
 }
 
-.card {
-  border-radius: 0px;
-  -webkit-column-gap: 40px; /* Chrome, Safari, Opera */
-  -moz-column-gap: 40px; /* Firefox */
-  column-gap: 40px;
-  border-color:black;
-}
+
 
 .card-eq-height {
   height: 100%;
@@ -85,19 +78,19 @@
   height : 40vh;
   background-color: white;
   object-fit: contain;
-  border-color:black;
   border:1px solid;
-  border-bottom: 0;
+  border-bottom:0px;
+  border-color:var(--color-border);
 }
 
 .card-img-top-pers {
   width: 100%;
-
 }
 
 #color-box{
   Width:5%;
   border-top:0;
+  border-color:var(--color-border);
   transition: all 0.8s ease-in-out 0s;
 }
 
@@ -149,4 +142,24 @@
 .bg-color-box10 {
   background-color: #FF850C;
   border-left:0;
+}
+
+.card-header-billet{
+  border-radius:0px;
+  padding : 5px;
+  font-size:120%;
+  height:4vh;
+  color: var(--color-font-light);
+  background-color: var(--color-theme);
+}
+
+.card-body-billet{
+  margin:0;
+  height:auto;
+}
+
+#dates-tab{
+  list-style-type: none;
+  padding:0;
+  margin:1vh;
 }
