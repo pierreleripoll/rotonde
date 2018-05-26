@@ -121,7 +121,6 @@ def set_spectacle(nomSpectacle):
                 actualDates = get_dates(nomSpectacle)
                 while "datetime"+str(nombrePlace) in cont :
                     datePy = datetime.strptime(cont["datetime"+str(nombrePlace)], '%d/%m/%Y %H:%M')
-                    print("*************************",datePy)
                     #datePy =dateHTMLtoPy(cont["datetime"+str(nombrePlace)])
                     date = Calendrier(date=datePy,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(nombrePlace)]))
                     nombrePlace +=1
@@ -154,3 +153,15 @@ def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
             return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
     else:
         return render_template("accueil.html")
+
+@gestion_spectacle.route('/deleteFile/<string:filename>/<int:number>/<string:nom>')
+def deleteFile (filename, number, nom):
+	tiret=filename.find('_');
+	spectacle=filename[:tiret]
+	print ("spectacle" +spectacle)
+
+	pathUpload =app.config['UPLOAD_FOLDER']+'/'+spectacle
+	os.remove(os.path.join(pathUpload,spectacle+"_"+str(number)))
+	spectacle=get_spectacle(nom)
+	spectacle.photos -= 1
+	return "succes!"

@@ -14,6 +14,11 @@
   <link rel="stylesheet" href="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
   <link rel="stylesheet" href="/static/bower_components/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
 
+
+
+<script src="/static/color-thief.js"></script>
+<script src="/static/jquery.guillotine.js"></script>
+<script src="/static/jquery.guillotine.min.js"></script>
   <script>
   var contactAffiche = 0
   function addNewContact() {
@@ -231,8 +236,8 @@
 		var count = parseInt(document.getElementById('file_count').value);
 
 		var file_name = document.getElementById("new_file["+count+"]").value;
-    file_name = file_name.substr(file_name.lastIndexOf('\\')+1)
-    console.log(file_name);
+
+
 		document.getElementById('new_file_row').style.display = "none";
 		document.getElementById('new_file_row').id = "new_file_row["+count+"]";
 		var table = document.getElementById('files_table');
@@ -264,8 +269,9 @@
     function validateForm(){
       return true;
     }
-  </script>
 
+
+  </script>
 {% endblock %}
 
 {% block title %}Modification spectacle{% endblock %}
@@ -273,7 +279,9 @@
 {% block content %}
   <div class="container-fluid">
     <p>Bienvenue sur la page de modification/création de spectacle : </p>
-    <p>{{spectacle.nom}}
+    <p>{{spectacle.nom}}</p>
+
+
       <form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
         <div class="form-group">
           <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
@@ -293,7 +301,9 @@
             </td>
          </tr>
          </table>
+
         </div>
+
         <div class="form-group">
           <label for="liens">Liens:</label><br>
           <input type="url" name="liens" class="form-control" value='{{spectacle.liens}}'><br>
@@ -384,4 +394,5 @@
         </div>
       </form>
     </div>
+
 {% endblock %}
