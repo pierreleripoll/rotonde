@@ -91,56 +91,56 @@
   Width:auto;
   border-top:0;
   border-color:var(--color-border);
-  transition: all 0.8s ease-in-out 0s;
+  transition: all 0.4s ease-in-out 0s;
 }
 
 .bg-color-box1{
   border-left:1px solid;
-  background-color: #FF850A;
+  background-color: var(--color-insa);
   border-right:0;
 }
 .bg-color-box2{
-  background-color: #FF850B;
+  background-color: var(--color-insa);
   border-left:0;
   border-right:0;
 }
 .bg-color-box3{
-  background-color: #FF850C;
+  background-color: var(--color-insa);
   border-left:0;
   border-right:0;
 }
 .bg-color-box4{
-  background-color: #FF850C;
+  background-color: var(--color-insa);
   border-left:0;
   border-right:0;
 }
 .bg-color-box5 {
-  background-color: #FF850C;
+  background-color: var(--color-insa);
   border-left:0;
   border-right:0;
 }
 .bg-color-box6 {
-  background-color: #FF850C;
+  background-color: var(--color-insa);
   border-left:0;
   border-right:0;
 }
 .bg-color-box7 {
-  background-color: #FF850C;
+  background-color: var(--color-insa);
   border-left:0;
   border-right:0;
 }
 .bg-color-box8 {
-  background-color: #FF850C;
+  background-color: var(--color-insa);
   border-left:0;
   border-right:0;
 }
 .bg-color-box9 {
-  background-color: #FF850C;
+  background-color: var(--color-insa);
   border-left:0;
   border-right:0;
 }
 .bg-color-box10 {
-  background-color: #FF850C;
+  background-color: var(--color-insa);
   border-left:0;
 }
 
@@ -148,22 +148,65 @@
   border-radius:0px;
   padding : 5px 5px 0px 5px;
   font-size:120%;
-  height:auto;
   color: var(--color-font-light);
   background-color: var(--color-theme);
 }
 
 .card-body-billet{
   margin:0;
+  padding:0;
+  padding-top: 1rem;
 }
 
-.ligne-date{
+.liste-dates{
   list-style-type: none;
   padding:0;
   margin:1vh;
+  border: 0px;
+}
+
+.table{
+  margin:0;
+  padding:0;
+  border: 0px;
 }
 
 #date{
-  color: var(--color-insa);
-  margin-right:5vw;
+  text-align:left;
+}
+
+#places-restantes{
+  text-align: center;
+}
+
+#input-places{
+  text-align:right;
+}
+
+.buttons{
+  padding:0;
+  margin:0;
+}
+
+.btn-valider{
+  text-align:center;
+  width:100%;
+}
+
+.btn-valider:hover{
+  background-color: var(--color-light-font);
+  color:var(--color-theme);
+  border-color: var(--color-light-font);
+}
+
+
+.btn-modifier{
+  text-align:center;
+  width:100%;
+}
+
+.btn-modifier:hover{
+  background-color: var(--color-light-font);
+  color:var(--color-theme);
+  border-color: var(--color-light-font);
 }

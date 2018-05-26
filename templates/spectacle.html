@@ -4,6 +4,113 @@
 {{super()}}
   <script src="/static/color-thief.js"></script>
 
+
+{%endblock%}
+{% block title %}{{spectacle.nom.upper()}}{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container"> <!-- conteneur de la page -->
+
+
+  <div class="row"> <!-- première ligne -->
+    <div class="col-md-8 "> <!-- première colonne de la première ligne -->
+      <div class="card card-eq-height"> <!-- première carte de la première ligne -->
+        <div class="card-body"> <!-- corps de la carte -->
+          <h2 class="card-title">{{spectacle.nom.upper()}} </h2> <!-- titre de la carte -->
+          {%if spectacle.auteur%}
+          <h4 class="card-title">{{spectacle.auteur.upper()}} </h4>
+          {%endif%}
+          {%if spectacle.resume %}
+          <p class="card-resume">{{spectacle.resume}}</p>
+          {%endif%}
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card card-eq-height">
+        <div class="card-body col-avec">
+          <h5 class="card-title">{{spectacle.directeur.upper()}} </h5>
+          <p class="card-participants">Avec {{spectacle.participants}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 ">
+      <div class="card card-eq-height">
+        <div class="card-body card-body-tarifs-dates">
+          <h5 class="card-title card-title-tarifs-dates">Du JJ au JJ MM </h5>
+          <p>Tarifs<br>VA :EEE euros<br>NON VA :EEE euros</p>
+        </div>
+        <div class="card-footer card-footer-billet" onclick="afficheBillets()">
+          <p>BILLETS | DATES</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="showImage"  class="col-md-8 ">
+      <div class="imageSpectacle">
+        <img onclick="chgPhoto()" onmouseEnter="mouseEnter()"  onmouseleave="mouseLeave()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
+      </div>
+
+      <div class="content">
+        <div onmouseleave="mouseLeave()" onmouseEnter="mouseEnter()" class="card-group">
+          <div id="color-box" class="card bg-color-box1"></div>
+          <div id="color-box" class="card bg-color-box2"></div>
+          <div id="color-box" class="card bg-color-box3"></div>
+          <div id="color-box" class="card bg-color-box4"></div>
+          <div id="color-box" class="card bg-color-box5"></div>
+          <div id="color-box" class="card bg-color-box6"></div>
+          <div id="color-box" class="card bg-color-box7"></div>
+          <div id="color-box" class="card bg-color-box8"></div>
+          <div id="color-box" class="card bg-color-box9"></div>
+          <div id="color-box" class="card bg-color-box10"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row"> <!--billeterie -->
+    <div class="col-md-12" >
+      <div class="card card-billet">
+        <div class="card-header card-header-billet">
+          <p>DATES ET HORAIRES</p>
+        </div>
+        <div class="card-body card-body-billet">
+          <form action="" method="POST">
+            <ul class="liste-dates">
+              {%for date in dates %}
+              <li >
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td id="date">{{date.date}}</td>
+                      <td id="places-restantes">{{date.placesRestantes}}</td>
+                      <td id="input-places"><input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"></td>
+                    </tr>
+                  </tbody>
+                </table>
+
+              </li>
+              {% endfor %}
+            </ul>
+            <ul class="buttons">
+              <button class="btn btn-valider" name="submit" value="valider" type="submit">Valider</button>
+                {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
+                  <button class="btn btn-modifier" name="submit" value="modify" type="submit">Modifier</button>
+                {%endif%}
+            </ul>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
   <script>
     var paths = new Array({{paths|length}});
     var i =0;
@@ -49,124 +156,6 @@
     month[6]="juillet";  month[7]="août";      month[8]="septembre";
     month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
   </script>
-
-{%endblock%}
-{% block title %}{{spectacle.nom.upper()}}{% endblock %}
-
-
-{% block content %}
-
-
-<div class="container"> <!-- conteneur de la page -->
-  <div class="row"> <!-- première ligne -->
-    <div class="col-md-8 "> <!-- première colonne de la première ligne -->
-      <div class="card card-eq-height"> <!-- première carte de la première ligne -->
-        <div class="card-body"> <!-- corps de la carte -->
-          <h2 class="card-title">{{spectacle.nom.upper()}} </h2> <!-- titre de la carte -->
-          {%if spectacle.auteur%}
-          <h4 class="card-title">{{spectacle.auteur.upper()}} </h4>
-          {%endif%}
-          {%if spectacle.resume %}
-          <p class="card-resume">{{spectacle.resume}}</p>
-          {%endif%}
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="card card-eq-height">
-        <div class="card-body col-avec">
-          <h5 class="card-title">{{spectacle.directeur.upper()}} </h5>
-          <p class="card-participants">Avec {{spectacle.participants}}</p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-md-4 ">
-      <div class="card card-eq-height">
-        <div class="card-body card-body-tarifs-dates">
-          <h5 class="card-title card-title-tarifs-dates">Du JJ au JJ MM </h5>
-          <p>Tarifs<br>VA :EEE euros<br>NON VA :EEE euros</p>
-        </div>
-        <div class="card-footer card-footer-billet" onclick="afficheBillets()">
-          <p>BILLETS | DATES</p>
-        </div>
-      </div>
-    </div>
-
-    <div id="showImage"  class="col-md-8 ">
-      <div class="imageSpectacle">
-        <img onclick="chgPhoto()" onmouseEnter="mouseEnter()"  id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
-      </div>
-
-      <div class="content">
-        <div onmouseleave="mouseLeave()" class="card-group">
-          <div id="color-box" class="card bg-color-box1"></div>
-          <div id="color-box" class="card bg-color-box2"></div>
-          <div id="color-box" class="card bg-color-box3"></div>
-          <div id="color-box" class="card bg-color-box4"></div>
-          <div id="color-box" class="card bg-color-box5"></div>
-          <div id="color-box" class="card bg-color-box6"></div>
-          <div id="color-box" class="card bg-color-box7"></div>
-          <div id="color-box" class="card bg-color-box8"></div>
-          <div id="color-box" class="card bg-color-box9"></div>
-          <div id="color-box" class="card bg-color-box10"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="row"> <!--billeterie -->
-    <div class="col-md-12" >
-      <div class="card card-billet">
-        <div class="card-header card-header-billet">
-          <p>DATES ET HORAIRES</p>
-        </div>
-        <div class="card-body card-body-billet">
-          <form action="" method="POST">
-            <ul>
-              {%for date in dates %}
-              <li class = "ligne-date">
-                <tr>
-                  <td id="date" style="color:yellow";>{{date.date}}</td>
-                  <td id="places-restantes">{{date.placesRestantes}}</td>
-                  <td id="input-places"><input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"></td>
-                </tr>
-              </li>
-              {% endfor %}
-            </ul>
-              <ul>
-                <button class="btn" name="submit" value="valider" type="submit">Valider</button>
-                 {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
-                <button class="btn" name="submit" value="modify" type="submit">Modifier</button>
-                {%endif%}
-                <br></br>
-              </ul>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-  <form action="" method="POST">
-    <p> Quelles dates souhaitez vous réserver ?</p>
-    <p> Date Places Restantes </p>
-    <ul>
-      {%for date in dates %}
-
-
-      {% endfor %}
-    </ul>
-      <ul>
-        <button class="btn" name="submit" value="valider" type="submit">Valider</button>
-         {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
-        <button class="btn" name="submit" value="modify" type="submit">Modifier</button>
-        {%endif%}
-        <br></br>
-      </ul>
-  </form>
 
   <script>
     var something=[];
