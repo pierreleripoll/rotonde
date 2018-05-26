@@ -94,7 +94,7 @@ def set_admin(login):
 				return abort(403)
 
         if request.method=="POST":
-            if request.form["login"] != "":
+            if request.form["login"] != "" and request.form["password"] != "":
 
                 cont = request.form
                 print("\n\n"+ str(cont) +"\n\n")
