@@ -79,12 +79,36 @@ def admin_log():
 
 @admin_relative.route('/set_admin/<login>', methods=['GET','POST'])
 def set_admin(login):
-    if 'super' in session:
+    if session['admin']=="super":
         if request.method=="GET":
-            sessionAdmin = get_session(login)
-            thisContact = get_contact()
+			print login
+			sessionAdmin=get_session(login)
+			thisContact=get_contact()
+			if login=="nouveladmin" or sessionAdmin.typeAdmin=="normal" or sessionAdmin.typeAdmin=="super":
+				return render_template('set_admin.html', admin=sessionAdmin, contact=thisContact)
+			else:
+				return abort(403)
 
-            if login == "nouveladmin" or session['admin']=="super" :
-                return render_template('set_admin.html',login = login, contact=thisContact)
-            else:
-                return abort(403);
+        if request.method=="POST":
+            if request.form["login"] != "":
+
+                cont = request.form
+                print("\n\n"+ str(cont) +"\n\n")
+                admin = Session(login=cont["login"],password=cont["password"],typeAdmin =cont["admintype"])
+                print("\n\n"+ str(cont) +"\n\n")
+                alreadyIn = get_session(admin.login)
+                if alreadyIn:
+                    print("\nSESSION ALREADY IN\n")
+                    if not(session['admin']=="super"):
+                        print("\n\nNOT ALLOWED MODIFY THIS SPECTACLE\n\n")
+                        return abort(403)
+                    print("CALL update_session")
+                    update_session(admin)
+                else:
+                    insert_session(admin)
+                db.session.commit();
+                return redirect(url_for('admin_relative.admin'))
+            else :
+                return redirect(url_for('admin_relative.set_admin',login="nouveladmin"))
+    else :
+        return abort(403)

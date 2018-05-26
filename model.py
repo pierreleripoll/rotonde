@@ -140,9 +140,10 @@ def get_spectacle(nomSpectacle):
 def get_date (date):
 	date= Calendrier.query.filter_by(date=date).first()
 	return date
-	
+
 def get_session(login):
-	session=Session.query.filter_by(login=login).first()
+    session=Session.query.filter_by(login=login).first()
+    return session
 
 def insert_place(place):
     db.session.add(place)
@@ -166,11 +167,24 @@ def insert_spectacle(spectacle):
     db.session.commit()
     return
 
+def insert_session(newsession):
+    db.session.add(newsession)
+    db.session.commit()
+    return
+
 # Update un spectacle
 def update_spectacle(spectacle):
     oldSpectacle = Spectacle.query.filter_by(nom=spectacle.nom).first()
     oldSpectacle = spectacle;
     print("OLD Spectacle",oldSpectacle.auteur,oldSpectacle.directeur)
+
+    db.session.commit()
+
+    return
+
+def update_session(session):
+    oldSession = Session.query.filter_by(login=session.login).first()
+    oldSession = session;
 
     db.session.commit()
 
