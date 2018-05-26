@@ -161,7 +161,7 @@ def get_main_color(idPhoto):
             return color
 
 def get_all_colors(idPhoto):
-    colors =  Color.query.filter_by(photo=id).all()
+    colors =  Color.query.filter_by(id=idPhoto).all()
     return colors
 
 def get_all_places():
