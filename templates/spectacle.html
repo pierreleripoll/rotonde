@@ -122,62 +122,82 @@
     i=0;
 
     var colorThief = new ColorThief();
+    function componentToHex(c) {
+      var hex = c.toString(16);
+      return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    function rgbToHex(r, g, b) {
+      return componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
 
     function chgPhoto(){
       var image = document.getElementById("imgSpectacle");
-      console.log(image)
       image.onload = function(){
         var c = colorThief.getColor(image);
         var p = colorThief.getPalette(image);
-
-        console.log(p);
-        var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')'
+        var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
         document.documentElement.style.setProperty('--color-theme', color);
-        image.style.backgroundColor = color;
         document.getElementsByClassName('bg-color-box1')[0].style.backgroundColor = color;
         for(j=0; j<9; j++){
-          var cobox = "bg-color-box"+(j+2)
-          console.log(cobox);
+          var cobox = "bg-color-box"+(j+2);
           document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
-        }
 
+        }
+        uploadColor(5,p[0],0);
       }
+
       i++;
       if(i>=paths.length)i=0;
       image.setAttribute("src",paths[i]);
-
-
       console.log(paths[i]);
     }
+
     chgPhoto();
+
     var month=new Array(12);
     month[0]="janvier";  month[1]="février";   month[2]="mars";
     month[3]="avril";    month[4]="mai";       month[5]="juin";
     month[6]="juillet";  month[7]="août";      month[8]="septembre";
     month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
-  </script>
 
-  <script>
+    function uploadColor(id,color,bool) {
+      var hex = rgbToHex(color[0],color[1],color[2]);
+      console.log(hex)
+      url2 = "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/";
+      console.log("url : ",url2);
+    $.ajax({
+      url: "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/",
+      success: function(data) {
+        console.log("c'est tout bon");
+      },
+      error: function() {
+        console.log("merdo");
+      }
+    });
+    }
+
+
+
     var something=[];
     var colors=[];
     var base = 'card bg-color-box';
     var name = "";
+
+
     for(i=0;i<10;i++){
       name=base+(i+1);
       elem=document.getElementsByClassName(name);
-      console.log(elem);
-      style=window.getComputedStyle(elem[0],null);
-      something.push(elem);
-      console.log("hey",style.getPropertyValue('background-color'));
+      something[i]=elem;
       something[i][0].style.cursor = 'pointer';
-    }
-    console.log(something[5][0]);
-    for(let i=0;i<10;i++){
-      console.log(i);
+
       something[i][0].onclick=function(){
-        console.log("in function",i,colors[i]);
+        color=window.getComputedStyle(this,null).getPropertyValue("background-color");
+        console.log("in function",i,color);
+        document.documentElement.style.setProperty('--color-theme', color);
       };
     }
+
 
     function scrollToY(distance, duration) {
         var initialY = window.scrollY;
@@ -208,7 +228,6 @@
         window.scrollToY(Y,1000);
       }
       console.log("CLICK : ",e);
-
     }
 
     function mouseEnter(){

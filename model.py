@@ -103,7 +103,7 @@ class Photo(db.Model):
 
 class Color(db.Model):
     hexa = db.Column(db.String(6),nullable=False,primary_key=True)
-    photo = db.Column(db.Integer,db.ForeignKey('photo.id'),nullable=False)
+    photo = db.Column(db.Integer,db.ForeignKey('photo.id'),nullable=False, primary_key=True)
     actif = db.Column(db.Boolean)
 
     def __repr__(self):
@@ -205,6 +205,11 @@ def insert_date(date):
     db.session.add(date)
     return
 
+def insert_color(color):
+    db.session.add(color)
+    db.session.commit()
+    return
+
 def insert_contact(contact):
     db.session.add(contact)
     db.session.commit()
@@ -226,7 +231,6 @@ def update_photo(newPhoto):
     oldPhoto.ordre = newPhoto.ordre
     db.session.commit()
     return
-
 
 # Update un spectacle
 def update_spectacle(spectacle):
@@ -296,6 +300,10 @@ def get_all_dates ():
 
     return dates
 
+def get_color(hex, id):
+    couleur = Color.query.filter_by(hexa=hex, photo=id)
+    print("voici la couleur demandée ! ", couleur)
+    return couleur
 
 def delete(elem):
     db.session.delete(elem)

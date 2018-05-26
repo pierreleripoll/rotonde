@@ -30,226 +30,233 @@
 <script src="/static/color-thief.js"></script>
 <script src="/static/jquery.guillotine.js"></script>
 <script src="/static/jquery.guillotine.min.js"></script>
-  <script>
-  var contactAffiche = 0
-  function addNewContact() {
-    var div = document.createElement("div");
-    var inputName = document.createElement("INPUT");
-    inputName.setAttribute("type", "text");
-    inputName.setAttribute("id", "nomUser");
-    inputName.setAttribute("class", "form-control");
-    inputName.setAttribute("name", "nomUser");
-    inputName.setAttribute("placeholder","Nom");
+<script>
+    var contactAffiche = 0
+    function addNewContact() {
+      var div = document.createElement("div");
+      var inputName = document.createElement("INPUT");
+      inputName.setAttribute("type", "text");
+      inputName.setAttribute("id", "nomUser");
+      inputName.setAttribute("class", "form-control");
+      inputName.setAttribute("name", "nomUser");
+      inputName.setAttribute("placeholder","Nom");
 
-    div.appendChild(inputName);
+      div.appendChild(inputName);
 
-    var inputPrenom = document.createElement("input");
-    inputPrenom.setAttribute("type", "text");
-    inputPrenom.setAttribute("id", "prenomUser");
-    inputPrenom.setAttribute("class", "form-control");
-    inputPrenom.setAttribute("name", "prenomUser");
-    inputPrenom.setAttribute("placeholder","Prenom");
+      var inputPrenom = document.createElement("input");
+      inputPrenom.setAttribute("type", "text");
+      inputPrenom.setAttribute("id", "prenomUser");
+      inputPrenom.setAttribute("class", "form-control");
+      inputPrenom.setAttribute("name", "prenomUser");
+      inputPrenom.setAttribute("placeholder","Prenom");
 
-    div.appendChild(inputPrenom);
+      div.appendChild(inputPrenom);
 
-    var telephone = document.createElement("input");
-    telephone.setAttribute("type", "integer");
-    telephone.setAttribute("id", "telephone");
-    telephone.setAttribute("name", "telephone");
-    telephone.setAttribute("placeholder","Numero de Telephone");
+      var telephone = document.createElement("input");
+      telephone.setAttribute("type", "integer");
+      telephone.setAttribute("id", "telephone");
+      telephone.setAttribute("name", "telephone");
+      telephone.setAttribute("placeholder","Numero de Telephone");
 
-    div.appendChild(telephone);
+      div.appendChild(telephone);
 
-    var adressemail = document.createElement("input");
-    adressemail.setAttribute("type", "text");
-    adressemail.setAttribute("id", "adressemail");
-    adressemail.setAttribute("class", "form-control");
-    adressemail.setAttribute("name", "adressemail");
-    adressemail.setAttribute("placeholder","Adresse email");
+      var adressemail = document.createElement("input");
+      adressemail.setAttribute("type", "text");
+      adressemail.setAttribute("id", "adressemail");
+      adressemail.setAttribute("class", "form-control");
+      adressemail.setAttribute("name", "adressemail");
+      adressemail.setAttribute("placeholder","Adresse email");
 
-    div.appendChild(adressemail);
+      div.appendChild(adressemail);
 
-    var annee = document.createElement("select");
-    annee.id = "anneeSelect";
-    annee.name="anneeSelect";
+      var annee = document.createElement("select");
+      annee.id = "anneeSelect";
+      annee.name="anneeSelect";
 
-    for (var x = 0; x < 6; x++) {
+      for (var x = 0; x < 6; x++) {
+          var option = document.createElement("option");
+          option.value = x;
+          option.text = x;
+          annee.appendChild(option);
+      }
+      div.appendChild(annee);
+
+
+      var depart = document.createElement("select");
+      depart.id = "departSelect";
+      depart.name="departSelect";
+
+      departement = ["exterieur","Bioscience","GCU","GE","GEN","GI","GM","IF","PC","SGM","TC"];
+      for (var x = 0; x < departement.length; x++) {
+          var option = document.createElement("option");
+          option.value = departement[x];
+          option.text = departement[x];
+          depart.appendChild(option);
+      }
+      div.appendChild(depart);
+
+      var bouton = document.createElement("input");
+      bouton.setAttribute("name", "boutonContact");
+      bouton.setAttribute("id", "boutonContact");
+      bouton.setAttribute("value", "Valider Contact");
+      bouton.setAttribute("type","button");
+      bouton.setAttribute("onclick","envoieContact()");
+
+      div.appendChild(bouton);
+
+      if (contactAffiche == 0) {
+        contactAffiche=1
+        document.getElementById("contact").appendChild(div);
+        document.getElementById("addContactbutton").innerHTML = "Annuler Contact";
+      } else if (contactAffiche == 1) {
+        contactAffiche=0
+        document.getElementById("addContactbutton").innerHTML = "Ajouter Contact";
+        document.getElementById("contact").innerHTML = "";
+      }
+    }
+
+    function envoieContact() {
+      var nomUser = $("#nomUser").val();
+      var prenomUser = $("#prenomUser").val();
+      var tel = $("#telephone").val();
+      var mail = $("#adressemail").val();
+      var anneeSelect = $("#anneeSelect").val();
+      var departSelect = $("#departSelect").val();
+    $.ajax({
+      url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect,
+      success: function(data) {
         var option = document.createElement("option");
-        option.value = x;
-        option.text = x;
-        annee.appendChild(option);
-    }
-    div.appendChild(annee);
+        option.value = data.id;
+        option.text = data.nom+" "+data.prenom+" "+data.an+data.dep;
+        document.getElementById("ajoutContactDB").appendChild(option);
+        addNewContact();
+      },
+      error: function() {
 
-
-    var depart = document.createElement("select");
-    depart.id = "departSelect";
-    depart.name="departSelect";
-
-    departement = ["exterieur","Bioscience","GCU","GE","GEN","GI","GM","IF","PC","SGM","TC"];
-    for (var x = 0; x < departement.length; x++) {
-        var option = document.createElement("option");
-        option.value = departement[x];
-        option.text = departement[x];
-        depart.appendChild(option);
-    }
-    div.appendChild(depart);
-
-    var bouton = document.createElement("input");
-    bouton.setAttribute("name", "boutonContact");
-    bouton.setAttribute("id", "boutonContact");
-    bouton.setAttribute("value", "Valider Contact");
-    bouton.setAttribute("type","button");
-    bouton.setAttribute("onclick","envoieContact()");
-
-    div.appendChild(bouton);
-
-    if (contactAffiche == 0) {
-      contactAffiche=1
-      document.getElementById("contact").appendChild(div);
-      document.getElementById("addContactbutton").innerHTML = "Annuler Contact";
-    } else if (contactAffiche == 1) {
-      contactAffiche=0
-      document.getElementById("addContactbutton").innerHTML = "Ajouter Contact";
-      document.getElementById("contact").innerHTML = "";
-    }
-  }
-
-  function envoieContact() {
-    var nomUser = $("#nomUser").val();
-    var prenomUser = $("#prenomUser").val();
-    var tel = $("#telephone").val();
-    var mail = $("#adressemail").val();
-    var anneeSelect = $("#anneeSelect").val();
-    var departSelect = $("#departSelect").val();
-  $.ajax({
-    url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect,
-    success: function(data) {
-      var option = document.createElement("option");
-      option.value = data.id;
-      option.text = data.nom+" "+data.prenom+" "+data.an+data.dep;
-      document.getElementById("ajoutContactDB").appendChild(option);
-      addNewContact();
-    },
-    error: function() {
-
-    }
-  });
-  }
-
-  var i = 0;
-  var datesLength = {{nDates}};
-  init(datesLength);
-
-  function init(val) {
-    i = val;
-  }
-  function addOneDate() {
-    var lastDate = document.getElementById("datetime" + i.toString());
-    var lastNPlaces = document.getElementById("nPlaces" + i.toString());
-
-    var div = document.createElement("div");
-    var inputDate = document.createElement("INPUT");
-    inputDate.setAttribute("type", "datetime-local");
-    i++;
-    inputDate.setAttribute("name", "datetime" + i.toString());
-    inputDate.setAttribute("id", "datetime" + i.toString());
-    console.log(i);
-
-    var br = document.createElement("br");
-
-    div.appendChild(inputDate);
-
-    var nPlace = document.createElement("input");
-    nPlace.setAttribute("type", "number");
-    nPlace.setAttribute("id", "nPlaces" + i.toString());
-    nPlace.setAttribute("name", "nPlaces" + i.toString());
-    nPlace.setAttribute("min", "0");
-    nPlace.setAttribute("max", "500");
-
-    if (lastDate) {
-      inputDate.setAttribute("value", lastDate.value);
-    }
-    if (lastNPlaces) {
-      nPlace.setAttribute("value", lastNPlaces.value);
+      }
+    });
     }
 
-    div.appendChild(nPlace);
+    var i = 0;
+    var datesLength = {{nDates}};
+    init(datesLength);
 
-    document.getElementById("date-div").appendChild(br);
-    document.getElementById("date-div").appendChild(div);
-  }
+    function init(val) {
+      i = val;
+    }
+    function addOneDate() {
+      var lastDate = document.getElementById("datetime" + i.toString());
+      var lastNPlaces = document.getElementById("nPlaces" + i.toString());
 
- function add_new_file(field, maxsize){
- 	var FileSize = field.files[0].size;
-	if (FileSize > maxsize) {
-		alert('Image '+field.files[i].name+' trop grande: taille limitée à '+maxsize+' octets');
-	} else {
-		var count = parseInt(document.getElementById('file_count').value);
+      var div = document.createElement("div");
+      var inputDate = document.createElement("INPUT");
+      inputDate.setAttribute("type", "datetime-local");
+      i++;
+      inputDate.setAttribute("name", "datetime" + i.toString());
+      inputDate.setAttribute("id", "datetime" + i.toString());
+      console.log(i);
 
-		var file_name = document.getElementById("new_file["+count+"]").value;
-    var colorThief = new ColorThief();
-    console.log(file_name);
-    file_name = file_name.substr(file_name.lastIndexOf('\\')+1);
+      var br = document.createElement("br");
 
+      div.appendChild(inputDate);
 
-		document.getElementById('new_file_row').style.display = "none";
-		document.getElementById('new_file_row').id = "new_file_row["+count+"]";
-		var table = document.getElementById('files_table');
+      var nPlace = document.createElement("input");
+      nPlace.setAttribute("type", "number");
+      nPlace.setAttribute("id", "nPlaces" + i.toString());
+      nPlace.setAttribute("name", "nPlaces" + i.toString());
+      nPlace.setAttribute("min", "0");
+      nPlace.setAttribute("max", "500");
 
-		var row = table.insertRow(table.rows.length);
-		row.id = "inserted_file["+count+"]";
-		var cell0 = row.insertCell(0);
-		cell0.innerHTML = '<input type="text" name="inserted_file['+count+']" value="'+file_name+'" /><input type="button" name="delete['+count+']" value="Delete" onclick="delete_inserted(this)"/>';
+      if (lastDate) {
+        inputDate.setAttribute("value", lastDate.value);
+      }
+      if (lastNPlaces) {
+        nPlace.setAttribute("value", lastNPlaces.value);
+      }
 
-		++count;
+      div.appendChild(nPlace);
 
-		var row = table.insertRow(table.rows.length);
-		row.id = "new_file_row";
-		var cell0 = row.insertCell(0);
-		cell0.innerHTML = '<input type="file" name="photos" id="new_file['+count+']" readonly="readonly" onchange="add_new_file(this,'+maxsize+')" accept=".png, .jpg, .jpeg"/>';
+      document.getElementById("date-div").appendChild(br);
+      document.getElementById("date-div").appendChild(div);
+    }
 
-		document.getElementById('file_count').value = count;
-	}
-   }
-function delete_inserted(field, alreadysaved){
-	    var name = field.name;
-	    var id = name.substr(name.indexOf('[') + 1, name.indexOf(']') - name.indexOf('[') - 1);
-	    document.getElementById("inserted_file["+id+"]").style.display = "none";
-	    if(alreadysaved == 0){
-			var control = document.getElementById("new_file["+id+"]");
-			control.parentNode.removeChild(control);
-		}
+    function add_new_file(field, maxsize){
+    	var FileSize = field.files[0].size;
+      if (FileSize > maxsize) {
+      	alert('Image '+field.files[i].name+' trop grande: taille limitée à '+maxsize+' octets');
+      } else {
+      	var count = parseInt(document.getElementById('file_count').value);
+
+      	var file_name = document.getElementById("new_file["+count+"]").value;
+        console.log("nom du fichier", file_name);
+        file_name = file_name.substr(file_name.lastIndexOf('\\')+1);
+
+      	document.getElementById('new_file_row').style.display = "none";
+      	document.getElementById('new_file_row').id = "new_file_row["+count+"]";
+      	var table = document.getElementById('files_table');
+
+      	var row = table.insertRow(table.rows.length);
+      	row.id = "inserted_file["+count+"]";
+      	var cell0 = row.insertCell(0);
+      	cell0.innerHTML = '<input type="text" name="inserted_file['+count+']" value="'+file_name+'" /><input type="button" name="delete['+count+']" value="Delete" onclick="delete_inserted(this)"/>';
+
+      	++count;
+
+      	var row = table.insertRow(table.rows.length);
+      	row.id = "new_file_row";
+      	var cell0 = row.insertCell(0);
+      	cell0.innerHTML = '<input type="file" name="photos" id="new_file['+count+']" readonly="readonly" onchange="add_new_file(this,'+maxsize+')" accept=".png, .jpg, .jpeg"/>';
+
+      	document.getElementById('file_count').value = count;
+      }
+    }
+    function delete_inserted(field, alreadysaved){
+      var name = field.name;
+      var id = name.substr(name.indexOf('[') + 1, name.indexOf(']') - name.indexOf('[') - 1);
+      document.getElementById("inserted_file["+id+"]").style.display = "none";
+      if(alreadysaved == 0){
+    		var control = document.getElementById("new_file["+id+"]");
+    		control.parentNode.removeChild(control);
+    	}
     }
 
     function validateForm(){
+      console.log("hey les amis");
       return true;
     }
 
-    $(document).ready(function() {
-    var urls = [];
-    {%for path in paths%}
-    urls.push('{{path}}');
-    {%endfor%}
-    var uploadPath = "/api/uploadFile/";
-    console.log("Test");
-    var nomSpectacleURL = encodeURI("{{spectacle.nom}}");
-    console.log(nomSpectacleURL);
-    var filenames = [];
-    var file_name = "";
-    {%for i in range(paths|length)%}
-    file_name = urls[{{i}}];
-    file_name = file_name.substr(file_name.lastIndexOf('/')+1);
-    filenames.push(file_name);
-    {%endfor%}
 
-    $("#input-25").fileinput({
+    $(document).ready(function() {
+      colorThief = new ColorThief();
+
+      var urls = [];
+      {%for path in paths%}
+        urls.push('{{path}}');
+      {%endfor%}
+      var uploadPath = "/api/uploadFile/";
+      console.log("Test");
+      var nomSpectacleURL = encodeURI("{{spectacle.nom}}");
+      console.log(nomSpectacleURL);
+      var filenames = [];
+      var file_name = "";
+      {%for i in range(paths|length)%}
+
+        file_name = urls[{{i}}];
+        console.log("bonjour à tous", file_name);
+        file_name = file_name.substr(file_name.lastIndexOf('/')+1);
+        console.log("bonjour à tous", file_name);
+
+        filenames.push(file_name);
+      {%endfor%}
+
+      $("#input-25").fileinput({
+
         initialPreview: [{%for path in paths%} '{{path}}', {%endfor%}],
         initialPreviewAsData: true,
         initialPreviewConfig: [
-            {%for i in range(paths|length)%}
-            {caption: filenames[{{i}}], filename: filenames[{{i}}],url:'/api/deleteFile/{{spectacle.nom}}/'+filenames[{{i}}], key:{{i}} },
-            {%endfor%}
+          {%for i in range(paths|length)%}
+          {caption: filenames[{{i}}], filename: filenames[{{i}}],url:'/api/deleteFile/{{spectacle.nom}}/'+filenames[{{i}}], key:{{i}} },
+          {%endfor%}
         ],
         uploadUrl: "/api/uploadFile/"+nomSpectacleURL+'/',
         multiple:true,
@@ -257,13 +264,15 @@ function delete_inserted(field, alreadysaved){
         overwriteInitial: false,
         maxFileSize: 1000,
         allowedFileExtensions: ["jpg","png","gif"]
+      });
+      var image = $("#input-25");
+      console.log("dernier, affichage de l'objet input-25",image);
     });
 
-    console.log($("#input-25"));
-  });
+
+</script>
 
 
-  </script>
 {% endblock %}
 
 {% block title %}Modification spectacle{% endblock %}
@@ -370,4 +379,7 @@ function delete_inserted(field, alreadysaved){
     </form>
   </div>
 
+  <script>
+
+  </script>
 {% endblock %}

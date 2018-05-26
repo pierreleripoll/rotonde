@@ -193,3 +193,16 @@ def uploadFile (nomSpectacle):
             return abort(401)
 
     return abort(401)
+
+@gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/')
+def uploadColor(id,hex,bool):
+    print(hex);
+    test = get_color(hex,id);
+    color = Color(hexa=hex,photo=id,actif=bool);
+    print("les deux :",test, color);
+    if(test != color):
+        insert_color(color)
+    else:
+        print("couleur déjà registered pour cette image")
+
+    return "niquel chrome";
