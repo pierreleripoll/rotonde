@@ -140,6 +140,9 @@ def get_spectacle(nomSpectacle):
 def get_date (date):
 	date= Calendrier.query.filter_by(date=date).first()
 	return date
+	
+def get_session(login):
+	session=Session.query.filter_by(login=login).first()
 
 def insert_place(place):
     db.session.add(place)

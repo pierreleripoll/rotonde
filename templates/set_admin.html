@@ -1,0 +1,171 @@
+{% extends "layout.html" %}
+{% set active_page = 'set_spectacle' %}
+
+{% block head %}
+  {{ super() }}
+  <script>
+	  
+  function validateForm(){
+      return true;
+    }
+    
+    
+    var contactAffiche = 0
+    function addNewContact() {
+    var div = document.createElement("div");
+    var inputName = document.createElement("INPUT");
+    inputName.setAttribute("type", "text");
+    inputName.setAttribute("id", "nomUser");
+    inputName.setAttribute("class", "form-control");
+    inputName.setAttribute("name", "nomUser");
+    inputName.setAttribute("placeholder","Nom");
+
+    div.appendChild(inputName);
+
+    var inputPrenom = document.createElement("input");
+    inputPrenom.setAttribute("type", "text");
+    inputPrenom.setAttribute("id", "prenomUser");
+    inputPrenom.setAttribute("class", "form-control");
+    inputPrenom.setAttribute("name", "prenomUser");
+    inputPrenom.setAttribute("placeholder","Prenom");
+
+    div.appendChild(inputPrenom);
+
+    var telephone = document.createElement("input");
+    telephone.setAttribute("type", "integer");
+    telephone.setAttribute("id", "telephone");
+    telephone.setAttribute("name", "telephone");
+    telephone.setAttribute("placeholder","Numero de Telephone");
+
+    div.appendChild(telephone);
+
+    var adressemail = document.createElement("input");
+    adressemail.setAttribute("type", "text");
+    adressemail.setAttribute("id", "adressemail");
+    adressemail.setAttribute("class", "form-control");
+    adressemail.setAttribute("name", "adressemail");
+    adressemail.setAttribute("placeholder","Adresse email");
+
+    div.appendChild(adressemail);
+
+    var annee = document.createElement("select");
+    annee.id = "anneeSelect";
+    annee.name="anneeSelect";
+
+    for (var x = 0; x < 6; x++) {
+        var option = document.createElement("option");
+        option.value = x;
+        option.text = x;
+        annee.appendChild(option);
+    }
+    div.appendChild(annee);
+
+
+    var depart = document.createElement("select");
+    depart.id = "departSelect";
+    depart.name="departSelect";
+
+    departement = ["exterieur","Bioscience","GCU","GE","GEN","GI","GM","IF","PC","SGM","TC"];
+    for (var x = 0; x < departement.length; x++) {
+        var option = document.createElement("option");
+        option.value = departement[x];
+        option.text = departement[x];
+        depart.appendChild(option);
+    }
+    div.appendChild(depart);
+
+    var bouton = document.createElement("input");
+    bouton.setAttribute("name", "boutonContact");
+    bouton.setAttribute("id", "boutonContact");
+    bouton.setAttribute("value", "Valider Contact");
+    bouton.setAttribute("type","button");
+    bouton.setAttribute("onclick","envoieContact()");
+
+    div.appendChild(bouton);
+
+    if (contactAffiche == 0) {
+      contactAffiche=1
+      document.getElementById("contact").appendChild(div);
+      document.getElementById("addContactbutton").innerHTML = "Annuler Contact";
+    } else if (contactAffiche == 1) {
+      contactAffiche=0
+      document.getElementById("addContactbutton").innerHTML = "Ajouter Contact";
+      document.getElementById("contact").innerHTML = "";
+    }
+  }
+	
+	
+	
+  function envoieContact() {
+    var nomUser = $("#nomUser").val();
+    var prenomUser = $("#prenomUser").val();
+    var tel = $("#telephone").val();
+    var mail = $("#adressemail").val();
+    var anneeSelect = $("#anneeSelect").val();
+    var departSelect = $("#departSelect").val();
+  $.ajax({
+    url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect,
+    success: function(data) {
+      var option = document.createElement("option");
+      option.value = data.id;
+      option.text = data.nom+" "+data.prenom+" "+data.an+data.dep;
+      document.getElementById("ajoutContactDB").appendChild(option);
+      addNewContact();
+    },
+    error: function() {
+
+    }
+  });
+  }
+	
+  </script>
+
+{% endblock %}
+
+{% block title %}Ajout Admin{% endblock %}
+
+{% block content %}
+	<div class="container-fluid">
+    <p>Bienvenue sur la page de modification/création d'admin : </p>
+    <p>{{admin.login}}</p>
+
+	<form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
+	<div class="form-group">
+        <label for="login">Login:<abbr title="required"></abbr></label><br>
+        <input type="text" id="login" class="form-control" name="login" value='{{admin.login}}'><br>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Mot de passe:</label><br>
+        <input type="text" id="password" class="form-control" name="password" >
+      </div>
+      
+      <div class="form-group">
+      </div>
+      
+      <div class="form-group">
+        <label for="admintype">Cette session est:</label><br>
+        <input type="checkbox" name="admintype" value="admin"> Admin<br>
+	    <input type="checkbox" name="admintype" value="admin" checked> SuperAdmin<br>
+	 </div>
+	 
+	 <div class="form-group">
+        <select name="ajoutContactDB" id="ajoutContactDB">
+          {%for c in contact:%}
+          <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
+          {%endfor%}
+        </select>
+        <button type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
+        <br>
+        <br>
+        <div id="contact"></div>
+      </div>
+      
+      <div>
+        <br><br>
+        <button name="button" id="valide" value="valider" type="valide" }>Valider</button>
+      </div>
+    </form>
+  </div>
+
+{% endblock %}

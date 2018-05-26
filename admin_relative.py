@@ -76,3 +76,15 @@ def admin_log():
                 print(session)
 
         return redirect(url_for('admin_relative.admin'))
+
+@admin_relative.route('/set_admin/<login>', methods=['GET','POST'])
+def set_admin(login):
+    if 'super' in session:
+        if request.method=="GET":
+            sessionAdmin = get_session(login)
+            thisContact = get_contact()
+
+            if login == "nouveladmin" or session['admin']=="super" :
+                return render_template('set_admin.html',login = login, contact=thisContact)
+            else:
+                return abort(403);
