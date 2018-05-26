@@ -8,6 +8,8 @@ import os
 import re
 from model import*
 from jinja2 import TemplateNotFound
+from datetime import datetime
+
 
 UPLOAD_FOLDER = './static/uploads'
 
@@ -68,15 +70,14 @@ def set_spectacle(nomSpectacle):
             thisDates = get_dates(nomSpectacle)
             thisContact = get_contact()
             for calendrier in thisDates:
-                calendrier.date = datePytoHTML(calendrier.date)
+                calendrier.date = calendrier.date.strftime('%d/%m/%Y %H:%M')
             print(thisDates)
-            if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" : 
+            if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
                 return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
             else:
                 return abort(403);
         if request.method=="POST":
             if request.form["nom"] != "":
-
                 cont = request.form
                 print("\n\n"+ str(cont) +"\n\n")
                 spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0,
@@ -119,7 +120,9 @@ def set_spectacle(nomSpectacle):
                 nombrePlace = 1
                 actualDates = get_dates(nomSpectacle)
                 while "datetime"+str(nombrePlace) in cont :
-                    datePy =dateHTMLtoPy(cont["datetime"+str(nombrePlace)])
+                    datePy = datetime.strptime(cont["datetime"+str(nombrePlace)], '%d/%m/%Y %H:%M')
+                    print("*************************",datePy)
+                    #datePy =dateHTMLtoPy(cont["datetime"+str(nombrePlace)])
                     date = Calendrier(date=datePy,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(nombrePlace)]))
                     nombrePlace +=1
                     alreadyIn="false"
@@ -138,6 +141,16 @@ def set_spectacle(nomSpectacle):
 
 @gestion_spectacle.route('/api/ajoutContact/<string:nomUser>/<string:prenomUser>/<int:tel>/<string:mail>/<int:anneeSelect>/<string:departSelect>')
 def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
-    contact = Contact(nom=nomUser,prenom=prenomUser,telephone=tel,adresseMail=mail,annee=anneeSelect, depart=departSelect)
-    insert_contact(contact)
-    return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
+    if 'admin' in session:
+        if mail == " ":
+            mail = ""
+        if tel == 0:
+            contact = Contact(nom=nomUser,prenom=prenomUser,adresseMail=mail,annee=anneeSelect, depart=departSelect)
+            insert_contact(contact)
+            return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
+        else :
+            contact = Contact(nom=nomUser,prenom=prenomUser,telephone=tel,adresseMail=mail,annee=anneeSelect, depart=departSelect)
+            insert_contact(contact)
+            return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
+    else:
+        return render_template("accueil.html")

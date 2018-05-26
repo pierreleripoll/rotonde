@@ -1,8 +1,18 @@
 {% extends "layout.html" %}
 {% set active_page = 'set_spectacle' %}
 
+
 {% block head %}
+
   {{ super() }}
+  <script type="text/javascript" src="/static/bower_components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript" src="/static/bower_components/moment/min/moment.min.js"></script>
+  <script type="text/javascript" src="/static/bower_components/moment/locale/fr.js"></script>
+  <script type="text/javascript" src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+  <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+  <link rel="stylesheet" href="/static/bower_components/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
 
   <script>
   var contactAffiche = 0
@@ -81,7 +91,7 @@
     if (contactAffiche == 0) {
       contactAffiche=1
       document.getElementById("contact").appendChild(div);
-      document.getElementById("addContactbutton").innerHTML = "Annuler Contact";
+      document.getElementById("addContactbutton").innerHTML = "Annuler";
     } else if (contactAffiche == 1) {
       contactAffiche=0
       document.getElementById("addContactbutton").innerHTML = "Ajouter Contact";
@@ -90,10 +100,30 @@
   }
 
   function envoieContact() {
-    var nomUser = $("#nomUser").val();
-    var prenomUser = $("#prenomUser").val();
-    var tel = $("#telephone").val();
-    var mail = $("#adressemail").val();
+    if($("#nomUser").val() == "") {
+      var nomUser = "--";
+    } else {
+      var nomUser = $("#nomUser").val();
+    }
+
+    if($("#prenomUser").val() == "") {
+      var prenomUser = "--";
+    } else {
+      var prenomUser = $("#prenomUser").val();
+    }
+
+    if($("#telephone").val() == "") {
+      var tel = "0";
+    } else {
+      var tel = $("#telephone").val();
+    }
+
+    if($("#adressemail").val() == "") {
+      var mail = " ";
+    } else {
+      var mail = $("#adressemail").val();
+    }
+
     var anneeSelect = $("#anneeSelect").val();
     var departSelect = $("#departSelect").val();
   $.ajax({
@@ -118,21 +148,49 @@
   function init(val) {
     i = val;
   }
+
+  function removeOneDate() {
+    if(i > 0) {
+      document.getElementById("groupe").innerHTML = "";
+      i=1;
+    }
+  }
+
   function addOneDate() {
+    if(i>=0) {
+      var boutonAnnule = document.createElement("input");
+      boutonAnnule.setAttribute("name", "boutonAnnule");
+      boutonAnnule.setAttribute("id", "boutonAnnule");
+      boutonAnnule.setAttribute("value", "Annuler");
+      boutonAnnule.setAttribute("type","button");
+      boutonAnnule.setAttribute("onclick","removeOneDate()");
+
+      if(i==0) {
+        document.getElementById("annule").appendChild(boutonAnnule);
+      }
+    }
+    i++;
+
+    var br = document.createElement("br");
     var lastDate = document.getElementById("datetime" + i.toString());
     var lastNPlaces = document.getElementById("nPlaces" + i.toString());
 
-    var div = document.createElement("div");
-    var inputDate = document.createElement("INPUT");
-    inputDate.setAttribute("type", "datetime-local");
-    i++;
-    inputDate.setAttribute("name", "datetime" + i.toString());
-    inputDate.setAttribute("id", "datetime" + i.toString());
-    console.log(i);
+    var datePick = document.createElement("div");
+    datePick.setAttribute("class", "input-group date");
+    datePick.setAttribute("id", "datetimepicker2" + i.toString());
 
-    var br = document.createElement("br");
+    var iconDate = document.createElement("input");
+    iconDate.setAttribute("type", "form-control");
+    iconDate.setAttribute("name", "datetime" + i.toString());
+    iconDate.setAttribute("id", "datetime" + i.toString());
+    var span1 = document.createElement("span");
+    span1.setAttribute("class", "input-group-addon");
+    var span2 = document.createElement("span");
+    span2.setAttribute("class", "glyphicon glyphicon-calendar");
+    span1.appendChild(span2);
 
-    div.appendChild(inputDate);
+    datePick.appendChild(iconDate);
+    datePick.appendChild(span1);
 
     var nPlace = document.createElement("input");
     nPlace.setAttribute("type", "number");
@@ -141,6 +199,14 @@
     nPlace.setAttribute("min", "0");
     nPlace.setAttribute("max", "500");
 
+    var nom = document.createElement("label");
+    nom.innerHTML = "- Places ";
+
+    document.getElementById("groupe").appendChild(datePick);
+    document.getElementById("groupe").appendChild(nPlace);
+    document.getElementById("groupe").appendChild(nom);
+    document.getElementById("groupe").appendChild(br);
+
     if (lastDate) {
       inputDate.setAttribute("value", lastDate.value);
     }
@@ -148,10 +214,13 @@
       nPlace.setAttribute("value", lastNPlaces.value);
     }
 
-    div.appendChild(nPlace);
-
-    document.getElementById("date-div").appendChild(br);
-    document.getElementById("date-div").appendChild(div);
+    var t = 0;
+    for(t=0; t<=i; t++) {
+      var nom = "#datetimepicker2"+t.toString()
+      $(nom).datetimepicker({
+        locale: 'fr'
+      });
+    }
   }
 
  function add_new_file(field, maxsize){
@@ -280,15 +349,31 @@
         </div>
         <br>
         <div>
-          <label for="dates">Dates :  </label>
-          <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button><br>
-          <div id="date-div">
-            {%for date in dates:%}
-            <div id="date{{loop.index}}">
-              <input type="datetime-local" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}">
-              <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
+          <div id='annule'>
+            <label for="dates">Dates :  </label>
+            <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button>
+          </div>
+          <br>
+          <div class="container">
+            <div class="row">
+              <div class='col-sm-4'>
+                <div class="form-group">
+                  <div id='groupe'>
+                    {%for date in dates:%}
+                      <div class='input-group date' id='datetimepicker2{{loop.index}}'>
+                        <input type='text' class="form-control" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}">
+                        <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                          </span>
+                      </div>
+                      <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
+                      <label for="place">- Places  </label>
+                      <br>
+                    {%endfor%}
+                  </div>
+                </div>
+              </div>
             </div>
-            {%endfor%}
           </div>
         </div>
 
