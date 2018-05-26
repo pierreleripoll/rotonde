@@ -164,8 +164,10 @@ super-small {
   position: relative;
   padding-top: 3rem;
   margin-top: auto;
-  background-color: #e3e4e4;
-  color: #87888a;
+  /* background-color: #e3e4e4;
+  color: #87888a; */
+  background-color: var(--color-theme);
+  color:var(--color-font-light);
   margin-bottom: 0;
 }
 

@@ -75,7 +75,7 @@
   </div>
 
   <div class="row"> <!--billeterie -->
-    <div class="col-md-12" >
+    <div class="col-md-12 col-billet" >
       <div class="card card-billet">
         <div class="card-header card-header-billet">
           <p>DATES ET HORAIRES</p>
@@ -177,6 +177,38 @@
       something[i][0].onclick=function(){
         console.log("in function",i,colors[i]);
       };
+    }
+
+
+    function scrollToY(distance, duration) {
+        var initialY = window.scrollY;
+        var y = distance;
+        var baseY = (initialY + y) * 0.5;
+        var difference = initialY - baseY;
+        var startTime = performance.now();
+
+        function step() {
+            var normalizedTime = (performance.now() - startTime) / duration;
+            if (normalizedTime > 1) normalizedTime = 1;
+
+            window.scrollTo(0, baseY + difference * Math.cos(normalizedTime * Math.PI));
+            if (normalizedTime < 1) window.requestAnimationFrame(step);
+        }
+        window.requestAnimationFrame(step);
+    }
+
+    function afficheBillets(){
+
+      var e=document.getElementsByClassName("card-billet")[0].style.opacity;
+      if(e==1){
+        document.getElementsByClassName("card-billet")[0].style.opacity="0";
+        window.scrollToY(0,1000);
+      }else{
+        document.getElementsByClassName("card-billet")[0].style.opacity="1";
+        window.scrollToY(500,1000);
+      }
+      console.log("CLICK : ",e);
+
     }
 
     function mouseEnter(){

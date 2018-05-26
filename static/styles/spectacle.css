@@ -55,6 +55,7 @@
   font-size: 150%;
   background-color: var(--color-theme);
   border-radius: 0px;
+  cursor :pointer;
 }
 
 
@@ -152,6 +153,11 @@
   background-color: var(--color-theme);
 }
 
+.card-billet{
+  opacity:0;
+  animation: ease-in-out 0.8s;
+}
+
 .card-body-billet{
   margin:0;
   padding:0;
@@ -189,14 +195,15 @@
 }
 
 .btn-valider{
+
   text-align:center;
   width:100%;
 }
 
 .btn-valider:hover{
-  background-color: var(--color-light-font);
+  background-color: var(--color-font-light);
   color:var(--color-theme);
-  border-color: var(--color-light-font);
+  border-color: var(--color-font-light);
 }
 
 
@@ -206,7 +213,7 @@
 }
 
 .btn-modifier:hover{
-  background-color: var(--color-light-font);
+  background-color: var(--color-font-light);
   color:var(--color-theme);
-  border-color: var(--color-light-font);
+  border-color: var(--color-font-light);
 }
