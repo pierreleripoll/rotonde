@@ -69,7 +69,6 @@ def set_spectacle(nomSpectacle):
             for calendrier in thisDates:
                 calendrier.date = datePytoHTML(calendrier.date)
             print(thisDates)
-
             if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
                 path = app.config['UPLOAD_FOLDER']+'/'+urlify(nomSpectacle)
                 paths = []
