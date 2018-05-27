@@ -4,17 +4,17 @@ Site de réservation de places à la Rotonde
 
 # TODO
 
-- [ ] rendre clean le css (bootstrap commun pour tout le monde)
-- [ ] rendre clean le html (jinja2, extends, import...)
-- [MATHILDE] mail de confirmation
-- [ARTHUR] gérer le dépassement de places (vérif côté serveur etc)
+- [x] rendre clean le css (bootstrap commun pour tout le monde)
+- [x] rendre clean le html (jinja2, extends, import...)
+- [x] *Mathilde* : mail de confirmation
+- [x] *Arthur* : gérer le dépassement de places (vérif côté serveur etc)
 - [x] rajouter infos sur le spectacle
-- [JN] rendre plus beau contact
+- [ ] *JN* : rendre plus beau contact
 - [ ] gestion des vignettes (trop grande, trop petite, mauvais format) -> image par déf
 - [ ] gestion des dates à modifier (#firefox not working...)
 - [ ] interface pour spectacle | gestion spectacle
-- [PIERRE] mode super admin / admin -> contact email, UTILISER FLASK SESSION/ADMIN/USER ?
-- [ ] calendrier a faire
+- [x] *Pierre* : mode super admin / admin -> contact email, UTILISER FLASK SESSION/ADMIN/USER ?
+- [x] calendrier a faire
 - [ ] site de paiement (utiliser Stripe ?)
 - [x] gérer la reservation dans la base de données -> places insérées dans la BD
 - [x] actualiser le nombre de places restantes lors de l'ajout de places
@@ -56,8 +56,6 @@ Vous pouvez ajouter les TODOs ici ! ;)
 ## Mathilde
 
 ## Pierre
-
-- Quelqu'un peut-il m'expliquer pourquoi Antoine vient m'emmerder en PRS ? Merci d'avance
 
 ---
 
