@@ -66,18 +66,19 @@ def set_spectacle(nomSpectacle):
     if 'admin' in session:
         if request.method=="GET":
             thisSpectacle = get_spectacle(nomSpectacle)
+
             if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
                 thisDates = get_dates(nomSpectacle)
-                paths = []
+                Photos = []
                 if nomSpectacle != "nouveauSpectacle":
-                    paths = get_paths_photos(nomSpectacle)
-                    print("Set spectacle : ",paths)
+                    photos = get_all_photos(nomSpectacle)
+                    print("Set spectacle : ",photos)
                 thisContact = get_contact()
                 for calendrier in thisDates:
                     calendrier.date = calendrier.date.strftime('%d/%m/%Y %H:%M')
                 print(thisDates)
 
-                return render_template('set_spectacle.html',paths=paths,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
+                return render_template('set_spectacle.html',photos=photos,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
             else:
                 return abort(403);
         if request.method=="POST":
@@ -96,26 +97,7 @@ def set_spectacle(nomSpectacle):
                         return abort(403)
                     spectacle.photos = alreadyIn.photos
                 # check if the post request has the file part
-                if 'photos' not in request.files:
-                    print("No photo")
-                else:
-                    print("There is photos :")
-                    name = urlify(spectacle.nom)
-                    pathUpload = app.config['UPLOAD_FOLDER']+'/'+name
-                    if not os.path.isdir(pathUpload):
-                        os.mkdir(pathUpload)
-                    numberPhotos = spectacle.photos
-                    for f in request.files.getlist('photos'):
-                        print(f.filename)
-                        # if user does not select file, browser also
-                        # submit a empty part without filename
-                        if f.filename == '':
-                            flash('No selected file')
-                        if f and allowed_file(f.filename):
-                            filename = secure_filename(f.filename)
-                            f.save(os.path.join(pathUpload, urlify(spectacle.nom)+"_"+str(numberPhotos)))
-                            numberPhotos +=1
-                    spectacle.photos=numberPhotos
+
                 if alreadyIn :
                     update_spectacle(spectacle)
                 else:
@@ -150,6 +132,7 @@ def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
             return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
     else:
         return render_template("accueil.html")
+
 
 @gestion_spectacle.route('/api/deleteFile/<string:nomSpectacle>/<string:filename>',methods=['POST'])
 def deleteFile (nomSpectacle,filename):
@@ -207,31 +190,91 @@ def uploadFile (nomSpectacle):
             print("Spectacle.photos :",spectacle.photos)
             print(request.files)
 
-            if 'photos' in request.files :
-                for f in request.files.getlist('photos'):
-                    numero = -1
-                    nomFichier = f.filename
-                    path = os.path.join(pathUpload,nomFichier)
-                    f.save("."+path)
-                    photo = Photo(path=path,spectacle=spectacle.nom,ordre=spectacle.photos)
-                    insert_photo(photo)
-                    spectacle.photos +=1
-                    print("Number photos add, state :",spectacle.photos)
+            f = request.files['photos']
+            numero = -1
+            nomFichier = f.filename
+            path = os.path.join(pathUpload,nomFichier)
+            f.save("."+path)
+            photo = Photo(path=path,size=os.path.getsize('.'+path),spectacle=spectacle.nom,ordre=spectacle.photos)
+            insert_photo(photo)
+            spectacle.photos +=1
+            print("Number photos add, state :",spectacle.photos)
+
 
             print(request.form)
             print(request.files)
             db.session.commit()
-            id = get_id_photo(path).id;
-            dic = {"succes":"total"}
-            dic = {"filename":nomFichier,"path":path, "id":id}
+            dic = {
+            'initialPreview': [path],
+            'initialPreviewConfig': [
+              {'caption': nomFichier, 'size':str(photo.size),'filename': nomFichier,'url':'/api/deleteFile/'+spectacle.nom+'/'+nomFichier,'key': str(photo.ordre) },
+            ],
+            'initialPreviewThumbTags': [    ],
+            'append': 'true',
+            'id':photo.id
+            }
             return json.dumps(dic)
 
         else:
-            return abort(401)
+            return jsonify({
+            'error': 'Not authentified',
+            'errorkeys': [],
+            'initialPreview': [],
+            'initialPreviewConfig': [],
+            'initialPreviewThumbTags': [    ],
+            'append': 'false'
+            })
+    else:
+        return jsonify({
+        'error': 'Not authentified',
+        'errorkeys': [],
+        'initialPreview': [],
+        'initialPreviewConfig': [],
+        'initialPreviewThumbTags': [    ],
+        'append': 'false'
+        })
 
-    return abort(401)
 
+@gestion_spectacle.route('/api/changeOrder/<string:nomSpectacle>/<int:oldIndex>/<int:newIndex>/',methods=["POST"])
+def changeOrder(nomSpectacle,oldIndex,newIndex):
+    print(nomSpectacle,oldIndex,newIndex)
+    photos= get_all_photos(nomSpectacle);
+    photos[oldIndex].ordre = -1
+    print(photos)
+    for photo in photos:
+        if photo.ordre > oldIndex:
+            photo.ordre-=1
+        if photo.ordre >= newIndex:
+            photo.ordre+=1
+        print(photo)
+
+    photos[oldIndex].ordre=newIndex;
+    print(photos)
+    db.session.commit()
+    return "fine"
+
+@gestion_spectacle.route('/api/crop/<string:nomSpectacle>/<int:id>/',methods=["POST"])
+def crop(nomSpectacle,id):
+    print("CROP ",nomSpectacle,id)
+    print(request.form)
+    form = request.form
+    photo = get_photo_byid(id)
+    photo.width = int(form['w'])
+    photo.height = int(form['h'])
+    photo.x = int(form['x'])
+    photo.y = int(form['y'])
+    photo.scale = float(form['scale'])
+
+    update_photo(photo)
+    return "fine"
+
+
+
+<<<<<<< HEAD
 @gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/',methods=['POST'])
+=======
+@gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/',methods=["POST"])
+>>>>>>> aa80d82a6037090ed39eae4c2bc8047c9b51f4ed
 def uploadColor(id,hex,bool):
     test = get_color(hex,id);
     color = Color(hexa=hex,photo=id,actif=bool);

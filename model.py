@@ -80,7 +80,6 @@ class Session(db.Model):
     password = db.Column(db.String(300), nullable = False) # TODO: encrypter le mdp avec passlib
     typeAdmin = db.Column(db.String(30),nullable=False)
     idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = True)
-
     contact = db.relationship('Contact', backref = db.backref('sessions', lazy = True))
 
     def __init__(self, **kwargs):
@@ -98,8 +97,17 @@ class Photo(db.Model):
     path = db.Column(db.String(80), nullable = False)
     spectacle = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False)
     ordre = db.Column(db.Integer,nullable=False)
+    size = db.Column(db.Integer,nullable = True)
+    width = db.Column(db.Integer,nullable = True)
+    height = db.Column(db.Integer,nullable = True)
+    x = db.Column(db.Integer,nullable = True)
+    y = db.Column(db.Integer,nullable = True)
+    scale = db.Column(db.Float,nullable=True)
     def __repr__(self):
-        return '<Photo: %r %r N.%d>' % (self.path, self.spectacle, self.ordre)
+        if not self.width:
+            return '<Photo: %r %r N.%d>' % (self.path, self.spectacle, self.ordre)
+        else :
+            return '<Photo: %r %r N.%d W%d H%d X%d Y%d>' % (self.path, self.spectacle, self.ordre,self.width,self.height,self.x,self.y)
     def getMainColor(self):
         return get_main_color(self.id)
 
@@ -170,6 +178,9 @@ def get_photo(path):
     photo = Photo.query.filter_by(path=path).first()
     return photo
 
+def get_photo_byid(id):
+    photo = Photo.query.filter_by(id=id).first()
+    return photo
 def get_main_color(idPhoto):
     colors = get_all_colors(idPhoto)
     for color in colors:
@@ -177,8 +188,9 @@ def get_main_color(idPhoto):
             return color
 
 def get_all_colors(idPhoto):
-    colors =  Color.query.filter_by(photo=idPhoto).all()
+    colors =  Color.query.filter_by(id=idPhoto).all()
     return colors
+
 
 def get_all_places():
     places = Place.query.all()
@@ -251,11 +263,6 @@ def insert_spectacle(spectacle):
     db.session.commit()
     return
 
-def insert_session(newsession):
-    db.session.add(newsession)
-    db.session.commit()
-    return
-
 def insert_photo(photo):
     db.session.add(photo)
     db.session.commit()
@@ -264,8 +271,16 @@ def insert_photo(photo):
 def update_photo(newPhoto):
     oldPhoto =  Photo.query.filter_by(id=newPhoto.id).first()
     oldPhoto.path = newPhoto.path
+    oldPhoto.spectacle = newPhoto.spectacle
     oldPhoto.ordre = newPhoto.ordre
-
+    oldPhoto.size = newPhoto.size
+    oldPhoto.width = newPhoto.width
+    oldPhoto.height = newPhoto.height
+    oldPhoto.x = newPhoto.x
+    oldPhoto.y = newPhoto.y
+    oldPhoto.scale = newPhoto.scale
+    db.session.commit()
+    return
 
 # Update un spectacle
 def update_spectacle(spectacle):
