@@ -56,7 +56,7 @@
       <div class="imageSpectacle">
         <img onclick="chgPhoto()" onmouseEnter="mouseEnter()"  onmouseleave="mouseLeave()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
       </div>
-
+      {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
       <div class="content">
         <div onmouseleave="mouseLeave()" onmouseEnter="mouseEnter()" class="card-group">
           <div id="color-box" class="card bg-color-box1"></div>
@@ -71,6 +71,7 @@
           <div id="color-box" class="card bg-color-box10"></div>
         </div>
       </div>
+      {%endif%}
     </div>
   </div>
 

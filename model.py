@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import bcrypt
 from datetime import datetime
+from jinja2 import Template
 import re
 import os
 # Connexion a la DB
@@ -61,7 +64,6 @@ class Place(db.Model):
     calendrier = db.relationship('Calendrier', backref = db.backref('places', lazy = True)) #idem qu'au dessus
     def __repr__(self):
         return '<Place: %r>' % self.idPlace
-
 
     def serialize(self):
         dic = {}
@@ -132,6 +134,14 @@ def urlify(s):
 
      return s.lower()
 
+def prettify_date(date, format='calendar'):
+    moiss = [ 'janvier', 'fevrier', 'mars', 'avril', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'decembre']
+    mois = moiss[date.month-1]
+    if format == 'calendar':
+        string = "%d %s, %dh%d" % (date.day, mois, date.hour, date.minute)
+    if format == 'mail':
+        string = 'le %d %s a %dh%d' % (date.day, mois, date.hour, date.minute)
+    return string
 
 def connect():
     conn = engine.connect()
@@ -143,9 +153,17 @@ def get_spectacles():
     spectacles = Spectacle.query.all()
     return spectacles
 
+
+
 def get_all_photos(nomSpectacle):
+    print("BON C'EST LA REQUETE SQL SUIVANTE QUI VA POSER UN PROBLEME")
     photos = Photo.query.filter_by(spectacle=nomSpectacle).order_by(Photo.ordre).all()
+    print("BON C'EST LA REQUETE SQL PRECEDENTE QUI VA POSER UN PROBLEME")
     return photos
+
+def get_id_photo(paht):
+    photo = Photo.query.filter_by(path=paht).first()
+    return photo
 
 def get_paths_photos(nomSpectacle):
     photos = get_all_photos(nomSpectacle);
@@ -180,6 +198,10 @@ def get_all_places():
     places = Place.query.all()
     return places
 
+def get_all_admins():
+    admins=Session.query.all()
+    return admins
+
 # Renvoie les places correspondant a un nom
 def get_places_user_name(userName):
 	places = Place.query.filter_by(nomUser=userName).all()
@@ -194,6 +216,14 @@ def get_contact():
     contact = Contact.query.all()
     return contact
 
+def get_contact_admin(adminLogin):
+    admin=get_session(adminLogin)
+    idcontact=admin.idContact
+    print(idcontact)
+    contacts=Contact.query.filter_by(id=idcontact).all()
+    print(contacts)
+    return contacts
+
 # Renvoie le spectacle portant le nom specifife
 def get_spectacle(nomSpectacle):
     spectacle = Spectacle.query.filter_by(nom=nomSpectacle).first()
@@ -204,6 +234,10 @@ def get_spectacle(nomSpectacle):
 def get_date (date):
 	date= Calendrier.query.filter_by(date=date).first()
 	return date
+
+def get_session(login):
+    session=Session.query.filter_by(login=login).first()
+    return session
 
 def insert_place(place):
     db.session.add(place)
@@ -254,18 +288,16 @@ def update_photo(newPhoto):
 # Update un spectacle
 def update_spectacle(spectacle):
     oldSpectacle = Spectacle.query.filter_by(nom=spectacle.nom).first()
-    oldSpectacle.resume = spectacle.resume;
-    oldSpectacle.photos = spectacle.photos;
-    oldSpectacle.liens = spectacle.liens;
-    oldSpectacle.idContact = spectacle.idContact;
-    oldSpectacle.directeur = spectacle.directeur;
-    oldSpectacle.auteur = spectacle.auteur;
-    oldSpectacle.participants = spectacle.participants;
-    oldSpectacle.infoComplementaire = spectacle.infoComplementaire;
-    oldSpectacle.tarif = spectacle.tarif;
-    oldSpectacle.duree = spectacle.duree;
-    oldSpectacle.resume = spectacle.resume;
-    oldSpectacle.typeSpectacle = spectacle.typeSpectacle;
+    oldSpectacle = spectacle;
+    print("OLD Spectacle",oldSpectacle.auteur,oldSpectacle.directeur)
+
+    db.session.commit()
+
+    return
+
+def update_session(session):
+    oldSession = Session.query.filter_by(login=session.login).first()
+    oldSession = session;
 
     db.session.commit()
 
@@ -288,9 +320,9 @@ def update_placesRestantes (date, placesPrises):
         date.placesRestantes=date.placesRestantes - placesPrises
         db.session.commit()
         return 1
-    except:
-        print("error not enough")
-        #db.session.rollback()
+    except Exception as e:
+        print("error not enough", e)
+        db.session.rollback()
     return -1
 
 #Convertir une date html en python
@@ -315,7 +347,7 @@ def get_dates(nomSpectacle):
 
 #Renvoie l'ensemble des dates disponibles
 def get_all_dates ():
-    dates = Calendrier.query.all()
+    dates = Calendrier.query.order_by(Calendrier.date).all()
 
     return dates
 

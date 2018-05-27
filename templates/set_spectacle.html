@@ -1,8 +1,19 @@
 {% extends "layout.html" %}
 {% set active_page = 'set_spectacle' %}
 
+
 {% block head %}
+
   {{ super() }}
+  <!--<script type="text/javascript" src="/static/bower_components/jquery/dist/jquery.min.js"></script>-->
+  <script type="text/javascript" src="/static/bower_components/moment/min/moment.min.js"></script>
+  <script type="text/javascript" src="/static/bower_components/moment/locale/fr.js"></script>
+  <!--<script type="text/javascript" src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
+  <script type="text/javascript" src="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+  <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+  <link rel="stylesheet" href="/static/bower_components/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+
 
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
@@ -22,6 +33,13 @@
 
 <script src="/static/color-thief.js"type="text/javascript"></script>
 <script src="/static/jquery.guillotine.min.js"type="text/javascript"></script>
+
+<!-- optionally uncomment line below for loading your theme assets for a theme like Font Awesome (`fa`) -->
+<!-- script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/themes/fa/theme.min.js"></script -->
+
+<script src="/static/color-thief.js"></script>
+<script src="/static/jquery.guillotine.js"></script>
+<script src="/static/jquery.guillotine.min.js"></script>
 <script>
     var contactAffiche = 0
     function addNewContact() {
@@ -108,25 +126,45 @@
     }
 
     function envoieContact() {
-      var nomUser = $("#nomUser").val();
-      var prenomUser = $("#prenomUser").val();
-      var tel = $("#telephone").val();
-      var mail = $("#adressemail").val();
+      if($("#nomUser").val() == "") {
+        var nomUser = "--";
+      } else {
+        var nomUser = $("#nomUser").val();
+      }
+
+      if($("#prenomUser").val() == "") {
+        var prenomUser = "--";
+      } else {
+        var prenomUser = $("#prenomUser").val();
+      }
+
+      if($("#telephone").val() == "") {
+        var tel = "0";
+      } else {
+        var tel = $("#telephone").val();
+      }
+
+      if($("#adressemail").val() == "") {
+        var mail = " ";
+      } else {
+        var mail = $("#adressemail").val();
+      }
+
       var anneeSelect = $("#anneeSelect").val();
       var departSelect = $("#departSelect").val();
-    $.ajax({
-      url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect,
-      success: function(data) {
-        var option = document.createElement("option");
-        option.value = data.id;
-        option.text = data.nom+" "+data.prenom+" "+data.an+data.dep;
-        document.getElementById("ajoutContactDB").appendChild(option);
-        addNewContact();
-      },
-      error: function() {
+      $.ajax({
+        url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect,
+        success: function(data) {
+          var option = document.createElement("option");
+          option.value = data.id;
+          option.text = data.nom+" "+data.prenom+" "+data.an+data.dep;
+          document.getElementById("ajoutContactDB").appendChild(option);
+          addNewContact();
+        },
+        error: function() {
 
-      }
-    });
+        }
+      });
     }
 
     var i = 0;
@@ -136,21 +174,40 @@
     function init(val) {
       i = val;
     }
+
     function addOneDate() {
+      if(i==0) {
+          var boutonAnnule = document.createElement("input");
+          boutonAnnule.setAttribute("name", "boutonAnnule");
+          boutonAnnule.setAttribute("id", "boutonAnnule");
+          boutonAnnule.setAttribute("value", "Effacer tout");
+          boutonAnnule.setAttribute("type","button");
+          boutonAnnule.setAttribute("onclick","removeOneDate(-1)");
+
+          document.getElementById("annule").appendChild(boutonAnnule);
+      }
+      i++;
+
+      var br = document.createElement("br");
       var lastDate = document.getElementById("datetime" + i.toString());
       var lastNPlaces = document.getElementById("nPlaces" + i.toString());
 
-      var div = document.createElement("div");
-      var inputDate = document.createElement("INPUT");
-      inputDate.setAttribute("type", "datetime-local");
-      i++;
-      inputDate.setAttribute("name", "datetime" + i.toString());
-      inputDate.setAttribute("id", "datetime" + i.toString());
-      console.log(i);
+      var datePick = document.createElement("div");
+      datePick.setAttribute("class", "input-group date");
+      datePick.setAttribute("id", "datetimepicker2" + i.toString());
 
-      var br = document.createElement("br");
+      var iconDate = document.createElement("input");
+      iconDate.setAttribute("type", "form-control");
+      iconDate.setAttribute("name", "datetime" + i.toString());
+      iconDate.setAttribute("id", "datetime" + i.toString());
+      var span1 = document.createElement("span");
+      span1.setAttribute("class", "input-group-addon");
+      var span2 = document.createElement("span");
+      span2.setAttribute("class", "glyphicon glyphicon-calendar");
+      span1.appendChild(span2);
 
-      div.appendChild(inputDate);
+      datePick.appendChild(iconDate);
+      datePick.appendChild(span1);
 
       var nPlace = document.createElement("input");
       nPlace.setAttribute("type", "number");
@@ -159,6 +216,24 @@
       nPlace.setAttribute("min", "0");
       nPlace.setAttribute("max", "500");
 
+      var nom = document.createElement("label");
+      nom.setAttribute("id", "label" + i.toString());
+      nom.innerHTML = " - Places";
+
+      var buttonA = document.createElement("input");
+      buttonA.setAttribute("type", "button");
+      buttonA.setAttribute("name", "annule"+ i.toString());
+      buttonA.setAttribute("id", "annule"+ i.toString());
+      buttonA.setAttribute("value", "Annuler");
+      buttonA.setAttribute("onclick","removeOneDate("+i.toString()+")");
+
+
+      document.getElementById("groupe").appendChild(datePick);
+      document.getElementById("groupe").appendChild(nPlace);
+      document.getElementById("groupe").appendChild(nom);
+      document.getElementById("groupe").appendChild(buttonA);
+      document.getElementById("groupe").appendChild(br);
+
       if (lastDate) {
         inputDate.setAttribute("value", lastDate.value);
       }
@@ -166,26 +241,119 @@
         nPlace.setAttribute("value", lastNPlaces.value);
       }
 
-      div.appendChild(nPlace);
-
-      document.getElementById("date-div").appendChild(br);
-      document.getElementById("date-div").appendChild(div);
+      var t = 0;
+      for(t=0; t<=i; t++) {
+        var nom = "#datetimepicker2"+t.toString()
+        $(nom).datetimepicker({
+          locale: 'fr'
+        });
+      }
     }
 
+    function removeOneDate(i) {
+      if(i < 0) {
+        document.getElementById("groupe").innerHTML = "";
+        $('#boutonAnnule').remove();
+        init(0);
+      } else if (i >= 0) {
+        var place = "#nPlaces"+ i.toString();
+        var datepicker = "#datetimepicker2"+ i.toString();
+        var labelo = "#label"+ i.toString();
+        var annullade = "#annule"+ i.toString();
+        $(place).remove();
+        $(datepicker).remove();
+        $(labelo).remove();
+        $(annullade).remove();
+      }
+    }
 
+    function add_new_file(field, maxsize){
+    	var FileSize = field.files[0].size;
+      if (FileSize > maxsize) {
+      	alert('Image '+field.files[i].name+' trop grande: taille limitée à '+maxsize+' octets');
+      } else {
+      	var count = parseInt(document.getElementById('file_count').value);
 
+      	var file_name = document.getElementById("new_file["+count+"]").value;
+        console.log("nom du fichier", file_name);
+        file_name = file_name.substr(file_name.lastIndexOf('\\')+1);
+
+      	document.getElementById('new_file_row').style.display = "none";
+      	document.getElementById('new_file_row').id = "new_file_row["+count+"]";
+      	var table = document.getElementById('files_table');
+
+      	var row = table.insertRow(table.rows.length);
+      	row.id = "inserted_file["+count+"]";
+      	var cell0 = row.insertCell(0);
+      	cell0.innerHTML = '<input type="text" name="inserted_file['+count+']" value="'+file_name+'" /><input type="button" name="delete['+count+']" value="Delete" onclick="delete_inserted(this)"/>';
+
+      	++count;
+
+      	var row = table.insertRow(table.rows.length);
+      	row.id = "new_file_row";
+      	var cell0 = row.insertCell(0);
+      	cell0.innerHTML = '<input type="file" name="photos" id="new_file['+count+']" readonly="readonly" onchange="add_new_file(this,'+maxsize+')" accept=".png, .jpg, .jpeg"/>';
+
+      	document.getElementById('file_count').value = count;
+      }
+    }
+    function delete_inserted(field, alreadysaved){
+      var name = field.name;
+      var id = name.substr(name.indexOf('[') + 1, name.indexOf(']') - name.indexOf('[') - 1);
+      document.getElementById("inserted_file["+id+"]").style.display = "none";
+      if(alreadysaved == 0){
+    		var control = document.getElementById("new_file["+id+"]");
+    		control.parentNode.removeChild(control);
+    	}
+    }
 
     function validateForm(){
       console.log("hey les amis");
       return true;
     }
 
+    function componentToHex(c) {
+      var hex = c.toString(16);
+      return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    function rgbToHex(r, g, b) {
+      return componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+
+    function createColorBase(id, reader){
+      console.log('YO image : ', id, reader.result);
+      var img = new Image();
+      img.src = reader.result;
+      var c = colorThief.getColor(img);
+      var p = colorThief.getPalette(img);
+      uploadColor(id,c,0);
+      for(j=0; j<9; j++){
+        uploadColor(id,p[j],0);
+      }
+    }
+
+    function uploadColor(id,color,bool) {
+      var hex = rgbToHex(color[0],color[1],color[2]);
+      console.log(hex)
+      url2 = "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/";
+      console.log("url : ",url2);
+      $.ajax({
+        url: "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/",
+        success: function(data) {
+          console.log("c'est tout bon");
+        },
+        error: function() {
+          console.log("merdo");
+        }
+      });
+    }
 
     $(document).ready(function() {
 
       var urls = [];
-      {%for photo in photos%}
-        urls.push('{{photo.path}}');
+      {%for path in paths%}
+        urls.push('{{path}}');
       {%endfor%}
       var uploadPath = "/api/uploadFile/";
       console.log("Test");
@@ -390,13 +558,37 @@
       </div>
       <br>
       <div>
-        <label for="dates">Dates :  </label>
-        <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button><br>
-        <div id="date-div">
-          {%for date in dates:%}
-          <div id="date{{loop.index}}">
-            <input type="datetime-local" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}">
-            <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
+        <div id='annule'>
+          <label for="dates">Dates :  </label>
+          <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button>
+        </div>
+        <br>
+        <div class="container">
+          <div class="row">
+            <div class='col-sm-3'>
+              <div class="form-group">
+                <div id='groupe'>
+                  {%for date in dates:%}
+                    <div class='input-group date' id='datetimepicker2{{loop.index}}'>
+                      <input type='text' class="form-control" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}">
+                      <span class="input-group-addon">
+                          <span class="glyphicon glyphicon-calendar"></span>
+                        </span>
+                    </div>
+                    <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
+                    <label for="place" id="label{{loop.index}}"> - Places </label>
+                    <input type="button" value="Annuler" id="annule{{loop.index}}" name="annule{{loop.index}}" onclick="removeOneDate({{loop.index}})">
+                    <br>
+                    <script type="text/javascript">
+                      $(function () {
+                        $('#datetimepicker2{{loop.index}}').datetimepicker({
+                          locale: 'fr'
+                        });
+                      });
+                    </script>
+                {%endfor%}
+              </div>
+            </div>
           </div>
           {%endfor%}
         </div>

@@ -22,6 +22,8 @@ app.register_blueprint(gestion_spectacle)
 app.register_blueprint(panier_relative)
 app.register_blueprint(admin_relative)
 
+app.jinja_env.filters['datetime'] = prettify_date
+
 db.init_app(app)
 
 # SI DECOMMENTER FLASK CREER LES TABLES

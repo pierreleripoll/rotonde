@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import *
 from flask import current_app as app
 from sqlalchemy import *
@@ -8,6 +10,8 @@ import os
 import re
 from model import*
 from jinja2 import TemplateNotFound
+from datetime import datetime
+
 
 UPLOAD_FOLDER = './static/uploads'
 
@@ -61,23 +65,23 @@ def set_spectacle(nomSpectacle):
     if 'admin' in session:
         if request.method=="GET":
             thisSpectacle = get_spectacle(nomSpectacle)
-            thisDates = get_dates(nomSpectacle)
-            thisContact = get_contact()
-            for calendrier in thisDates:
-                calendrier.date = datePytoHTML(calendrier.date)
-            print(thisDates)
 
             if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
+                thisDates = get_dates(nomSpectacle)
                 paths = []
                 if nomSpectacle != "nouveauSpectacle":
-                    photos = get_all_photos(nomSpectacle)
+                    paths = get_paths_photos(nomSpectacle)
                     print("Set spectacle : ",paths)
-                return render_template('set_spectacle.html',photos=photos,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
+                thisContact = get_contact()
+                for calendrier in thisDates:
+                    calendrier.date = calendrier.date.strftime('%d/%m/%Y %H:%M')
+                print(thisDates)
+
+                return render_template('set_spectacle.html',paths=paths,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
             else:
                 return abort(403);
         if request.method=="POST":
             if request.form["nom"] != "":
-
                 cont = request.form
                 print("\n\n"+ str(cont) +"\n\n")
                 spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0,
@@ -101,7 +105,8 @@ def set_spectacle(nomSpectacle):
                 nombrePlace = 1
                 actualDates = get_dates(nomSpectacle)
                 while "datetime"+str(nombrePlace) in cont :
-                    datePy =dateHTMLtoPy(cont["datetime"+str(nombrePlace)])
+                    datePy = datetime.strptime(cont["datetime"+str(nombrePlace)], '%d/%m/%Y %H:%M')
+                    #datePy =dateHTMLtoPy(cont["datetime"+str(nombrePlace)])
                     date = Calendrier(date=datePy,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(nombrePlace)]))
                     nombrePlace +=1
                     alreadyIn="false"
@@ -120,9 +125,20 @@ def set_spectacle(nomSpectacle):
 
 @gestion_spectacle.route('/api/ajoutContact/<string:nomUser>/<string:prenomUser>/<int:tel>/<string:mail>/<int:anneeSelect>/<string:departSelect>')
 def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
-    contact = Contact(nom=nomUser,prenom=prenomUser,telephone=tel,adresseMail=mail,annee=anneeSelect, depart=departSelect)
-    insert_contact(contact)
-    return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
+    if 'admin' in session:
+        if mail == " ":
+            mail = ""
+        if tel == 0:
+            contact = Contact(nom=nomUser,prenom=prenomUser,adresseMail=mail,annee=anneeSelect, depart=departSelect)
+            insert_contact(contact)
+            return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
+        else :
+            contact = Contact(nom=nomUser,prenom=prenomUser,telephone=tel,adresseMail=mail,annee=anneeSelect, depart=departSelect)
+            insert_contact(contact)
+            return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
+    else:
+        return render_template("accueil.html")
+
 
 @gestion_spectacle.route('/api/deleteFile/<string:nomSpectacle>/<string:filename>',methods=['POST'])
 def deleteFile (nomSpectacle,filename):
@@ -142,6 +158,14 @@ def deleteFile (nomSpectacle,filename):
 
             photo = get_photo(pathPhoto)
 
+            id = photo.id
+            print("lol")
+            colors = get_all_colors(id)
+            print(colors);
+            for color in colors:
+                delete(color)
+            colors = get_all_colors(id)
+            print(colors);
             for p in photos:
                 if p.ordre>photo.ordre:
                     p.ordre -=1
@@ -171,6 +195,7 @@ def uploadFile (nomSpectacle):
                 os.mkdir("."+pathUpload)
             print("Spectacle.photos :",spectacle.photos)
             print(request.files)
+
             f = request.files['photos']
             numero = -1
             nomFichier = f.filename
@@ -181,16 +206,19 @@ def uploadFile (nomSpectacle):
             spectacle.photos +=1
             print("Number photos add, state :",spectacle.photos)
 
+
             print(request.form)
             print(request.files)
             db.session.commit()
+<<<<<<< HEAD
             dic = {
             'initialPreview': [path],
             'initialPreviewConfig': [
               {'caption': nomFichier, 'size':str(photo.size),'filename': nomFichier,'url':'/api/deleteFile/'+spectacle.nom+'/'+nomFichier,'key': str(photo.ordre) },
             ],
             'initialPreviewThumbTags': [    ],
-            'append': 'true'
+            'append': 'true',
+            'id':photo.id
             }
             return json.dumps(dic)
 
