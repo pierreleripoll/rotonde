@@ -268,13 +268,7 @@ def crop(nomSpectacle,id):
     update_photo(photo)
     return "fine"
 
-
-
-<<<<<<< HEAD
 @gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/',methods=['POST'])
-=======
-@gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/',methods=["POST"])
->>>>>>> aa80d82a6037090ed39eae4c2bc8047c9b51f4ed
 def uploadColor(id,hex,bool):
     test = get_color(hex,id);
     color = Color(hexa=hex,photo=id,actif=bool);
