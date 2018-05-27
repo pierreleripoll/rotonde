@@ -100,9 +100,12 @@ class Photo(db.Model):
     height = db.Column(db.Integer,nullable = True)
     x = db.Column(db.Integer,nullable = True)
     y = db.Column(db.Integer,nullable = True)
-
+    scale = db.Column(db.Float,nullable=True)
     def __repr__(self):
-        return '<Photo: %r %r N.%d>' % (self.path, self.spectacle, self.ordre)
+        if not width:
+            return '<Photo: %r %r N.%d>' % (self.path, self.spectacle, self.ordre)
+        else :
+            return '<Photo: %r %r N.%d W%d H%d X%d Y%d>' % (self.path, self.spectacle, self.ordre,self.width,self.height,self.x,self.y)
     def getMainColor(self):
         return get_main_color(self.id)
 
@@ -159,6 +162,9 @@ def get_photo(path):
     photo = Photo.query.filter_by(path=path).first()
     return photo
 
+def get_photo_byid(id):
+    photo = Photo.query.filter_by(id=id).first()
+    return photo
 def get_main_color(idPhoto):
     colors = get_all_colors(idPhoto)
     for color in colors:
@@ -168,6 +174,7 @@ def get_main_color(idPhoto):
 def get_all_colors(idPhoto):
     colors =  Color.query.filter_by(id=idPhoto).all()
     return colors
+
 
 def get_all_places():
     places = Place.query.all()
@@ -233,7 +240,14 @@ def insert_photo(photo):
 def update_photo(newPhoto):
     oldPhoto =  Photo.query.filter_by(id=newPhoto.id).first()
     oldPhoto.path = newPhoto.path
+    oldPhoto.spectacle = newPhoto.spectacle
     oldPhoto.ordre = newPhoto.ordre
+    oldPhoto.size = newPhoto.size
+    oldPhoto.width = newPhoto.width
+    oldPhoto.height = newPhoto.height
+    oldPhoto.x = newPhoto.x
+    oldPhoto.y = newPhoto.y
+    oldPhoto.scale = newPhoto.scale
     db.session.commit()
     return
 

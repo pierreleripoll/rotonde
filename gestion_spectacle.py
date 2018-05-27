@@ -214,7 +214,7 @@ def uploadFile (nomSpectacle):
         })
 
 
-@gestion_spectacle.route('/api/changeOrder/<string:nomSpectacle>/<int:oldIndex>/<int:newIndex>/')
+@gestion_spectacle.route('/api/changeOrder/<string:nomSpectacle>/<int:oldIndex>/<int:newIndex>/',methods=["POST"])
 def changeOrder(nomSpectacle,oldIndex,newIndex):
     print(nomSpectacle,oldIndex,newIndex)
     photos= get_all_photos(nomSpectacle);
@@ -232,7 +232,24 @@ def changeOrder(nomSpectacle,oldIndex,newIndex):
     db.session.commit()
     return "fine"
 
-@gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/')
+@gestion_spectacle.route('/api/crop/<string:nomSpectacle>/<int:id>/',methods=["POST"])
+def crop(nomSpectacle,id):
+    print("CROP ",nomSpectacle,id)
+    print(request.form)
+    form = request.form
+    photo = get_photo_byid(id)
+    photo.width = int(form['w'])
+    photo.height = int(form['h'])
+    photo.x = int(form['x'])
+    photo.y = int(form['y'])
+    photo.scale = float(form['scale'])
+
+    update_photo(photo)
+    return "fine"
+
+
+
+@gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/',methods=["POST"])
 def uploadColor(id,hex,bool):
     test = get_color(hex,id);
     color = Color(hexa=hex,photo=id,actif=bool);
