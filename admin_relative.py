@@ -85,13 +85,13 @@ def admin_log():
 def set_admin(login):
     if session['admin']=="super":
         if request.method=="GET":
-			print login
-			sessionAdmin=get_session(login)
-			thisContact=get_contact()
-			if login=="nouveladmin" or sessionAdmin.typeAdmin=="normal" or sessionAdmin.typeAdmin=="super":
-				return render_template('set_admin.html', admin=sessionAdmin, contact=thisContact)
-			else:
-				return abort(403)
+            print(login)
+            sessionAdmin=get_session(login)
+            thisContact=get_contact()
+            if login=="nouveladmin" or sessionAdmin.typeAdmin=="normal" or sessionAdmin.typeAdmin=="super":
+                return render_template('set_admin.html', admin=sessionAdmin, contact=thisContact)
+            else:
+                return abort(403)
 
         if request.method=="POST":
             if request.form["login"] != "" and request.form["password"] != "":

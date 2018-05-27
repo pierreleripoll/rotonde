@@ -138,9 +138,9 @@ def get_contact():
 def get_contact_admin(adminLogin):
     admin=get_session(adminLogin)
     idcontact=admin.idContact
-    print idcontact
+    print(idcontact)
     contacts=Contact.query.filter_by(id=idcontact).all()
-    print contacts
+    print(contacts)
     return contacts
 
 # Renvoie le spectacle portant le nom specifife
