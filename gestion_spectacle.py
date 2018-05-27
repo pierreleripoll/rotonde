@@ -68,16 +68,16 @@ def set_spectacle(nomSpectacle):
 
             if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
                 thisDates = get_dates(nomSpectacle)
-                paths = []
+                Photos = []
                 if nomSpectacle != "nouveauSpectacle":
-                    paths = get_paths_photos(nomSpectacle)
-                    print("Set spectacle : ",paths)
+                    photos = get_all_photos(nomSpectacle)
+                    print("Set spectacle : ",photos)
                 thisContact = get_contact()
                 for calendrier in thisDates:
                     calendrier.date = calendrier.date.strftime('%d/%m/%Y %H:%M')
                 print(thisDates)
 
-                return render_template('set_spectacle.html',paths=paths,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
+                return render_template('set_spectacle.html',photos=photos,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
             else:
                 return abort(403);
         if request.method=="POST":
@@ -210,7 +210,6 @@ def uploadFile (nomSpectacle):
             print(request.form)
             print(request.files)
             db.session.commit()
-<<<<<<< HEAD
             dic = {
             'initialPreview': [path],
             'initialPreviewConfig': [

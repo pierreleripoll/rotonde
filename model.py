@@ -104,7 +104,7 @@ class Photo(db.Model):
     y = db.Column(db.Integer,nullable = True)
     scale = db.Column(db.Float,nullable=True)
     def __repr__(self):
-        if not width:
+        if not self.width:
             return '<Photo: %r %r N.%d>' % (self.path, self.spectacle, self.ordre)
         else :
             return '<Photo: %r %r N.%d W%d H%d X%d Y%d>' % (self.path, self.spectacle, self.ordre,self.width,self.height,self.x,self.y)
