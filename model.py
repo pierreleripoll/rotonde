@@ -275,9 +275,9 @@ def update_placesRestantes (date, placesPrises):
         date.placesRestantes=date.placesRestantes - placesPrises
         db.session.commit()
         return 1
-    except:
-        print("error not enough")
-        #db.session.rollback()
+    except Exception as e:
+        print("error not enough", e)
+        db.session.rollback()
     return -1
 
 #Convertir une date html en python
