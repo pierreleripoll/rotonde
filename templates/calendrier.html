@@ -1,20 +1,28 @@
 {% extends "layout.html" %}
 {% set active_page = 'calendrier' %}
+
 {% block title %}Calendrier{% endblock %}
 
 
 {% block content %}
-  <p>CALENDRIER </p>
-  <form action="" method="POST">
-    <ul>
-      {%for date in dates %}
-      <p>{{date.date}} {{date.nom}}</p>
-      <p>Il reste {{date.placesRestantes}} places</p>
-      <input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"> </li>
+<div class="container">
+<table class="table table-striped">
+  <tr>
+    <th>Date</th>
+    <th>Nom du spectacle</th>
+    <th>Places diponibles</th>
+    <th>Prix</th>
+  </tr>
+  {% for date in dates %}
+  <tr>
+    <td>{{ date.date|datetime }}</td>
+    <td><a href="/spectacle/{{date.nom}}">{{date.nom}}</a></td>
+    <td>{{date.placesRestantes}}</td>
+    <td>{{date.spectacle.tarif}}€</td>
+  </tr>
+  {% endfor %}
 
-      {% endfor %}
-    </ul>
-    <button name="foo" value="valider" type="submit">Ajouter au panier</button>
-    <button name="foo" value="accueil" type="submit">Accueil</button>
-  </form>
+</table>
+</div>
+
 {% endblock %}
