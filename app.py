@@ -67,6 +67,10 @@ def mainPhoto_filter(nom):
 	photo = spectacle.getPhoto(0)
 	return photo.path
 
+@app.template_filter('nameFromPath')
+def nameFromPath_filter(path):
+	return path.rsplit('/',1)[-1]
+
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
 def logout():
@@ -148,4 +152,4 @@ def uploads(nomSpectacle):
 
 if __name__ == '__main__':
 	app.run(debug='true')
-    # app.run(host="192.168.0.21",port=2000)
+	#app.run(host="192.168.0.22",port=5000)

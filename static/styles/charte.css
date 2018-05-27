@@ -49,6 +49,15 @@ body {
 }
 
 
+body {
+  padding-top: 80px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family:lato;
+}
+
+
 super-small {
     font-size: 5px;
 }
