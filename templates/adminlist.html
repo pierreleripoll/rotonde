@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+{% set active_page = 'admin' %}
+{% block title %}Accueil{% endblock %}
+
+
+{% block content %}
+<main role="main">
+  <ul>
+    {%for admin in admins %}
+      <li>{{admin.login}}     Statut: {{admin.typeAdmin}}  </li>
+    {%for contact in contacts%}
+      <p> Contacts: </p>
+        <li>{{contact.nom}}  {{contact.prenom}} </li>
+        <p>{{contact.telephone}}</p>
+        <p>{{contact.adresseMail}}</p>
+        <p>{{contact.annee}}  {{contact.depart}}</p>
+      {%endfor%}
+        <a href="/set_admin/{{admin.login}}" class="btn btn-primary">Modifier</a>
+      <br>
+      <br>
+    {% endfor %}
+  <ul>
+</main>
+{% endblock %}
