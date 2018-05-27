@@ -1,6 +1,9 @@
+# -*- coding: utf-8 -*-
+
 from flask_sqlalchemy import SQLAlchemy
 from passlib.hash import bcrypt
 from datetime import datetime
+from jinja2 import Template
 import re
 import os
 # Connexion a la DB
@@ -62,7 +65,6 @@ class Place(db.Model):
     def __repr__(self):
         return '<Place: %r>' % self.idPlace
 
-
     def serialize(self):
         dic = {}
         dic["nomSpectacle"]=self.nomSpectacle
@@ -78,7 +80,6 @@ class Session(db.Model):
     password = db.Column(db.String(300), nullable = False) # TODO: encrypter le mdp avec passlib
     typeAdmin = db.Column(db.String(30),nullable=False)
     idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = True)
-
     contact = db.relationship('Contact', backref = db.backref('sessions', lazy = True))
 
     def __init__(self, **kwargs):
@@ -96,8 +97,17 @@ class Photo(db.Model):
     path = db.Column(db.String(80), nullable = False)
     spectacle = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False)
     ordre = db.Column(db.Integer,nullable=False)
+    size = db.Column(db.Integer,nullable = True)
+    width = db.Column(db.Integer,nullable = True)
+    height = db.Column(db.Integer,nullable = True)
+    x = db.Column(db.Integer,nullable = True)
+    y = db.Column(db.Integer,nullable = True)
+    scale = db.Column(db.Float,nullable=True)
     def __repr__(self):
-        return '<Photo: %r %r N.%d>' % (self.path, self.spectacle, self.ordre)
+        if not self.width:
+            return '<Photo: %r %r N.%d>' % (self.path, self.spectacle, self.ordre)
+        else :
+            return '<Photo: %r %r N.%d W%d H%d X%d Y%d>' % (self.path, self.spectacle, self.ordre,self.width,self.height,self.x,self.y)
     def getMainColor(self):
         return get_main_color(self.id)
 
@@ -124,6 +134,14 @@ def urlify(s):
 
      return s.lower()
 
+def prettify_date(date, format='calendar'):
+    moiss = [ 'janvier', 'fevrier', 'mars', 'avril', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'decembre']
+    mois = moiss[date.month-1]
+    if format == 'calendar':
+        string = "%d %s, %dh%d" % (date.day, mois, date.hour, date.minute)
+    if format == 'mail':
+        string = 'le %d %s a %dh%d' % (date.day, mois, date.hour, date.minute)
+    return string
 
 def connect():
     conn = engine.connect()
@@ -135,9 +153,15 @@ def get_spectacles():
     spectacles = Spectacle.query.all()
     return spectacles
 
+
+
 def get_all_photos(nomSpectacle):
     photos = Photo.query.filter_by(spectacle=nomSpectacle).order_by(Photo.ordre).all()
     return photos
+
+def get_id_photo(paht):
+    photo = Photo.query.filter_by(path=paht).first()
+    return photo
 
 def get_paths_photos(nomSpectacle):
     photos = get_all_photos(nomSpectacle);
@@ -154,6 +178,9 @@ def get_photo(path):
     photo = Photo.query.filter_by(path=path).first()
     return photo
 
+def get_photo_byid(id):
+    photo = Photo.query.filter_by(id=id).first()
+    return photo
 def get_main_color(idPhoto):
     colors = get_all_colors(idPhoto)
     for color in colors:
@@ -161,12 +188,17 @@ def get_main_color(idPhoto):
             return color
 
 def get_all_colors(idPhoto):
-    colors =  Color.query.filter_by(photo=id).all()
+    colors =  Color.query.filter_by(id=idPhoto).all()
     return colors
+
 
 def get_all_places():
     places = Place.query.all()
     return places
+
+def get_all_admins():
+    admins=Session.query.all()
+    return admins
 
 # Renvoie les places correspondant a un nom
 def get_places_user_name(userName):
@@ -182,6 +214,14 @@ def get_contact():
     contact = Contact.query.all()
     return contact
 
+def get_contact_admin(adminLogin):
+    admin=get_session(adminLogin)
+    idcontact=admin.idContact
+    print(idcontact)
+    contacts=Contact.query.filter_by(id=idcontact).all()
+    print(contacts)
+    return contacts
+
 # Renvoie le spectacle portant le nom specifife
 def get_spectacle(nomSpectacle):
     spectacle = Spectacle.query.filter_by(nom=nomSpectacle).first()
@@ -193,9 +233,12 @@ def get_date (date):
 	date= Calendrier.query.filter_by(date=date).first()
 	return date
 
+def get_session(login):
+    session=Session.query.filter_by(login=login).first()
+    return session
+
 def insert_place(place):
     db.session.add(place)
-
 
 def commit_place_insertion():
     db.session.commit()
@@ -228,28 +271,31 @@ def insert_photo(photo):
 def update_photo(newPhoto):
     oldPhoto =  Photo.query.filter_by(id=newPhoto.id).first()
     oldPhoto.path = newPhoto.path
+    oldPhoto.spectacle = newPhoto.spectacle
     oldPhoto.ordre = newPhoto.ordre
+    oldPhoto.size = newPhoto.size
+    oldPhoto.width = newPhoto.width
+    oldPhoto.height = newPhoto.height
+    oldPhoto.x = newPhoto.x
+    oldPhoto.y = newPhoto.y
+    oldPhoto.scale = newPhoto.scale
     db.session.commit()
     return
 
 # Update un spectacle
 def update_spectacle(spectacle):
     oldSpectacle = Spectacle.query.filter_by(nom=spectacle.nom).first()
-    oldSpectacle.resume = spectacle.resume;
-    oldSpectacle.photos = spectacle.photos;
-    oldSpectacle.liens = spectacle.liens;
-    oldSpectacle.idContact = spectacle.idContact;
-    oldSpectacle.directeur = spectacle.directeur;
-    oldSpectacle.auteur = spectacle.auteur;
-    oldSpectacle.participants = spectacle.participants;
-    oldSpectacle.infoComplementaire = spectacle.infoComplementaire;
-    oldSpectacle.tarif = spectacle.tarif;
-    oldSpectacle.duree = spectacle.duree;
-    oldSpectacle.resume = spectacle.resume;
-    oldSpectacle.typeSpectacle = spectacle.typeSpectacle;
+    oldSpectacle = spectacle;
+    print("OLD Spectacle",oldSpectacle.auteur,oldSpectacle.directeur)
 
     db.session.commit()
 
+    return
+
+def update_session(session):
+    oldSession = Session.query.filter_by(login=session.login).first()
+    oldSession = session;
+    db.session.commit()
     return
 
 # Update une date
@@ -263,15 +309,21 @@ def update_date(newDate):
 
     return
 
+def delete_date(nomSpectacle):
+    date = Calendrier.query.filter_by(nom=nomSpectacle).all()
+    for d in date:
+        delete(d)
+    return
+
 #update le nombre de places sur une date
 def update_placesRestantes (date, placesPrises):
     try:
         date.placesRestantes=date.placesRestantes - placesPrises
         db.session.commit()
         return 1
-    except:
-        print("error not enough")
-        #db.session.rollback()
+    except Exception as e:
+        print("error not enough", e)
+        db.session.rollback()
     return -1
 
 #Convertir une date html en python
@@ -296,7 +348,7 @@ def get_dates(nomSpectacle):
 
 #Renvoie l'ensemble des dates disponibles
 def get_all_dates ():
-    dates = Calendrier.query.all()
+    dates = Calendrier.query.order_by(Calendrier.date).all()
 
     return dates
 

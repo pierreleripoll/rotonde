@@ -22,6 +22,8 @@ app.register_blueprint(gestion_spectacle)
 app.register_blueprint(panier_relative)
 app.register_blueprint(admin_relative)
 
+app.jinja_env.filters['datetime'] = prettify_date
+
 db.init_app(app)
 
 # SI DECOMMENTER FLASK CREER LES TABLES
@@ -64,6 +66,16 @@ def mainPhoto_filter(nom):
 	spectacle = get_spectacle(nom)
 	photo = spectacle.getPhoto(0)
 	return photo.path
+
+@app.template_filter('originalPhoto')
+def originalPhoto_filter(path):
+	pathSplit = path.split('/')
+	return path.replace(pathSplit[-1],'originals/'+pathSplit[-1])
+
+
+@app.template_filter('nameFromPath')
+def nameFromPath_filter(path):
+	return path.rsplit('/',1)[-1]
 
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
@@ -145,5 +157,5 @@ def uploads(nomSpectacle):
 
 
 if __name__ == '__main__':
-	#app.run(debug='true')
-	app.run(host="192.168.0.22",port=5000)
+	app.run(debug='true')
+	#app.run(host="192.168.0.22",port=5000)

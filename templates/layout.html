@@ -15,11 +15,15 @@
 
   <title>{% block title %}ROTONDE{% endblock %}</title>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script>
+    window.jQuery || document.write('<script src="/static/assets/js/vendor/jquery.min.js"><\/script>')
+  </script>
   <!-- Bootstrap core CSS -->
-  <link href="/static/boot4/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
   <link href="/static/styles/charte.css" rel="stylesheet">
   <link href="/static/styles/spectacle.css" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
   {% endblock %}
 </head>
 
@@ -27,8 +31,8 @@
   <header>
     <!-- Fixed navbar -->
 
-    <nav class="navbar navbar-expand navbar-custom d-flex fixed-top ">
-      <a class="navbar-brand" href="#"><img class= "logoInsa" src="/static/styles/logo_insaWhite.png"  alt="logo"></a>
+    <nav class="navbar navbar-custom navbar-expand d-flex fixed-top ">
+      <a class="navbar-brand" href="#"><img src="/static/styles/logo_insaWhite.png" style="height: 40px;" alt="logo"></a>
 
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
@@ -83,9 +87,6 @@
     ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
 
-  <script>
-    window.jQuery || document.write('<script src="/static/assets/js/vendor/jquery.min.js"><\/script>')
-  </script>
   <script src="/static/boot4/js/bootstrap.min.js"></script>
 </body>
 

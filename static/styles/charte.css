@@ -30,8 +30,22 @@
   color: var(--color-insa);
 }
 
-.logoInsa{
-  height: 30px;
+.row > [class*='card'] {
+  display: flex;
+  flex-direction: column;
+}
+
+
+.card-eq-height {
+  height: 100%;
+}
+
+body {
+  padding-top: 80px;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  font-family:lato;
 }
 
 
@@ -54,7 +68,7 @@ super-small {
   padding-top: var(--jumbotron-padding-y);
   padding-bottom: var(--jumbotron-padding-y);
   margin-bottom: 0;
-  background-color: #fff;
+  /* background-color: #fff; */
 }
 
 
@@ -69,7 +83,7 @@ super-small {
 
 .jumbotron .container {
   max-width: 40rem;
-} */
+}
 
 
 
@@ -92,6 +106,26 @@ super-small {
   border-radius: 0px;
   background-color: var(--color-insa);
   border-color: var(--color-insa);
+
+}
+
+.card-resume{
+  text-align: justify;
+  text-justify: inter-character;
+
+}
+
+.card-participants{
+  font-size: 90%;
+  color:rgb(240,240,240);
+}
+
+.card-with-background{
+  background-color: rgb(60,60,60);
+  color:rgb(240,240,240);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .btn  {
@@ -126,7 +160,11 @@ super-small {
   color: var(--color-font-dark);
 }
 
-
+.card-img-top-pers {
+  width: 100%;
+  border-top-left-radius: calc(0.25rem - 1px);
+  border-top-right-radius: calc(0.25rem - 1px);
+}
 
 .card .card-footer{
   border-radius:0px;

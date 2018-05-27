@@ -5,18 +5,18 @@
 
 <body>
 
-  <p>Bonjour {{nomUser}}, vous avez reserve les spectacles : 
+  <p>Bonjour {{nomUser}}, vous avez reserve les spectacles :
 
       <table class="table table-striped">
         {% for place in places %}
         <tr>
 		  <td>Place numero: {{place.idPlace}}</td>
           <td> {{place.nomSpectacle}}</td>
-          <td> {{place.date}}</td>
+          <td> {{place.date|datetime('mail')}}</td>
         </tr>
         {% endfor %}
       </table>
-  </p>    
+  </p>
 
 
 </body>
