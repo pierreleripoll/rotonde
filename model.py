@@ -109,7 +109,7 @@ def prettify_date(date, format='calendar'):
     if format == 'calendar':
         string = "%d %s, %dh%d" % (date.day, mois, date.hour, date.minute)
     if format == 'mail':
-        string = 'le %d %s à %dh%d' % (date.day, mois, date.hour, date.minute)
+        string = 'le %d %s a %dh%d' % (date.day, mois, date.hour, date.minute)
     return string
 
 def connect():
