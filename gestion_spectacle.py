@@ -171,28 +171,50 @@ def uploadFile (nomSpectacle):
                 os.mkdir("."+pathUpload)
             print("Spectacle.photos :",spectacle.photos)
             print(request.files)
-
-            if 'photos' in request.files :
-                for f in request.files.getlist('photos'):
-                    numero = -1
-                    nomFichier = f.filename
-                    path = os.path.join(pathUpload,nomFichier)
-                    f.save("."+path)
-                    photo = Photo(path=path,spectacle=spectacle.nom,ordre=spectacle.photos)
-                    insert_photo(photo)
-                    spectacle.photos +=1
-                    print("Number photos add, state :",spectacle.photos)
+            f = request.files['photos']
+            numero = -1
+            nomFichier = f.filename
+            path = os.path.join(pathUpload,nomFichier)
+            f.save("."+path)
+            photo = Photo(path=path,spectacle=spectacle.nom,ordre=spectacle.photos)
+            insert_photo(photo)
+            spectacle.photos +=1
+            print("Number photos add, state :",spectacle.photos)
 
             print(request.form)
             print(request.files)
             db.session.commit()
-            dic = {"succes":"total"}
+            dic = {
+            'initialPreview': [path],
+            'initialPreviewConfig': [
+              {'caption': nomFichier, 'filename': nomFichier,'url':'/api/deleteFile/'+spectacle.nom+'/'+nomFichier,'key': str(photo.ordre) },
+            ],
+            'initialPreviewThumbTags': [    ],
+            'append': 'true'
+            }
             return json.dumps(dic)
 
         else:
-            return abort(401)
+            return jsonify({
+            'error': 'Not authentified',
+            'errorkeys': [],
+            'initialPreview': [],
+            'initialPreviewConfig': [],
+            'initialPreviewThumbTags': [    ],
+            'append': 'false'
+            })
+    else:
+        return jsonify({
+        'error': 'Not authentified',
+        'errorkeys': [],
+        'initialPreview': [],
+        'initialPreviewConfig': [],
+        'initialPreviewThumbTags': [    ],
+        'append': 'false'
+        })
 
-    return abort(401)
+
+
 
 @gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/')
 def uploadColor(id,hex,bool):
