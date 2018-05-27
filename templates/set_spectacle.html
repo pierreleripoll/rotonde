@@ -303,13 +303,14 @@
         createColorBase(params.response['id'],params.reader);
       }).on('filebeforedelete', function() {
         var aborted = !window.confirm('Êtes-vous sûr de vouloir supprimer cette photo ?');
-        if (aborted) {
-            window.alert('Suppression de la photo annulée ! ');
-        };
         return aborted;
-      });
-      }
-
+      }).on('filesorted', function(e, params) {
+          console.log('file sorted', e, params);
+      }).on('filedeleted', function() {
+        setTimeout(function() {
+            window.alert('Suppression réussie ! ');
+        }, 900);
+    });
       var image = $("#input-25");
       console.log("dernier, affichage de l'objet input-25",image);
     });
