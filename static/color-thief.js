@@ -179,11 +179,7 @@ ColorThief.prototype.getColorAsync = function(imageUrl, callback, quality) {
             var dominantColor = palette[0];
             callback(dominantColor, this);
         });
-<<<<<<< HEAD
         sourceImage.src = imageData;
-=======
-        sourceImage.src = imageData;      
->>>>>>> 30dfb1ab4250c693ade5acf36cbd0e05aa7461df
     });
 };
 

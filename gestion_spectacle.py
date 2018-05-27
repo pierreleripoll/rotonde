@@ -9,6 +9,7 @@ import re
 from model import*
 from jinja2 import TemplateNotFound
 from datetime import datetime
+import re
 
 
 UPLOAD_FOLDER = './static/uploads'
@@ -118,19 +119,12 @@ def set_spectacle(nomSpectacle):
                 else:
                     insert_spectacle(spectacle)
 
-                nombrePlace = 1
-                actualDates = get_dates(nomSpectacle)
-                while "datetime"+str(nombrePlace) in cont :
-                    datePy = datetime.strptime(cont["datetime"+str(nombrePlace)], '%d/%m/%Y %H:%M')
-                    #datePy =dateHTMLtoPy(cont["datetime"+str(nombrePlace)])
-                    date = Calendrier(date=datePy,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(nombrePlace)]))
-                    nombrePlace +=1
-                    alreadyIn="false"
-                    for actualDate in actualDates:
-                        if datePy == actualDate.date:
-                            update_date(date)
-                            alreadyIn = "true"
-                    if alreadyIn == "false":
+                delete_date(nomSpectacle)
+                for dates in cont:
+                    if "datetime" in dates:
+                        datePy = datetime.strptime(cont[dates], '%d/%m/%Y %H:%M')
+                        date = Calendrier(date=datePy,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(re.findall(r'\d+', dates)[0])]))
+                        alreadyIn = "false"
                         insert_date(date)
                 db.session.commit();
                 return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=request.form["nom"]))
