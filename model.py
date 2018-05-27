@@ -96,6 +96,10 @@ class Photo(db.Model):
     spectacle = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False)
     ordre = db.Column(db.Integer,nullable=False)
     size = db.Column(db.Integer,nullable = True)
+    width = db.Column(db.Integer,nullable = True)
+    height = db.Column(db.Integer,nullable = True)
+    x = db.Column(db.Integer,nullable = True)
+    y = db.Column(db.Integer,nullable = True)
 
     def __repr__(self):
         return '<Photo: %r %r N.%d>' % (self.path, self.spectacle, self.ordre)

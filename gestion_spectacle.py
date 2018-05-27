@@ -219,15 +219,16 @@ def changeOrder(nomSpectacle,oldIndex,newIndex):
     print(nomSpectacle,oldIndex,newIndex)
     photos= get_all_photos(nomSpectacle);
     photos[oldIndex].ordre = -1
+    print(photos)
     for photo in photos:
-        change= 0
         if photo.ordre > oldIndex:
-            change-=1
+            photo.ordre-=1
         if photo.ordre >= newIndex:
-            change+=1
-        photo.ordre += change
+            photo.ordre+=1
+        print(photo)
 
     photos[oldIndex].ordre=newIndex;
+    print(photos)
     db.session.commit()
     return "fine"
 
