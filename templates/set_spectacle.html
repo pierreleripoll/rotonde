@@ -154,6 +154,7 @@
       var departSelect = $("#departSelect").val();
       $.ajax({
         url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect,
+        type: "POST",
         success: function(data) {
           var option = document.createElement("option");
           option.value = data.id;
@@ -302,6 +303,7 @@
       console.log("url : ",url2);
       $.ajax({
         url: "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/",
+        type: "POST",
         success: function(data) {
           console.log("c'est tout bon");
         },

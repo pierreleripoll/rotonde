@@ -118,7 +118,7 @@ def set_spectacle(nomSpectacle):
     else :
         return abort(403)
 
-@gestion_spectacle.route('/api/ajoutContact/<string:nomUser>/<string:prenomUser>/<int:tel>/<string:mail>/<int:anneeSelect>/<string:departSelect>')
+@gestion_spectacle.route('/api/ajoutContact/<string:nomUser>/<string:prenomUser>/<int:tel>/<string:mail>/<int:anneeSelect>/<string:departSelect>',methods=['POST'])
 def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
     if 'admin' in session:
         if mail == " ":
@@ -293,9 +293,7 @@ def crop(nomSpectacle,id):
 
     return "fine"
 
-
-
-@gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/',methods=["POST"])
+@gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/',methods=['POST'])
 def uploadColor(id,hex,bool):
     test = get_color(hex,id);
     color = Color(hexa=hex,photo=id,actif=bool);
