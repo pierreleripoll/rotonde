@@ -78,7 +78,6 @@ class Session(db.Model):
     password = db.Column(db.String(300), nullable = False) # TODO: encrypter le mdp avec passlib
     typeAdmin = db.Column(db.String(30),nullable=False)
     idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = True)
-
     contact = db.relationship('Contact', backref = db.backref('sessions', lazy = True))
 
     def __init__(self, **kwargs):
@@ -96,6 +95,8 @@ class Photo(db.Model):
     path = db.Column(db.String(80), nullable = False)
     spectacle = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False)
     ordre = db.Column(db.Integer,nullable=False)
+    size = db.Column(db.Integer,nullable = True)
+
     def __repr__(self):
         return '<Photo: %r %r N.%d>' % (self.path, self.spectacle, self.ordre)
     def getMainColor(self):

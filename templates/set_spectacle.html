@@ -172,45 +172,8 @@
       document.getElementById("date-div").appendChild(div);
     }
 
-    function add_new_file(field, maxsize){
-    	var FileSize = field.files[0].size;
-      if (FileSize > maxsize) {
-      	alert('Image '+field.files[i].name+' trop grande: taille limitée à '+maxsize+' octets');
-      } else {
-      	var count = parseInt(document.getElementById('file_count').value);
 
-      	var file_name = document.getElementById("new_file["+count+"]").value;
-        console.log("nom du fichier", file_name);
-        file_name = file_name.substr(file_name.lastIndexOf('\\')+1);
 
-      	document.getElementById('new_file_row').style.display = "none";
-      	document.getElementById('new_file_row').id = "new_file_row["+count+"]";
-      	var table = document.getElementById('files_table');
-
-      	var row = table.insertRow(table.rows.length);
-      	row.id = "inserted_file["+count+"]";
-      	var cell0 = row.insertCell(0);
-      	cell0.innerHTML = '<input type="text" name="inserted_file['+count+']" value="'+file_name+'" /><input type="button" name="delete['+count+']" value="Delete" onclick="delete_inserted(this)"/>';
-
-      	++count;
-
-      	var row = table.insertRow(table.rows.length);
-      	row.id = "new_file_row";
-      	var cell0 = row.insertCell(0);
-      	cell0.innerHTML = '<input type="file" name="photos" id="new_file['+count+']" readonly="readonly" onchange="add_new_file(this,'+maxsize+')" accept=".png, .jpg, .jpeg"/>';
-
-      	document.getElementById('file_count').value = count;
-      }
-    }
-    function delete_inserted(field, alreadysaved){
-      var name = field.name;
-      var id = name.substr(name.indexOf('[') + 1, name.indexOf(']') - name.indexOf('[') - 1);
-      document.getElementById("inserted_file["+id+"]").style.display = "none";
-      if(alreadysaved == 0){
-    		var control = document.getElementById("new_file["+id+"]");
-    		control.parentNode.removeChild(control);
-    	}
-    }
 
     function validateForm(){
       console.log("hey les amis");
@@ -221,8 +184,8 @@
     $(document).ready(function() {
 
       var urls = [];
-      {%for path in paths%}
-        urls.push('{{path}}');
+      {%for photo in photos%}
+        urls.push('{{photo.path}}');
       {%endfor%}
       var uploadPath = "/api/uploadFile/";
       console.log("Test");
@@ -230,7 +193,7 @@
       console.log(nomSpectacleURL);
       var filenames = [];
       var file_name = "";
-      {%for i in range(paths|length)%}
+      {%for i in range(photos|length)%}
 
         file_name = urls[{{i}}];
         file_name = file_name.substr(file_name.lastIndexOf('/')+1);
@@ -240,14 +203,14 @@
 
 
 
-      $("#input-25").fileinput({
-        initialPreview: [urls[0] {%for i in range(1,paths|length)%} ,urls[{{i}}] {%endfor%}],
+      $("#input-file").fileinput({
+        initialPreview: [urls[0] {%for i in range(1,photos|length)%} ,urls[{{i}}] {%endfor%}],
         initialPreviewAsData: true,
         initialPreviewFileType: 'image',
         showDrag : true,
         initialPreviewConfig: [
-          {%for i in range(paths|length)%}
-          {caption: filenames[{{i}}], filename: filenames[{{i}}],url:'/api/deleteFile/{{spectacle.nom}}/'+filenames[{{i}}],key: {{i}} },
+          {%for i in range(photos|length)%}
+          {caption: filenames[{{i}}], size: {{photos[i].size}}, filename: filenames[{{i}}],url:'/api/deleteFile/{{spectacle.nom}}/'+filenames[{{i}}],key: {{i}} }{%if i != paths|length-1%},{%endif%}
           {%endfor%}
         ],
         deleteUrl:'/api/deleteFile/{{spectacle.nom}}/{filename}',
@@ -281,9 +244,9 @@
     <p>Bienvenue sur la page de modification/création de spectacle : </p>
     <p>{{spectacle.nom}}</p>
 
-    <label for="input-25">Photos:</label>
+    <label for="input-file">Photos:</label>
     <div class="file-loading">
-        <input id="input-25" name="photos" type="file" multiple>
+        <input id="input-file" name="photos" type="file" multiple>
     </div>
 
 

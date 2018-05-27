@@ -70,9 +70,9 @@ def set_spectacle(nomSpectacle):
             if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
                 paths = []
                 if nomSpectacle != "nouveauSpectacle":
-                    paths = get_paths_photos(nomSpectacle)
+                    photos = get_all_photos(nomSpectacle)
                     print("Set spectacle : ",paths)
-                return render_template('set_spectacle.html',paths=paths,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
+                return render_template('set_spectacle.html',photos=photos,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
             else:
                 return abort(403);
         if request.method=="POST":
@@ -176,7 +176,7 @@ def uploadFile (nomSpectacle):
             nomFichier = f.filename
             path = os.path.join(pathUpload,nomFichier)
             f.save("."+path)
-            photo = Photo(path=path,spectacle=spectacle.nom,ordre=spectacle.photos)
+            photo = Photo(path=path,size=os.path.getsize('.'+path),spectacle=spectacle.nom,ordre=spectacle.photos)
             insert_photo(photo)
             spectacle.photos +=1
             print("Number photos add, state :",spectacle.photos)
@@ -187,7 +187,7 @@ def uploadFile (nomSpectacle):
             dic = {
             'initialPreview': [path],
             'initialPreviewConfig': [
-              {'caption': nomFichier, 'filename': nomFichier,'url':'/api/deleteFile/'+spectacle.nom+'/'+nomFichier,'key': str(photo.ordre) },
+              {'caption': nomFichier, 'size':str(photo.size),'filename': nomFichier,'url':'/api/deleteFile/'+spectacle.nom+'/'+nomFichier,'key': str(photo.ordre) },
             ],
             'initialPreviewThumbTags': [    ],
             'append': 'true'
