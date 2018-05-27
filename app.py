@@ -65,6 +65,10 @@ def mainPhoto_filter(nom):
 	photo = spectacle.getPhoto(0)
 	return photo.path
 
+@app.template_filter('nameFromPath')
+def nameFromPath_filter(path):
+	return path.rsplit('/',1)[-1]
+
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
 def logout():

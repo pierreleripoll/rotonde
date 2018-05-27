@@ -214,7 +214,22 @@ def uploadFile (nomSpectacle):
         })
 
 
+@gestion_spectacle.route('/api/changeOrder/<string:nomSpectacle>/<int:oldIndex>/<int:newIndex>/')
+def changeOrder(nomSpectacle,oldIndex,newIndex):
+    print(nomSpectacle,oldIndex,newIndex)
+    photos= get_all_photos(nomSpectacle);
+    photos[oldIndex].ordre = -1
+    for photo in photos:
+        change= 0
+        if photo.ordre > oldIndex:
+            change-=1
+        if photo.ordre >= newIndex:
+            change+=1
+        photo.ordre += change
 
+    photos[oldIndex].ordre=newIndex;
+    db.session.commit()
+    return "fine"
 
 @gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/')
 def uploadColor(id,hex,bool):
