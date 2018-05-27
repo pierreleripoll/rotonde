@@ -284,12 +284,12 @@ def crop(nomSpectacle,id):
     img = Image.open("."+pathOriginal)
     W, H = img.size
     newSize = (int(W*photo.scale),int(H*photo.scale))
-    img.thumbnail(newSize,Image.ANTIALIAS)
     print("Original :",pathOriginal)
     print("Cropped :",pathCropped)
-    area=(photo.x,photo.y,photo.x+photo.width,photo.y+photo.height)
+    s = 1/photo.scale
+    area=(int(s*photo.x),int(s*photo.y),int(s*(photo.x+photo.width)),int(s*(photo.y+photo.height)))
     cropped_img = img.crop(area)
-    cropped_img.save("."+pathCropped)
+    cropped_img.save("."+pathCropped,quality=90)
 
     return "fine"
 
