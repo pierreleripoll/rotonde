@@ -229,13 +229,17 @@
 
       if (lastDate) {
         inputDate.setAttribute("value", lastDate.value);
-        var t = 0;
-        for(t=0; t<=i; t++) {
-          var nom = "#datetimepicker2"+t.toString()
-          $(nom).datetimepicker({
-            locale: 'fr'
-          });
-        }
+      }
+      if (lastNPlaces) {
+        nPlace.setAttribute("value", lastNPlaces.value);
+      }
+      
+      var t = 0;
+      for(t=0; t<=i; t++) {
+        var nom = "#datetimepicker2"+t.toString()
+        $(nom).datetimepicker({
+          locale: 'fr'
+        });
       }
     }
 

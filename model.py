@@ -138,7 +138,9 @@ def get_spectacles():
 
 
 def get_all_photos(nomSpectacle):
+    print("BON C'EST LA REQUETE SQL SUIVANTE QUI VA POSER UN PROBLEME")
     photos = Photo.query.filter_by(spectacle=nomSpectacle).order_by(Photo.ordre).all()
+    print("BON C'EST LA REQUETE SQL PRECEDENTE QUI VA POSER UN PROBLEME")
     return photos
 
 def get_id_photo(paht):
@@ -147,7 +149,7 @@ def get_id_photo(paht):
 
 def get_paths_photos(nomSpectacle):
     photos = get_all_photos(nomSpectacle);
-    paths = []; 
+    paths = [];
     for photo in photos:
         paths.append(photo.path)
     return paths

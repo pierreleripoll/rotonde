@@ -63,17 +63,17 @@ def set_spectacle(nomSpectacle):
     if 'admin' in session:
         if request.method=="GET":
             thisSpectacle = get_spectacle(nomSpectacle)
-            thisDates = get_dates(nomSpectacle)
-            thisContact = get_contact()
-            for calendrier in thisDates:
-                calendrier.date = calendrier.date.strftime('%d/%m/%Y %H:%M')
-            print(thisDates)
-
             if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
+                thisDates = get_dates(nomSpectacle)
                 paths = []
                 if nomSpectacle != "nouveauSpectacle":
                     paths = get_paths_photos(nomSpectacle)
                     print("Set spectacle : ",paths)
+                thisContact = get_contact()
+                for calendrier in thisDates:
+                    calendrier.date = calendrier.date.strftime('%d/%m/%Y %H:%M')
+                print(thisDates)
+
                 return render_template('set_spectacle.html',paths=paths,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
             else:
                 return abort(403);
