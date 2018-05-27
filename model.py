@@ -156,9 +156,7 @@ def get_spectacles():
 
 
 def get_all_photos(nomSpectacle):
-    print("BON C'EST LA REQUETE SQL SUIVANTE QUI VA POSER UN PROBLEME")
     photos = Photo.query.filter_by(spectacle=nomSpectacle).order_by(Photo.ordre).all()
-    print("BON C'EST LA REQUETE SQL PRECEDENTE QUI VA POSER UN PROBLEME")
     return photos
 
 def get_id_photo(paht):
@@ -242,7 +240,6 @@ def get_session(login):
 def insert_place(place):
     db.session.add(place)
 
-
 def commit_place_insertion():
     db.session.commit()
     return
@@ -298,9 +295,7 @@ def update_spectacle(spectacle):
 def update_session(session):
     oldSession = Session.query.filter_by(login=session.login).first()
     oldSession = session;
-
     db.session.commit()
-
     return
 
 # Update une date
@@ -312,6 +307,12 @@ def update_date(newDate):
 
     db.session.commit()
 
+    return
+
+def delete_date(nomSpectacle):
+    date = Calendrier.query.filter_by(nom=nomSpectacle).all()
+    for d in date:
+        delete(d)
     return
 
 #update le nombre de places sur une date
