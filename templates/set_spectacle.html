@@ -364,8 +364,11 @@
   }
 
   function addGuillotine(path,id){
-      console.log("Crop ",path)
-
+          console.log("Crop ",path);
+          name = nameFromPath(path);
+          path = path.substr(0,path.lastIndexOf('/'));
+          path = path+"/originals/"+name;
+          console.log("Path original :"+path);
           var picture = $("#photo_to_crop");
           picture.attr("src",path);
           picture.guillotine({width: 500, height: 300});
@@ -384,6 +387,8 @@
               data : dataG
             });
           });
+
+
 
     }
 
@@ -409,7 +414,7 @@
     <label for="photos-ordre">Ordre des photos (la première sera celle utilisée pour l'acceuil!):</label>
     <div id="photos-ordre" class="list-group">
         {%for photo in photos%}
-        <div id="{{photo.id}}"class="list-group-item"><img id="photo_{{photo.id}}"src="{{photo.path}}" style="height:50px"> {{photo.path|nameFromPath}}
+        <div id="{{photo.id}}"class="list-group-item"><img id="photo_{{photo.id}}"src="{{photo.path|originalPhoto}}" style="height:50px"> {{photo.path|nameFromPath}}
             <button type='button'class="btn btn-primary" onclick="addGuillotine('{{photo.path}}',{{photo.id}})">Recadrer</button>
         </div>
         {%endfor%}

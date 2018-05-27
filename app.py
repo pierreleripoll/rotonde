@@ -67,6 +67,12 @@ def mainPhoto_filter(nom):
 	photo = spectacle.getPhoto(0)
 	return photo.path
 
+@app.template_filter('originalPhoto')
+def originalPhoto_filter(path):
+	pathSplit = path.split('/')
+	return path.replace(pathSplit[-1],'originals/'+pathSplit[-1])
+
+
 @app.template_filter('nameFromPath')
 def nameFromPath_filter(path):
 	return path.rsplit('/',1)[-1]

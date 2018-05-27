@@ -12,7 +12,8 @@ from model import*
 from jinja2 import TemplateNotFound
 from datetime import datetime
 import re
-
+from PIL import Image
+import shutil
 
 UPLOAD_FOLDER = './static/uploads'
 
@@ -146,7 +147,11 @@ def deleteFile (nomSpectacle,filename):
             print ("spectacle"+nomSpectacle)
             pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
             pathPhoto = os.path.join(pathUpload,filename)
+            pathOriginal = os.path.join(pathUpload+'originals/',filename)
+            if os.path.exists("."+pathOriginal):
+                os.remove("."+pathOriginal)
             os.remove("."+pathPhoto)
+
             print("Spectacle.photos :",spectacle.photos)
 
 
@@ -187,14 +192,21 @@ def uploadFile (nomSpectacle):
 
             if not os.path.isdir("."+pathUpload):
                 os.mkdir("."+pathUpload)
+            if not os.path.isdir("."+pathUpload+'/originals'):
+                os.mkdir("."+pathUpload+"/originals")
             print("Spectacle.photos :",spectacle.photos)
             print(request.files)
 
             f = request.files['photos']
             numero = -1
-            nomFichier = f.filename
+            nomFichier = secure_filename(f.filename)
             path = os.path.join(pathUpload,nomFichier)
             f.save("."+path)
+            print("Path :",path)
+            pathOriginal = os.path.join(pathUpload,"originals",nomFichier)
+            print("Path original :",pathOriginal)
+            shutil.copyfile("."+path,"."+pathOriginal)
+
             photo = Photo(path=path,size=os.path.getsize('.'+path),spectacle=spectacle.nom,ordre=spectacle.photos)
             insert_photo(photo)
             spectacle.photos +=1
@@ -264,8 +276,21 @@ def crop(nomSpectacle,id):
     photo.x = int(form['x'])
     photo.y = int(form['y'])
     photo.scale = float(form['scale'])
-
     update_photo(photo)
+    print(photo.path)
+    pathSplit = photo.path.split('/')
+    pathCropped =photo.path
+    pathOriginal = pathCropped.replace(pathSplit[-1],'originals/'+pathSplit[-1])
+    img = Image.open("."+pathOriginal)
+    W, H = img.size
+    newSize = (int(W*photo.scale),int(H*photo.scale))
+    img.thumbnail(newSize,Image.ANTIALIAS)
+    print("Original :",pathOriginal)
+    print("Cropped :",pathCropped)
+    area=(photo.x,photo.y,photo.x+photo.width,photo.y+photo.height)
+    cropped_img = img.crop(area)
+    cropped_img.save("."+pathCropped)
+
     return "fine"
 
 
