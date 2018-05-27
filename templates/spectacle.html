@@ -1,64 +1,243 @@
 {% extends "layout.html" %}
 {% set active_page = 'spectacle' %}
+{%block head%}
+{{super()}}
+  <script src="/static/color-thief.js"></script>
+
+
+{%endblock%}
 {% block title %}{{spectacle.nom.upper()}}{% endblock %}
 
 
 {% block content %}
 
 
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8 ">
-          <div class="card">
-            <div class="card-body">
-              <h2 class="card-title">{{spectacle.nom.upper()}} </h2>
-              {%if spectacle.auteur%}
-              <h4 class="card-title">{{spectacle.auteur.upper()}} </h4>
-              {%endif%}
-              {%if spectacle.resume %}
-              <p class="card-resume">{{spectacle.resume}}</p>
-              {%endif%}
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card card-eq-height">
-            <div class="card-with-background ">
-              <div class="card-body">
-                <h5 class="card-title">{{spectacle.directeur.upper()}} </h5>
-                <p class="card-participants">Avec {{spectacle.participants}}</p>
-              </div>
-            </div>
-          </div>
-        </div>
+<div class="container"> <!-- conteneur de la page -->
 
-      <div class="row">
-        <div class="card-img col-md-12 ">
-            <img class="card-img" src="{{paths[0]}}">
+
+  <div class="row"> <!-- première ligne -->
+    <div class="col-md-8 "> <!-- première colonne de la première ligne -->
+      <div class="card card-eq-height"> <!-- première carte de la première ligne -->
+        <div class="card-body"> <!-- corps de la carte -->
+          <h2 class="card-title">{{spectacle.nom.upper()}} </h2> <!-- titre de la carte -->
+          {%if spectacle.auteur%}
+          <h4 class="card-title">{{spectacle.auteur.upper()}} </h4>
+          {%endif%}
+          {%if spectacle.resume %}
+          <p class="card-resume">{{spectacle.resume}}</p>
+          {%endif%}
+        </div>
       </div>
-
+    </div>
+    <div class="col-md-4">
+      <div class="card card-eq-height">
+        <div class="card-body col-avec">
+          <h5 class="card-title">{{spectacle.directeur.upper()}} </h5>
+          <p class="card-participants">Avec {{spectacle.participants}}</p>
+        </div>
+      </div>
     </div>
   </div>
 
+  <div class="row">
+    <div class="col-md-4 ">
+      <div class="card card-eq-height">
+        <div class="card-body card-body-tarifs-dates">
+          <h5 class="card-title card-title-tarifs-dates">Du JJ au JJ MM </h5>
+          <p>Tarifs<br>VA :EEE euros<br>NON VA :EEE euros</p>
+        </div>
+        <div class="card-footer card-footer-billet" onclick="afficheBillets()">
+          <p>BILLETS | DATES</p>
+        </div>
+      </div>
+    </div>
 
-  <p>Administrateur à contacter : {{spectacle.admin}}</p>
+    <div id="showImage"  class="col-md-8 ">
+      <div class="imageSpectacle">
+        <img onclick="chgPhoto()" onmouseEnter="mouseEnter()"  onmouseleave="mouseLeave()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
+      </div>
+      {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
+      <div class="content">
+        <div onmouseleave="mouseLeave()" onmouseEnter="mouseEnter()" class="card-group">
+          <div id="color-box" class="card bg-color-box1"></div>
+          <div id="color-box" class="card bg-color-box2"></div>
+          <div id="color-box" class="card bg-color-box3"></div>
+          <div id="color-box" class="card bg-color-box4"></div>
+          <div id="color-box" class="card bg-color-box5"></div>
+          <div id="color-box" class="card bg-color-box6"></div>
+          <div id="color-box" class="card bg-color-box7"></div>
+          <div id="color-box" class="card bg-color-box8"></div>
+          <div id="color-box" class="card bg-color-box9"></div>
+          <div id="color-box" class="card bg-color-box10"></div>
+        </div>
+      </div>
+      {%endif%}
+    </div>
+  </div>
 
-  <form action="" method="POST">
-    <p> Quelles dates souhaitez vous réserver ?</p>
-    <p> Date Places Restantes </p>
-    <ul>
-      {%for date in dates %}
-      <li>{{date.date}} {{date.placesRestantes}}
-        <input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"> </li>
+  <div class="row"> <!--billeterie -->
+    <div class="col-md-12 col-billet" >
+      <div class="card card-billet">
+        <div class="card-header card-header-billet">
+          <p>DATES ET HORAIRES</p>
+        </div>
+        <div class="card-body card-body-billet">
+          <form action="" method="POST">
+            <ul class="liste-dates">
+              {%for date in dates %}
+              <li >
+                <table class="table">
+                  <tbody>
+                    <tr>
+                      <td id="date">{{date.date}}</td>
+                      <td id="places-restantes">{{date.placesRestantes}}</td>
+                      <td id="input-places"><input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"></td>
+                    </tr>
+                  </tbody>
+                </table>
 
-      {% endfor %}
-    </ul>
-      <ul>
-        <button name="submit" value="valider" type="submit">Valider</button> {%if session.admin == 'true' and session.pseudo == spectacle.admin%}
-        <button name="submit" value="modify" type="submit">Modifier</button> {%endif%}
-        <br></br>
-        {%for url in paths%}
-        <img src="{{url}}" width=500 alt="Flowers in Chania"><br> {%endfor%}
-      </ul>
-  </form>
+              </li>
+              {% endfor %}
+            </ul>
+            <ul class="buttons">
+              <button class="btn btn-valider" name="submit" value="valider" type="submit">Valider</button>
+                {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
+                  <button class="btn btn-modifier" name="submit" value="modify" type="submit">Modifier</button>
+                {%endif%}
+            </ul>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script>
+    var paths = new Array({{paths|length}});
+    var i =0;
+    {%for path in paths%}
+    paths[i] ="{{path}}" ;
+    console.log(paths[i]);
+    i++;
+    {%endfor%}
+    i=0;
+
+    var colorThief = new ColorThief();
+    function componentToHex(c) {
+      var hex = c.toString(16);
+      return hex.length == 1 ? "0" + hex : hex;
+    }
+
+    function rgbToHex(r, g, b) {
+      return componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+
+    function chgPhoto(){
+      var image = document.getElementById("imgSpectacle");
+      image.onload = function(){
+        var c = colorThief.getColor(image);
+        var p = colorThief.getPalette(image);
+        var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
+        document.documentElement.style.setProperty('--color-theme', color);
+        document.getElementsByClassName('bg-color-box1')[0].style.backgroundColor = color;
+        for(j=0; j<9; j++){
+          var cobox = "bg-color-box"+(j+2);
+          document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
+          uploadColor(5,p[j],0);
+        }
+      }
+
+      i++;
+      if(i>=paths.length)i=0;
+      image.setAttribute("src",paths[i]);
+      console.log(paths[i]);
+    }
+
+    chgPhoto();
+
+    var month=new Array(12);
+    month[0]="janvier";  month[1]="février";   month[2]="mars";
+    month[3]="avril";    month[4]="mai";       month[5]="juin";
+    month[6]="juillet";  month[7]="août";      month[8]="septembre";
+    month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
+
+    function uploadColor(id,color,bool) {
+      var hex = rgbToHex(color[0],color[1],color[2]);
+      console.log(hex)
+      url2 = "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/";
+      console.log("url : ",url2);
+    $.ajax({
+      url: "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/",
+      success: function(data) {
+        console.log("c'est tout bon");
+      },
+      error: function() {
+        console.log("merdo");
+      }
+    });
+    }
+
+
+
+    var something=[];
+    var colors=[];
+    var base = 'card bg-color-box';
+    var name = "";
+
+
+    for(i=0;i<10;i++){
+      name=base+(i+1);
+      elem=document.getElementsByClassName(name);
+      something[i]=elem;
+      something[i][0].style.cursor = 'pointer';
+
+      something[i][0].onclick=function(){
+        color=window.getComputedStyle(this,null).getPropertyValue("background-color");
+        console.log("in function",i,color);
+        document.documentElement.style.setProperty('--color-theme', color);
+      };
+    }
+
+
+    function scrollToY(distance, duration) {
+        var initialY = window.scrollY;
+        var y = distance;
+        var baseY = (initialY + y) * 0.5;
+        var difference = initialY - baseY;
+        var startTime = performance.now();
+
+        function step() {
+            var normalizedTime = (performance.now() - startTime) / duration;
+            if (normalizedTime > 1) normalizedTime = 1;
+
+            window.scrollTo(0, baseY + difference * Math.cos(normalizedTime * Math.PI));
+            if (normalizedTime < 1) window.requestAnimationFrame(step);
+        }
+        window.requestAnimationFrame(step);
+    }
+
+    function afficheBillets(){
+      var e=document.getElementsByClassName("card-billet")[0];
+      if(e.style.opacity==1){
+        document.getElementsByClassName("card-billet")[0].style.opacity="0";
+        window.scrollToY(0,1000);
+      }else{
+        document.getElementsByClassName("card-billet")[0].style.opacity="1";
+        let Y=e.getBoundingClientRect().top+pageYOffset;
+        console.log(Y);
+        window.scrollToY(Y,1000);
+      }
+      console.log("CLICK : ",e);
+    }
+
+    function mouseEnter(){
+      var e=document.getElementById("color-box").style.height="3vh";
+      console.log("HOVER : ",e);
+    }
+    function mouseLeave(){
+      var e=document.getElementById("color-box").style.height="0vh";
+      console.log("HOVER : ",e);
+    }
+  </script>
+
 {% endblock %}

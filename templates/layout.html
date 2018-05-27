@@ -20,8 +20,10 @@
     window.jQuery || document.write('<script src="/static/assets/js/vendor/jquery.min.js"><\/script>')
   </script>
   <!-- Bootstrap core CSS -->
-  <link href="/static/boot4/css/bootstrap.css" rel="stylesheet">
+  <link href="/static/boot4/css/bootstrap.min.css" rel="stylesheet">
   <link href="/static/styles/charte.css" rel="stylesheet">
+  <link href="/static/styles/spectacle.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   {% endblock %}
 </head>
 
@@ -35,13 +37,13 @@
       <div class="collapse navbar-collapse" id="navbarCollapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item {% if active_page == 'accueil'%}active {% endif %}">
-            <a class="nav-link" href="/">Accueil</a>
+            <a class="nav-link" href="/">ACCUEIL</a>
           </li>
           <li class="nav-item {% if active_page == 'calendrier' %}active {% endif %}">
-            <a class="nav-link" href="/calendrier">Calendrier</a>
+            <a class="nav-link" href="/calendrier">CALENDRIER</a>
           </li>
           <li class="nav-item {% if active_page == 'panier' %}active {% endif %}">
-            <a class="nav-link" href="/panier">Panier</a>
+            <a class="nav-link" href="/panier">PANIER</a>
           </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -75,7 +77,7 @@
         <p>By A. Flamant, M. Humbert, A. Navarro,
            P. Ripoll, J-N. Winter</p>
       </small>
-  </div>
+    </div>
     {% endblock %}
   </footer>
 

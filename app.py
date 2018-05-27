@@ -8,7 +8,7 @@ from gestion_spectacle import *
 from panier_relative import *
 from admin_relative import *
 
-UPLOAD_FOLDER = './static/uploads'
+UPLOAD_FOLDER = '/static/uploads'
 
 app = Flask(__name__)
 app.config['UPLOAD_FOLDER']= UPLOAD_FOLDER
@@ -16,6 +16,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///baseRotonde.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 app.config['MAX_CONTENT_LENGTH'] =  1024 * 1024
 app.secret_key = 'iswuygdedgv{&75619892__01;;>..zzqwQIHQIWS'
+app.jinja_env.filters['urlify']=urlify
 
 app.register_blueprint(gestion_spectacle)
 app.register_blueprint(panier_relative)
@@ -57,6 +58,12 @@ def utility_processor():
     def niceUrl(s):
         return urlify(s)
     return dict(niceUrl=niceUrl)
+
+@app.template_filter('mainPhoto')
+def mainPhoto_filter(nom):
+	spectacle = get_spectacle(nom)
+	photo = spectacle.getPhoto(0)
+	return photo.path
 
 ## PAGE D'ACCUEIL
 @app.route('/', methods=['GET','POST'])
@@ -139,4 +146,4 @@ def uploads(nomSpectacle):
 
 if __name__ == '__main__':
 	app.run(debug='true')
-#app.run(host="192.168.43.6",port=2000)
+	#app.run(host="192.168.0.14",port=5000)

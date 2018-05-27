@@ -25,14 +25,9 @@ def spectacle(nomSpectacle):
         print(thisDates)
         if thisSpectacle == None :
             return abort(404)
-        path = app.config['UPLOAD_FOLDER']+'/'+urlify(nomSpectacle)
-        paths = []
-        if not os.path.isdir(path) :
-            print(path+" no uploads dir for this spectacle")
-        else:
-            for fileName in os.listdir(path):
-                paths.append('.'+path+'/'+fileName)
-            print("Paths :",paths)
+
+        paths = get_paths_photos(thisSpectacle.nom)
+        print("Paths :",paths)
         return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths)
     if request.method == "POST":
         if request.form["submit"] == "modify" and session['pseudo'] == thisSpectacle.admin:
@@ -57,7 +52,8 @@ def spectacle(nomSpectacle):
                     pass
             session['panier']=places
             return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=nomSpectacle))
-
+        if request.form["Color1"] != 0:
+            print("wow it's working")
         if request.form["submit"] == "accueil":
             return redirect(url_for('logout'))
 
@@ -74,7 +70,11 @@ def set_spectacle(nomSpectacle):
             print(thisDates)
 
             if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
-                return render_template('set_spectacle.html',spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
+                paths = []
+                if nomSpectacle != "nouveauSpectacle":
+                    paths = get_paths_photos(nomSpectacle)
+                    print("Set spectacle : ",paths)
+                return render_template('set_spectacle.html',paths=paths,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
             else:
                 return abort(403);
         if request.method=="POST":
@@ -155,14 +155,95 @@ def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
     else:
         return render_template("accueil.html")
 
-@gestion_spectacle.route('/deleteFile/<string:filename>/<int:number>/<string:nom>')
-def deleteFile (filename, number, nom):
-	tiret=filename.find('_');
-	spectacle=filename[:tiret]
-	print ("spectacle" +spectacle)
+@gestion_spectacle.route('/api/deleteFile/<string:nomSpectacle>/<string:filename>',methods=['POST'])
+def deleteFile (nomSpectacle,filename):
+    if 'admin' not in session :
+        return abort(401)
+    else :
+        spectacle=get_spectacle(nomSpectacle)
+        if session['pseudo']==spectacle.admin or session['admin']=='super':
+            photos = get_all_photos(nomSpectacle)
+            nomSpectacle = urlify(nomSpectacle)
+            print ("spectacle"+nomSpectacle)
+            pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
+            pathPhoto = os.path.join(pathUpload,filename)
+            os.remove("."+pathPhoto)
+            print("Spectacle.photos :",spectacle.photos)
 
-	pathUpload =app.config['UPLOAD_FOLDER']+'/'+spectacle
-	os.remove(os.path.join(pathUpload,spectacle+"_"+str(number)))
-	spectacle=get_spectacle(nom)
-	spectacle.photos -= 1
-	return "succes!"
+
+            photo = get_photo(pathPhoto)
+
+            id = photo.id
+            print("lol")
+            colors = get_all_colors(id)
+            print(colors);
+            for color in colors:
+                delete(color)
+            colors = get_all_colors(id)
+            print(colors);
+            for p in photos:
+                if p.ordre>photo.ordre:
+                    p.ordre -=1
+
+            delete(photo)
+
+            spectacle.photos -= 1
+            db.session.commit()
+            print(photos)
+            dic = {"succes":"total"}
+            return json.dumps(dic)
+        else:
+            return abort(401)
+
+@gestion_spectacle.route('/api/uploadFile/<string:nomSpectacle>/',methods=['POST'])
+def uploadFile (nomSpectacle):
+    if 'admin' in session :
+        spectacle=get_spectacle(nomSpectacle)
+
+        if session['pseudo']==spectacle.admin or session['admin']=='super':
+
+            nomSpectacle = urlify(nomSpectacle)
+            print ("spectacle"+nomSpectacle)
+            pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
+
+            if not os.path.isdir("."+pathUpload):
+                os.mkdir("."+pathUpload)
+            print("Spectacle.photos :",spectacle.photos)
+            print(request.files)
+
+            if 'photos' in request.files :
+                for f in request.files.getlist('photos'):
+                    numero = -1
+                    nomFichier = f.filename
+                    path = os.path.join(pathUpload,nomFichier)
+                    f.save("."+path)
+                    photo = Photo(path=path,spectacle=spectacle.nom,ordre=spectacle.photos)
+                    insert_photo(photo)
+                    spectacle.photos +=1
+                    print("Number photos add, state :",spectacle.photos)
+
+            print(request.form)
+            print(request.files)
+            db.session.commit()
+            id = get_id_photo(path).id;
+            dic = {"succes":"total"}
+            dic = {"filename":nomFichier,"path":path, "id":id}
+            return json.dumps(dic)
+
+        else:
+            return abort(401)
+
+    return abort(401)
+
+@gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/')
+def uploadColor(id,hex,bool):
+    test = get_color(hex,id);
+    color = Color(hexa=hex,photo=id,actif=bool);
+
+    if(test is None):
+        print("elles sont différentes");
+        insert_color(color)
+    else:
+        print("couleur déjà registered pour cette image")
+
+    return "niquel chrome";
