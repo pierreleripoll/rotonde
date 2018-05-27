@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import *
 from flask import current_app as app
 from sqlalchemy import *
@@ -8,6 +10,10 @@ import os
 import re
 from model import*
 from jinja2 import TemplateNotFound
+from datetime import datetime
+import re
+from PIL import Image
+import shutil
 
 UPLOAD_FOLDER = './static/uploads'
 
@@ -61,23 +67,23 @@ def set_spectacle(nomSpectacle):
     if 'admin' in session:
         if request.method=="GET":
             thisSpectacle = get_spectacle(nomSpectacle)
-            thisDates = get_dates(nomSpectacle)
-            thisContact = get_contact()
-            for calendrier in thisDates:
-                calendrier.date = datePytoHTML(calendrier.date)
-            print(thisDates)
 
             if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
-                paths = []
+                thisDates = get_dates(nomSpectacle)
+                Photos = []
                 if nomSpectacle != "nouveauSpectacle":
-                    paths = get_paths_photos(nomSpectacle)
-                    print("Set spectacle : ",paths)
-                return render_template('set_spectacle.html',paths=paths,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
+                    photos = get_all_photos(nomSpectacle)
+                    print("Set spectacle : ",photos)
+                thisContact = get_contact()
+                for calendrier in thisDates:
+                    calendrier.date = calendrier.date.strftime('%d/%m/%Y %H:%M')
+                print(thisDates)
+
+                return render_template('set_spectacle.html',photos=photos,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
             else:
                 return abort(403);
         if request.method=="POST":
             if request.form["nom"] != "":
-
                 cont = request.form
                 print("\n\n"+ str(cont) +"\n\n")
                 spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0,
@@ -98,18 +104,12 @@ def set_spectacle(nomSpectacle):
                 else:
                     insert_spectacle(spectacle)
 
-                nombrePlace = 1
-                actualDates = get_dates(nomSpectacle)
-                while "datetime"+str(nombrePlace) in cont :
-                    datePy =dateHTMLtoPy(cont["datetime"+str(nombrePlace)])
-                    date = Calendrier(date=datePy,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(nombrePlace)]))
-                    nombrePlace +=1
-                    alreadyIn="false"
-                    for actualDate in actualDates:
-                        if datePy == actualDate.date:
-                            update_date(date)
-                            alreadyIn = "true"
-                    if alreadyIn == "false":
+                delete_date(nomSpectacle)
+                for dates in cont:
+                    if "datetime" in dates:
+                        datePy = datetime.strptime(cont[dates], '%d/%m/%Y %H:%M')
+                        date = Calendrier(date=datePy,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(re.findall(r'\d+', dates)[0])]))
+                        alreadyIn = "false"
                         insert_date(date)
                 db.session.commit();
                 return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=request.form["nom"]))
@@ -118,11 +118,22 @@ def set_spectacle(nomSpectacle):
     else :
         return abort(403)
 
-@gestion_spectacle.route('/api/ajoutContact/<string:nomUser>/<string:prenomUser>/<int:tel>/<string:mail>/<int:anneeSelect>/<string:departSelect>')
+@gestion_spectacle.route('/api/ajoutContact/<string:nomUser>/<string:prenomUser>/<int:tel>/<string:mail>/<int:anneeSelect>/<string:departSelect>',methods=['POST'])
 def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
-    contact = Contact(nom=nomUser,prenom=prenomUser,telephone=tel,adresseMail=mail,annee=anneeSelect, depart=departSelect)
-    insert_contact(contact)
-    return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
+    if 'admin' in session:
+        if mail == " ":
+            mail = ""
+        if tel == 0:
+            contact = Contact(nom=nomUser,prenom=prenomUser,adresseMail=mail,annee=anneeSelect, depart=departSelect)
+            insert_contact(contact)
+            return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
+        else :
+            contact = Contact(nom=nomUser,prenom=prenomUser,telephone=tel,adresseMail=mail,annee=anneeSelect, depart=departSelect)
+            insert_contact(contact)
+            return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
+    else:
+        return render_template("accueil.html")
+
 
 @gestion_spectacle.route('/api/deleteFile/<string:nomSpectacle>/<string:filename>',methods=['POST'])
 def deleteFile (nomSpectacle,filename):
@@ -136,7 +147,11 @@ def deleteFile (nomSpectacle,filename):
             print ("spectacle"+nomSpectacle)
             pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
             pathPhoto = os.path.join(pathUpload,filename)
+            pathOriginal = os.path.join(pathUpload+'originals/',filename)
+            if os.path.exists("."+pathOriginal):
+                os.remove("."+pathOriginal)
             os.remove("."+pathPhoto)
+
             print("Spectacle.photos :",spectacle.photos)
 
 
@@ -177,34 +192,108 @@ def uploadFile (nomSpectacle):
 
             if not os.path.isdir("."+pathUpload):
                 os.mkdir("."+pathUpload)
+            if not os.path.isdir("."+pathUpload+'/originals'):
+                os.mkdir("."+pathUpload+"/originals")
             print("Spectacle.photos :",spectacle.photos)
             print(request.files)
 
-            if 'photos' in request.files :
-                for f in request.files.getlist('photos'):
-                    numero = -1
-                    nomFichier = f.filename
-                    path = os.path.join(pathUpload,nomFichier)
-                    f.save("."+path)
-                    photo = Photo(path=path,spectacle=spectacle.nom,ordre=spectacle.photos)
-                    insert_photo(photo)
-                    spectacle.photos +=1
-                    print("Number photos add, state :",spectacle.photos)
+            f = request.files['photos']
+            numero = -1
+            nomFichier = secure_filename(f.filename)
+            path = os.path.join(pathUpload,nomFichier)
+            f.save("."+path)
+            print("Path :",path)
+            pathOriginal = os.path.join(pathUpload,"originals",nomFichier)
+            print("Path original :",pathOriginal)
+            shutil.copyfile("."+path,"."+pathOriginal)
+
+            photo = Photo(path=path,size=os.path.getsize('.'+path),spectacle=spectacle.nom,ordre=spectacle.photos)
+            insert_photo(photo)
+            spectacle.photos +=1
+            print("Number photos add, state :",spectacle.photos)
+
 
             print(request.form)
             print(request.files)
             db.session.commit()
-            id = get_id_photo(path).id;
-            dic = {"succes":"total"}
-            dic = {"filename":nomFichier,"path":path, "id":id}
+            dic = {
+            'initialPreview': [path],
+            'initialPreviewConfig': [
+              {'caption': nomFichier, 'size':str(photo.size),'filename': nomFichier,'url':'/api/deleteFile/'+spectacle.nom+'/'+nomFichier,'key': str(photo.ordre) },
+            ],
+            'initialPreviewThumbTags': [    ],
+            'append': 'true',
+            'id':photo.id
+            }
             return json.dumps(dic)
 
         else:
-            return abort(401)
+            return jsonify({
+            'error': 'Not authentified',
+            'errorkeys': [],
+            'initialPreview': [],
+            'initialPreviewConfig': [],
+            'initialPreviewThumbTags': [    ],
+            'append': 'false'
+            })
+    else:
+        return jsonify({
+        'error': 'Not authentified',
+        'errorkeys': [],
+        'initialPreview': [],
+        'initialPreviewConfig': [],
+        'initialPreviewThumbTags': [    ],
+        'append': 'false'
+        })
 
-    return abort(401)
 
-@gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/')
+@gestion_spectacle.route('/api/changeOrder/<string:nomSpectacle>/<int:oldIndex>/<int:newIndex>/',methods=["POST"])
+def changeOrder(nomSpectacle,oldIndex,newIndex):
+    print(nomSpectacle,oldIndex,newIndex)
+    photos= get_all_photos(nomSpectacle);
+    photos[oldIndex].ordre = -1
+    print(photos)
+    for photo in photos:
+        if photo.ordre > oldIndex:
+            photo.ordre-=1
+        if photo.ordre >= newIndex:
+            photo.ordre+=1
+        print(photo)
+
+    photos[oldIndex].ordre=newIndex;
+    print(photos)
+    db.session.commit()
+    return "fine"
+
+@gestion_spectacle.route('/api/crop/<string:nomSpectacle>/<int:id>/',methods=["POST"])
+def crop(nomSpectacle,id):
+    print("CROP ",nomSpectacle,id)
+    print(request.form)
+    form = request.form
+    photo = get_photo_byid(id)
+    photo.width = int(form['w'])
+    photo.height = int(form['h'])
+    photo.x = int(form['x'])
+    photo.y = int(form['y'])
+    photo.scale = float(form['scale'])
+    update_photo(photo)
+    print(photo.path)
+    pathSplit = photo.path.split('/')
+    pathCropped =photo.path
+    pathOriginal = pathCropped.replace(pathSplit[-1],'originals/'+pathSplit[-1])
+    img = Image.open("."+pathOriginal)
+    W, H = img.size
+    newSize = (int(W*photo.scale),int(H*photo.scale))
+    img.thumbnail(newSize,Image.ANTIALIAS)
+    print("Original :",pathOriginal)
+    print("Cropped :",pathCropped)
+    area=(photo.x,photo.y,photo.x+photo.width,photo.y+photo.height)
+    cropped_img = img.crop(area)
+    cropped_img.save("."+pathCropped)
+
+    return "fine"
+
+@gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/',methods=['POST'])
 def uploadColor(id,hex,bool):
     test = get_color(hex,id);
     color = Color(hexa=hex,photo=id,actif=bool);

@@ -1,21 +1,39 @@
 {% extends "layout.html" %}
 {% set active_page = 'set_spectacle' %}
 
-{% block head %}
-  {{ super() }}
 
+{% block head %}
+
+{{ super() }}
+<!--<script type="text/javascript" src="/static/bower_components/jquery/dist/jquery.min.js"></script>-->
+<script type="text/javascript" src="/static/bower_components/moment/min/moment.min.js"></script>
+<script type="text/javascript" src="/static/bower_components/moment/locale/fr.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+<link href="/static/jquery.guillotine.css" rel="stylesheet" type="text/css"/>
+
+<script type="text/javascript" src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" href="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" href="/static/bower_components/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/js/plugins/piexif.min.js" type="text/javascript"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/js/plugins/sortable.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/js/plugins/purify.min.js" type="text/javascript"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"type="text/javascript"></script>
+<script src="/static/boot4/js/bootstrap.min.js" type="text/javascript"></script>
 
-<!-- the main fileinput plugin file -->
-<script src="/static/fileinput.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/js/fileinput.min.js" type="text/javascript"></script>
+
+<script src="/static/color-thief.js"type="text/javascript"></script>
+<script src="/static/jquery.guillotine.min.js"type="text/javascript"></script>
+
 <!-- optionally uncomment line below for loading your theme assets for a theme like Font Awesome (`fa`) -->
 <!-- script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/themes/fa/theme.min.js"></script -->
 
@@ -108,14 +126,35 @@
     }
 
     function envoieContact() {
-      var nomUser = $("#nomUser").val();
-      var prenomUser = $("#prenomUser").val();
-      var tel = $("#telephone").val();
-      var mail = $("#adressemail").val();
+      if($("#nomUser").val() == "") {
+        var nomUser = "--";
+      } else {
+        var nomUser = $("#nomUser").val();
+      }
+
+      if($("#prenomUser").val() == "") {
+        var prenomUser = "--";
+      } else {
+        var prenomUser = $("#prenomUser").val();
+      }
+
+      if($("#telephone").val() == "") {
+        var tel = "0";
+      } else {
+        var tel = $("#telephone").val();
+      }
+
+      if($("#adressemail").val() == "") {
+        var mail = " ";
+      } else {
+        var mail = $("#adressemail").val();
+      }
+
       var anneeSelect = $("#anneeSelect").val();
       var departSelect = $("#departSelect").val();
       $.ajax({
         url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect,
+        type: "POST",
         success: function(data) {
           var option = document.createElement("option");
           option.value = data.id;
@@ -136,21 +175,40 @@
     function init(val) {
       i = val;
     }
+
     function addOneDate() {
+      if(i==0) {
+          var boutonAnnule = document.createElement("input");
+          boutonAnnule.setAttribute("name", "boutonAnnule");
+          boutonAnnule.setAttribute("id", "boutonAnnule");
+          boutonAnnule.setAttribute("value", "Effacer tout");
+          boutonAnnule.setAttribute("type","button");
+          boutonAnnule.setAttribute("onclick","removeOneDate(-1)");
+
+          document.getElementById("annule").appendChild(boutonAnnule);
+      }
+      i++;
+
+      var br = document.createElement("br");
       var lastDate = document.getElementById("datetime" + i.toString());
       var lastNPlaces = document.getElementById("nPlaces" + i.toString());
 
-      var div = document.createElement("div");
-      var inputDate = document.createElement("INPUT");
-      inputDate.setAttribute("type", "datetime-local");
-      i++;
-      inputDate.setAttribute("name", "datetime" + i.toString());
-      inputDate.setAttribute("id", "datetime" + i.toString());
-      console.log(i);
+      var datePick = document.createElement("div");
+      datePick.setAttribute("class", "input-group date");
+      datePick.setAttribute("id", "datetimepicker2" + i.toString());
 
-      var br = document.createElement("br");
+      var iconDate = document.createElement("input");
+      iconDate.setAttribute("type", "form-control");
+      iconDate.setAttribute("name", "datetime" + i.toString());
+      iconDate.setAttribute("id", "datetime" + i.toString());
+      var span1 = document.createElement("span");
+      span1.setAttribute("class", "input-group-addon");
+      var span2 = document.createElement("span");
+      span2.setAttribute("class", "glyphicon glyphicon-calendar");
+      span1.appendChild(span2);
 
-      div.appendChild(inputDate);
+      datePick.appendChild(iconDate);
+      datePick.appendChild(span1);
 
       var nPlace = document.createElement("input");
       nPlace.setAttribute("type", "number");
@@ -159,6 +217,24 @@
       nPlace.setAttribute("min", "0");
       nPlace.setAttribute("max", "500");
 
+      var nom = document.createElement("label");
+      nom.setAttribute("id", "label" + i.toString());
+      nom.innerHTML = " - Places";
+
+      var buttonA = document.createElement("input");
+      buttonA.setAttribute("type", "button");
+      buttonA.setAttribute("name", "annule"+ i.toString());
+      buttonA.setAttribute("id", "annule"+ i.toString());
+      buttonA.setAttribute("value", "Annuler");
+      buttonA.setAttribute("onclick","removeOneDate("+i.toString()+")");
+
+
+      document.getElementById("groupe").appendChild(datePick);
+      document.getElementById("groupe").appendChild(nPlace);
+      document.getElementById("groupe").appendChild(nom);
+      document.getElementById("groupe").appendChild(buttonA);
+      document.getElementById("groupe").appendChild(br);
+
       if (lastDate) {
         inputDate.setAttribute("value", lastDate.value);
       }
@@ -166,58 +242,33 @@
         nPlace.setAttribute("value", lastNPlaces.value);
       }
 
-      div.appendChild(nPlace);
-
-      document.getElementById("date-div").appendChild(br);
-      document.getElementById("date-div").appendChild(div);
-    }
-
-
-    $( document ).ready(function() {
-      var e = document.getElementsByTagName("img");
-      console.log(e, e.length);
-      console.log(e[1]);
-    });
-
-    function add_new_file(field, maxsize){
-    	var FileSize = field.files[0].size;
-      if (FileSize > maxsize) {
-      	alert('Image '+field.files[i].name+' trop grande: taille limitée à '+maxsize+' octets');
-      } else {
-      	var count = parseInt(document.getElementById('file_count').value);
-
-      	var file_name = document.getElementById("new_file["+count+"]").value;
-        console.log("nom du fichier", file_name);
-        file_name = file_name.substr(file_name.lastIndexOf('\\')+1);
-
-      	document.getElementById('new_file_row').style.display = "none";
-      	document.getElementById('new_file_row').id = "new_file_row["+count+"]";
-      	var table = document.getElementById('files_table');
-
-      	var row = table.insertRow(table.rows.length);
-      	row.id = "inserted_file["+count+"]";
-      	var cell0 = row.insertCell(0);
-      	cell0.innerHTML = '<input type="text" name="inserted_file['+count+']" value="'+file_name+'" /><input type="button" name="delete['+count+']" value="Delete" onclick="delete_inserted(this)"/>';
-
-      	++count;
-
-      	var row = table.insertRow(table.rows.length);
-      	row.id = "new_file_row";
-      	var cell0 = row.insertCell(0);
-      	cell0.innerHTML = '<input type="file" name="photos" id="new_file['+count+']" readonly="readonly" onchange="add_new_file(this,'+maxsize+')" accept=".png, .jpg, .jpeg"/>';
-
-      	document.getElementById('file_count').value = count;
+      var t = 0;
+      for(t=0; t<=i; t++) {
+        var nom = "#datetimepicker2"+t.toString()
+        $(nom).datetimepicker({
+          locale: 'fr'
+        });
       }
     }
-    function delete_inserted(field, alreadysaved){
-      var name = field.name;
-      var id = name.substr(name.indexOf('[') + 1, name.indexOf(']') - name.indexOf('[') - 1);
-      document.getElementById("inserted_file["+id+"]").style.display = "none";
-      if(alreadysaved == 0){
-    		var control = document.getElementById("new_file["+id+"]");
-    		control.parentNode.removeChild(control);
-    	}
+
+    function removeOneDate(i) {
+      if(i < 0) {
+        document.getElementById("groupe").innerHTML = "";
+        $('#boutonAnnule').remove();
+        init(0);
+      } else if (i >= 0) {
+        var place = "#nPlaces"+ i.toString();
+        var datepicker = "#datetimepicker2"+ i.toString();
+        var labelo = "#label"+ i.toString();
+        var annullade = "#annule"+ i.toString();
+        $(place).remove();
+        $(datepicker).remove();
+        $(labelo).remove();
+        $(annullade).remove();
+      }
     }
+
+
 
     function validateForm(){
       console.log("hey les amis");
@@ -252,6 +303,7 @@
       console.log("url : ",url2);
       $.ajax({
         url: "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/",
+        type: "POST",
         success: function(data) {
           console.log("c'est tout bon");
         },
@@ -262,11 +314,10 @@
     }
 
     $(document).ready(function() {
-      colorThief = new ColorThief();
 
       var urls = [];
-      {%for path in paths%}
-        urls.push('{{path}}');
+      {%for photo in photoss%}
+        urls.push('{{photo}}');
       {%endfor%}
       var uploadPath = "/api/uploadFile/";
       console.log("Test");
@@ -274,27 +325,21 @@
       console.log(nomSpectacleURL);
       var filenames = [];
       var file_name = "";
-      {%for i in range(paths|length)%}
 
-        file_name = urls[{{i}}];
-        console.log("bonjour à tous", file_name);
-        file_name = file_name.substr(file_name.lastIndexOf('/')+1);
-        console.log("bonjour à tous", file_name);
 
-        filenames.push(file_name);
-      {%endfor%}
 
-      $("#input-25").fileinput({
-        initialPreview: [{%for path in paths%} '{{path}}', {%endfor%}],
+      $("#input-file").fileinput({
+        initialPreview: [ {%for i in range(photos|length)%}'{{photos[i].path}}'{%if i != photos|length-1%},{%endif%} {%endfor%}],
         initialPreviewAsData: true,
+        initialPreviewFileType: 'image',
+        showDrag : true,
         initialPreviewConfig: [
-          {%for i in range(paths|length)%}
-          {caption: filenames[{{i}}], filename: filenames[{{i}}],url:'/api/deleteFile/{{spectacle.nom}}/'+filenames[{{i}}], key:{{i}} },
+          {%for i in range(photos|length)%}
+          {caption:'{{photos[i].path|nameFromPath}}', size: {{photos[i].size}}, filename:'{{photos[i].path|nameFromPath}}',url:'/api/deleteFile/{{spectacle.nom}}/{{photos[i].path|nameFromPath}}',key: {{i}} }{%if i != paths|length-1%},{%endif%}
           {%endfor%}
         ],
+        deleteUrl:'/api/deleteFile/{{spectacle.nom}}/{filename}',
         uploadUrl: "/api/uploadFile/"+nomSpectacleURL+'/',
-        multiple:true,
-        showUpload:true,
         overwriteInitial: false,
         maxFileSize: 1000,
         allowedFileExtensions: ["jpg","png","gif"]
@@ -309,12 +354,43 @@
       }).on('filedeleted', function() {
         setTimeout(function() {
             window.alert('Suppression réussie ! ');
-        }, 900);
-    });
-      var image = $("#input-25");
-      console.log("dernier, affichage de l'objet input-25",image);
+        });
+      });
     });
 
+
+
+    $('#guillotine').on('shown.bs.modal', function () {
+      $('#guillotine').trigger('focus')
+    })
+
+  function nameFromPath(path){
+    name = path.substr(path.lastIndexOf('/') + 1);
+    return name
+  }
+
+  function addGuillotine(path,id){
+      console.log("Crop ",path)
+
+          var picture = $("#photo_to_crop");
+          picture.attr("src",path);
+          picture.guillotine({width: 500, height: 300});
+          $('#guillotine').modal()
+          $('#zoom-in').click(function(){
+          picture.guillotine('zoomIn');
+          });
+          $('#zoom-out').click(function(){
+          picture.guillotine('zoomOut');
+          });
+          $('#save').click(function(){
+            dataG =  picture.guillotine("getData");
+            $.ajax({
+              type:"POST",
+              url: "/api/crop/{{spectacle.nom}}/"+id+'/',
+              data : dataG
+            });
+          });
+    }
 
 </script>
 
@@ -324,108 +400,176 @@
 {% block title %}Modification spectacle{% endblock %}
 
 {% block content %}
-  <div class="container-fluid">
-    <p>Bienvenue sur la page de modification/création de spectacle : </p>
-    <p>{{spectacle.nom}}</p>
+<div class="container-fluid">
+  <p>Bienvenue sur la page de modification/création de spectacle : </p>
+  <p>{{spectacle.nom}}</p>
 
-    <label for="input-25">Photos:</label>
-    <div class="file-loading">
-        <input id="input-25" name="photos" type="file" multiple>
-    </div>
+  <label for="input-file">Photos:</label>
+  <div class="file-loading">
+      <input id="input-file" name="photos" type="file" multiple>
+  </div>
 
-    <script>
-      var picture = $('#thepicture');  // Must be already loaded or cached!
-      picture.guillotine({width: 400, height: 300});
-    </script>
-
-
-
-    <form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
-      <div class="form-group">
-        <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
-        <input type="text" id="nom" class="form-control" name="nom" value='{{spectacle.nom}}'><br>
+  <label for="photos-ordre">Ordre des photos (la première sera celle utilisée pour l'acceuil!):</label>
+  <div id="photos-ordre" class="list-group">
+      {%for photo in photos%}
+      <div id="{{photo.id}}"class="list-group-item"><img id="photo_{{photo.id}}"src="{{photo.path}}" style="height:50px"> {{photo.path|nameFromPath}}
+          <button type='button'class="btn btn-primary" onclick="addGuillotine('{{photo.path}}',{{photo.id}})">Recadrer</button>
       </div>
-      <div class="form-group">
-        <label for="resume">Résumé:</label><br>
-        <textarea type="text" id="resume" row="4" class="form-control" name="resume" >{{spectacle.resume}}</textarea>
-      </div>
-      <div class="form-group">
-      </div>
-
-      <div class="form-group">
-        <label for="liens">Liens:</label><br>
-        <input type="url" name="liens" class="form-control" value='{%if spectacle.liens != None%}{{spectacle.liens}}{%endif%}'><br>
-      </div>
-      <div class="form-group">
-        <label for="directeur">Par:</label><br>
-        <input type="text" name="directeur" class="form-control" value='{{spectacle.directeur}}'><br>
-      </div>
-      <div class="form-group">
-        <label for="auteur">Auteur:</label><br>
-        <input type="text" name="auteur" class="form-control" value='{{spectacle.auteur}}'><br>
-      </div>
-      <div class="form-group">
-        <label for="participants">Avec:</label><br>
-        <input type="text" name="participants" class="form-control" value='{{spectacle.participants}}'><br>
-      </div>
-      <div class="form-group">
-        <label for="typeSpectacle">Genre:</label><br>
-        <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}'>
-          <option value="Théâtre">Théâtre</option>
-          <option value="Musique">Musique</option>
-          <option value="Danse">Danse</option>
-          <option value="Impro">Impro</option>
-          <option value="Conférence">Conférence</option>
-          <option value="Cirque">Cirque</option>
-          <option value="Performance">Performance</option>
-          <option value="Autre">Autre</option>
-        </select><br>
-      </div>
-      <div class="form-group">
-        <label for="duree">Durée (en minutes):</label><br>
-        <input type="number" name="duree" class="form-control" value='{{spectacle.duree}}'><br>
-      </div>
-      <div class="form-group">
-        <label for="tarif">Tarif:</label><br>
-        <input type="number" name="tarif" class="form-control" value='{{spectacle.tarif}}'><br>
-      </div>
-      <div class="form-group">
-        <label for="infoComplementaire">Info complémentaire:</label><br>
-        <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
-      </div>
-      <div class="form-group">
-        <select name="ajoutContactDB" id="ajoutContactDB">
-          {%for c in contact:%}
-          <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
-          {%endfor%}
-        </select>
-        <button type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
-        <br>
-        <br>
-        <div id="contact"></div>
-      </div>
-      <br>
-      <div>
-        <label for="dates">Dates :  </label>
-        <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button><br>
-        <div id="date-div">
-          {%for date in dates:%}
-          <div id="date{{loop.index}}">
-            <input type="datetime-local" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}">
-            <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
-          </div>
-          {%endfor%}
-        </div>
-      </div>
-
-      <div>
-        <br><br>
-        <button name="button" id="valide" value="valider" type="valide" }>Valider</button>
-      </div>
-    </form>
+      {%endfor%}
   </div>
 
   <script>
-
+    var el = document.getElementById('photos-ordre');
+    var sortable = new Sortable(el, {
+      onUpdate: function(evt){
+        console.log(evt.item.id);
+        console.log(evt.oldIndex,' -> ',evt.newIndex);
+        $.ajax({
+          type:"POST",
+          url: "/api/changeOrder/{{spectacle.nom}}/"+evt.oldIndex+"/"+evt.newIndex+'/'
+        });
+      }
+    });
   </script>
+
+  <div class="modal fade" id="guillotine" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Recadrez votre photo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div  class="modal-body">
+          <img id="photo_to_crop" src="">
+        </div>
+        <div class="modal-footer">
+          <button id="zoom-out"type="button" class="btn btn-secondary">Dézoomer</button>
+          <button id="zoom-in"type="button" class="btn btn-secondary">Zoomer</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+          <button id="save" type="button" class="btn btn-primary">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
+      <input type="text" id="nom" class="form-control" name="nom" value='{{spectacle.nom}}'><br>
+    </div>
+    <div class="form-group">
+      <label for="resume">Résumé:</label><br>
+      <textarea type="text" id="resume" row="4" class="form-control" name="resume" >{{spectacle.resume}}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="liens">Liens:</label><br>
+      <input type="url" name="liens" class="form-control" value='{%if spectacle.liens != None%}{{spectacle.liens}}{%endif%}'><br>
+    </div>
+
+    <div class="form-group">
+      <label for="directeur">Par:</label><br>
+      <input type="text" name="directeur" class="form-control" value='{{spectacle.directeur}}'><br>
+    </div>
+
+    <div class="form-group">
+      <label for="auteur">Auteur:</label><br>
+      <input type="text" name="auteur" class="form-control" value='{{spectacle.auteur}}'><br>
+    </div>
+
+    <div class="form-group">
+      <label for="participants">Avec:</label><br>
+      <input type="text" name="participants" class="form-control" value='{{spectacle.participants}}'><br>
+    </div>
+
+    <div class="form-group">
+      <label for="typeSpectacle">Genre:</label><br>
+      <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}'>
+        <option value="Théâtre">Théâtre</option>
+        <option value="Musique">Musique</option>
+        <option value="Danse">Danse</option>
+        <option value="Impro">Impro</option>
+        <option value="Conférence">Conférence</option>
+        <option value="Cirque">Cirque</option>
+        <option value="Performance">Performance</option>
+        <option value="Autre">Autre</option>
+      </select><br>
+    </div>
+
+    <div class="form-group">
+      <label for="duree">Durée (en minutes):</label><br>
+      <input type="number" name="duree" class="form-control" value='{{spectacle.duree}}'><br>
+    </div>
+
+    <div class="form-group">
+      <label for="tarif">Tarif:</label><br>
+      <input type="number" name="tarif" class="form-control" value='{{spectacle.tarif}}'><br>
+    </div>
+
+    <div class="form-group">
+      <label for="infoComplementaire">Info complémentaire:</label><br>
+      <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
+    </div>
+
+    <div class="form-group">
+      <select name="ajoutContactDB" id="ajoutContactDB">
+        {%for c in contact:%}
+        <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
+        {%endfor%}
+      </select>
+      <button type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
+      <br>
+      <br>
+      <div id="contact"></div>
+    </div>
+    <br>
+
+    <div>
+      <div id='annule'>
+        <label for="dates">Dates :  </label>
+        <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button>
+      </div>
+      <br>
+      <div class="container">
+        <div class="row">
+          <div class='col-sm-3'>
+            <div class="form-group">
+              <div id='groupe'>
+                {%for date in dates:%}
+                  <div class='input-group date' id='datetimepicker2{{loop.index}}'>
+                    <input type='text' class="form-control" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}">
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                  </div>
+                  <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
+                  <label for="place" id="label{{loop.index}}"> - Places </label>
+                  <input type="button" value="Annuler" id="annule{{loop.index}}" name="annule{{loop.index}}" onclick="removeOneDate({{loop.index}})">
+                  <br>
+                  <script type="text/javascript">
+                    $(function () {
+                      $('#datetimepicker2{{loop.index}}').datetimepicker({
+                        locale: 'fr'
+                      });
+                    });
+                  </script>
+                {%endfor%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <br><br>
+      <button name="button" id="valide" value="valider" type="valide" }>Valider</button>
+    </div>
+
+  </form>
+</div>
+
 {% endblock %}

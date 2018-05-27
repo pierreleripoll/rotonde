@@ -1,0 +1,233 @@
+:root {
+  height: 100%;
+  --color-theme: rgb(50,50,50);
+  --color-font-light: rgb(240,240,240);
+  --jumbotron-padding-y: 3rem;
+
+}
+
+.jumbotron {
+  padding-top: var(--jumbotron-padding-y);
+  padding-bottom: var(--jumbotron-padding-y);
+  margin-bottom: 0;
+  background-color: #fff;
+}
+
+
+.jumbotron p:last-child {
+  margin-bottom: 0;
+}
+
+.navbar{
+  position:fixed;
+  top:0;
+  right:0;
+  left:0;
+  background-color: var(--color-theme);
+  color: var(--color-font-light);
+  font-family:Lato;
+  padding-top:1px;
+  border-radius:0px;
+  align-items: center;
+  padding-bottom:3px;
+}
+
+.card-body-tarifs-dates{
+  font-size: 100%;
+}
+
+.card-title-tarifs-dates{
+  font-size: 150%;
+}
+
+.card-img {
+  cursor :pointer;
+}
+
+.row-palette{
+  margin:0px;
+  background-color: var(--color-theme);
+  padding-top: 0;
+  padding-bottom:0;
+  padding-left:2%;
+  padding-right: 2%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.col-avec{
+  color: var(--color-font-light);
+  font-size: 150%;
+  background-color: var(--color-theme);
+}
+
+.card-footer-billet{
+  height:40%;
+  color: var(--color-font-light);
+  font-size: 150%;
+  background-color: var(--color-theme);
+  border-radius: 0px;
+  cursor :pointer;
+}
+
+
+
+.card-eq-height {
+  height: 100%;
+}
+
+.card-resume{
+  text-align: justify;
+  text-justify: inter-character;
+}
+
+.card-participants{
+  font-size: 90%;
+}
+
+.card-imgSpectacle{
+  cursor: pointer;
+  width:100%;
+  height : 40vh;
+  background-color: var(--color-theme);
+  object-fit: contain;
+  border:1px solid;
+  border-bottom:0px;
+  border-color:var(--color-border);
+}
+
+.card-img-top-pers {
+  width: 100%;
+}
+
+#color-box{
+  Width:auto;
+  border-top:0;
+  border-color:var(--color-border);
+  transition: all 0.4s ease-in-out 0s;
+}
+
+.bg-color-box1{
+  border-left:1px solid;
+  background-color: var(--color-insa);
+  border-right:0;
+}
+.bg-color-box2{
+  background-color: var(--color-insa);
+  border-left:0;
+  border-right:0;
+}
+.bg-color-box3{
+  background-color: var(--color-insa);
+  border-left:0;
+  border-right:0;
+}
+.bg-color-box4{
+  background-color: var(--color-insa);
+  border-left:0;
+  border-right:0;
+}
+.bg-color-box5 {
+  background-color: var(--color-insa);
+  border-left:0;
+  border-right:0;
+}
+.bg-color-box6 {
+  background-color: var(--color-insa);
+  border-left:0;
+  border-right:0;
+}
+.bg-color-box7 {
+  background-color: var(--color-insa);
+  border-left:0;
+  border-right:0;
+}
+.bg-color-box8 {
+  background-color: var(--color-insa);
+  border-left:0;
+  border-right:0;
+}
+.bg-color-box9 {
+  background-color: var(--color-insa);
+  border-left:0;
+  border-right:0;
+}
+.bg-color-box10 {
+  background-color: var(--color-insa);
+  border-left:0;
+}
+
+.card-header-billet{
+  border-radius:0px;
+  padding : 5px 5px 0px 5px;
+  font-size:120%;
+  color: var(--color-font-light);
+  background-color: var(--color-theme);
+}
+
+.card-billet{
+  opacity:0;
+  animation: ease-in-out 0.8s;
+}
+
+.card-body-billet{
+  margin:0;
+  padding:0;
+  padding-top: 1rem;
+}
+
+.liste-dates{
+  list-style-type: none;
+  padding:0;
+  margin:1vh;
+  border: 0px;
+}
+
+.table{
+  margin:0;
+  padding:0;
+  border: 0px;
+}
+
+#date{
+  text-align:left;
+}
+
+#places-restantes{
+  text-align: center;
+}
+
+#input-places{
+  text-align:right;
+}
+
+.buttons{
+  padding:0;
+  margin:0;
+}
+
+.btn-valider{
+
+  text-align:center;
+  width:100%;
+}
+
+.btn-valider:hover{
+  background-color: var(--color-font-light);
+  color:var(--color-theme);
+  border-color: var(--color-font-light);
+}
+
+
+.btn-modifier{
+  text-align:center;
+  width:100%;
+}
+
+.btn-modifier:hover{
+  background-color: var(--color-font-light);
+  color:var(--color-theme);
+  border-color: var(--color-font-light);
+}

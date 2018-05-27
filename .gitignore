@@ -1,8 +1,5 @@
 __pycache__/
-*.pyc
-build/
 develop-eggs/
-dist/
 downloads/
 docs/_build/
 eggs/
@@ -50,3 +47,4 @@ pip-delete-this-directory.txt
 *.pot
 .webassets-cache
 *.db
+*.pyc
