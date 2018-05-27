@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import *
 from flask import current_app as app
 from sqlalchemy import *
