@@ -207,8 +207,9 @@ def get_places_user_name(userName):
 
 # Renvoie les places correspondant a un mail
 def get_places_mail(mail):
-	places = Place.query.filter_by(adresseMail=mail).all()
-	return places
+    now = datetime.now()
+    places = Place.query.filter(Place.adresseMail==mail, Place.date>now).all()
+    return places
 
 def get_contact():
     contact = Contact.query.all()
