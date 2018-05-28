@@ -144,6 +144,7 @@ def prettify_date(date, format='calendar'):
         string = 'le %d %s a %dh%d' % (date.day, mois, date.hour, date.minute)
     if format == 'spectacle':
         string = '%d %s' % (date.day, mois)
+
     return string
 
 def connect():
