@@ -337,6 +337,19 @@ def delete_date(nomSpectacle):
         delete(d)
     return
 
+def delete_places(nomSpectacle):
+    places=Place.query.filter_by(nomSpectacle=nomSpectacle).all()
+    for place in places:
+        delete(place)
+    return
+
+def delete_spectacle(nom):
+    spectacle=get_spectacle(nom)
+    delete_places(nom)
+    delete_date(nom)
+    delete(spectacle)
+    return
+
 #update le nombre de places sur une date
 def update_placesRestantes (date, placesPrises):
     try:

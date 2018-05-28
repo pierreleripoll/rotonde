@@ -83,38 +83,42 @@ def set_spectacle(nomSpectacle):
             else:
                 return abort(403);
         if request.method=="POST":
-            if request.form["nom"] != "":
-                cont = request.form
-                print("\n\n"+ str(cont) +"\n\n")
-                spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0,
-                    directeur=cont["directeur"],auteur=cont["auteur"],participants=cont["participants"],infoComplementaire=cont["infoComplementaire"],tarif=cont["tarif"],
-                    duree=cont["duree"],typeSpectacle=cont["typeSpectacle"], idContact=cont["ajoutContactDB"])
-                print("\n\n"+ str(cont) +"\n\n")
-                alreadyIn = get_spectacle(spectacle.nom)
-                if alreadyIn:
-                    print("\nSPECTACLE ALREADY IN\n")
-                    if not( alreadyIn.admin == session['pseudo'] or session['admin']=="super"):
-                        print("\n\nNOT ALLOWED MODIFY THIS SPECTACLE\n\n")
-                        return abort(403)
-                    spectacle.photos = alreadyIn.photos
-                # check if the post request has the file part
+            if request.form["button"] == "valider":
+                if request.form["nom"] != "":
+                    cont = request.form
+                    print("\n\n"+ str(cont) +"\n\n")
+                    spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0,
+                        directeur=cont["directeur"],auteur=cont["auteur"],participants=cont["participants"],infoComplementaire=cont["infoComplementaire"],tarif=cont["tarif"],
+                        duree=cont["duree"],typeSpectacle=cont["typeSpectacle"], idContact=cont["ajoutContactDB"])
+                    print("\n\n"+ str(cont) +"\n\n")
+                    alreadyIn = get_spectacle(spectacle.nom)
+                    if alreadyIn:
+                        print("\nSPECTACLE ALREADY IN\n")
+                        if not( alreadyIn.admin == session['pseudo'] or session['admin']=="super"):
+                            print("\n\nNOT ALLOWED MODIFY THIS SPECTACLE\n\n")
+                            return abort(403)
+                        spectacle.photos = alreadyIn.photos
+                    # check if the post request has the file part
 
-                if alreadyIn :
-                    update_spectacle(spectacle)
-                else:
-                    insert_spectacle(spectacle)
+                    if alreadyIn :
+                        update_spectacle(spectacle)
+                    else:
+                        insert_spectacle(spectacle)
 
-                delete_date(nomSpectacle)
-                for dates in cont:
-                    if "datetime" in dates:
-                        datePy = datetime.strptime(cont[dates], '%d/%m/%Y %H:%M')
-                        date = Calendrier(date=datePy,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(re.findall(r'\d+', dates)[0])]))
-                        alreadyIn = "false"
-                        insert_date(date)
-                db.session.commit();
-                return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=request.form["nom"]))
-            else :
-                return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle="nouveauSpectacle"))
+                    delete_date(nomSpectacle)
+                    for dates in cont:
+                        if "datetime" in dates:
+                            datePy = datetime.strptime(cont[dates], '%d/%m/%Y %H:%M')
+                            date = Calendrier(date=datePy,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(re.findall(r'\d+', dates)[0])]))
+                            alreadyIn = "false"
+                            insert_date(date)
+                    db.session.commit();
+                    return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=request.form["nom"]))
+                else :
+                    return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle="nouveauSpectacle"))
+        if request.form["button"]=="delete_spectacle":
+            delete_spectacle(nomSpectacle)
+            return redirect(url_for('logout'))
     else :
         return abort(403)
 
