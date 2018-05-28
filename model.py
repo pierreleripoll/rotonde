@@ -137,7 +137,7 @@ def urlify(s):
      return s.lower()
 
 def prettify_date(date, format='calendar'):
-    moiss = [ 'janvier', 'fevrier', 'mars', 'avril', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'decembre']
+    moiss = [ 'janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
     mois = moiss[date.month-1]
     if format == 'calendar':
         string = "%d %s, %dh%d" % (date.day, mois, date.hour, date.minute)

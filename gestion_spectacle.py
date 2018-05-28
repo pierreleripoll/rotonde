@@ -111,6 +111,9 @@ def set_spectacle(nomSpectacle):
                     delete_date(nomSpectacle)
                     for dates in cont:
                         if "datetime" in dates:
+                            # strDate = cont[dates];
+                            # print(strDate)
+                            # strDate = strDate[0:len(strDate)-3]
                             datePy = datetime.strptime(cont[dates], '%d/%m/%Y %H:%M')
                             date = Calendrier(date=datePy,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(re.findall(r'\d+', dates)[0])]))
                             alreadyIn = "false"

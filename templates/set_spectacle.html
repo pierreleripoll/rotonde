@@ -11,13 +11,14 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
 <link href="/static/jquery.guillotine.css" rel="stylesheet" type="text/css"/>
 
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+<!--
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script> -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha18/js/tempusdominus-bootstrap-4.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha18/css/tempusdominus-bootstrap-4.min.css" />
 
 <!--<script type="text/javascript" src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
 <script type="text/javascript" src="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="/static/fr.js"></script>
 
 <link rel="stylesheet" href="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
 <link rel="stylesheet" href="/static/bower_components/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
@@ -194,28 +195,44 @@
 
           document.getElementById("annule").appendChild(boutonAnnule);
       }
-      i++;
+
 
       var br = document.createElement("br");
+
       var lastDate = document.getElementById("datetime" + i.toString());
       var lastNPlaces = document.getElementById("nPlaces" + i.toString());
+
+      i++;
 
       var datePick = document.createElement("div");
       datePick.setAttribute("class", "input-group date");
       datePick.setAttribute("id", "datetimepicker2" + i.toString());
+      datePick.setAttribute("data-target-input", "nearest");
 
       var iconDate = document.createElement("input");
-      iconDate.setAttribute("type", "form-control");
+
+      iconDate.setAttribute("type", "text");
       iconDate.setAttribute("name", "datetime" + i.toString());
       iconDate.setAttribute("id", "datetime" + i.toString());
-      var span1 = document.createElement("span");
-      span1.setAttribute("class", "input-group-addon");
-      var span2 = document.createElement("span");
-      span2.setAttribute("class", "glyphicon glyphicon-calendar");
-      span1.appendChild(span2);
+      iconDate.setAttribute("class", "form-control datetimepicker-input");
+      iconDate.setAttribute("data-target", "#datetimepicker1");
 
+      var div1 = document.createElement("div");
+      div1.setAttribute("class", "input-group-append");
+      div1.setAttribute("data-target", "#datetimepicker2"+i.toString());
+      div1.setAttribute("data-toggle", "datetimepicker");
+
+      var div2 = document.createElement("div");
+      div2.setAttribute("class","input-group-text");
+
+      var iElem= document.createElement("i");
+      iElem.setAttribute("class", "fa fa-calendar");
+
+      div2.appendChild(iElem);
+      div1.appendChild(div2);
       datePick.appendChild(iconDate);
-      datePick.appendChild(span1);
+      datePick.appendChild(div1);
+
 
       var nPlace = document.createElement("input");
       nPlace.setAttribute("type", "number");
@@ -224,6 +241,7 @@
       nPlace.setAttribute("name", "nPlaces" + i.toString());
       nPlace.setAttribute("min", "0");
       nPlace.setAttribute("max", "500");
+
 
       var nom = document.createElement("label");
       nom.setAttribute("id", "label" + i.toString());
@@ -244,19 +262,17 @@
       document.getElementById("groupe").appendChild(br);
 
       if (lastDate) {
-        inputDate.setAttribute("value", lastDate.value);
+        iconDate.setAttribute("value", lastDate.value);
       }
       if (lastNPlaces) {
         nPlace.setAttribute("value", lastNPlaces.value);
       }
 
-      var t = 0;
-      for(t=0; t<=i; t++) {
-        var nom = "#datetimepicker2"+t.toString()
-        $(nom).datetimepicker({
-          locale: 'fr'
-        });
-      }
+      var nom = "#datetimepicker2"+i.toString();
+      $(nom).datetimepicker({
+        locale: 'fr'
+      });
+
     }
 
     function removeOneDate(i) {
