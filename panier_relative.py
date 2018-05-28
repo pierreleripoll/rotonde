@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import *
 from flask import current_app as app
 from sqlalchemy import *
@@ -145,12 +147,3 @@ def panier():
 				places=get_places_mail(mail)
 				sendMail(mail, places, name)
 			return redirect(url_for('logout'))
-
-
-@panier_relative.route('/add_to_cart/<int:id>', methods=['POST','GET']) #Provisoire, enlever le get
-def add_to_cart(id, ):
-	if "cart" not in session:
-		session["cart"] = []
-		session["cart"].append(id)
-		flash("Successfully added to cart!")
-	return redirect("/panier")

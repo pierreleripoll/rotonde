@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from flask import *
 from werkzeug.utils import secure_filename
 import os
@@ -25,35 +27,6 @@ app.register_blueprint(admin_relative)
 app.jinja_env.filters['datetime'] = prettify_date
 
 db.init_app(app)
-
-# SI DECOMMENTER FLASK CREER LES TABLES
-
-# with app.app_context() :
-# 	db.create_all()
-#	initContact()
-
-
-# with app.app_context():
-# 	superadmin = Session(login='superadmin',password='larotonde',typeAdmin='super');
-# 	db.session.add(superadmin);
-# 	db.session.commit();
-# 	ami = Session(login='ami',password='boring',typeAdmin='normal');
-# 	db.session.add(ami);
-# 	db.session.commit()
-
-
-#PAGE DE TEST JAVASCRIPT
-@app.route('/javascript')
-def javascript():
-	return render_template('testJS.html')
-
-@app.route('/navbar')
-def navbar():
-    return render_template('navbar.html')
-
-@app.route('/sign_in')
-def sign_in():
-	return render_template('sign_in.html')
 
 @app.context_processor
 def utility_processor():
