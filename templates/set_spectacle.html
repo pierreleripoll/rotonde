@@ -536,7 +536,6 @@
         <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button>
       </div>
       <br>
-<<<<<<< HEAD
       <div>
         <div id='annule'>
           <label for="dates">Dates :  </label>
@@ -564,28 +563,6 @@
                         $('#datetimepicker2{{loop.index}}').datetimepicker({
                           locale: 'fr'
                         });
-=======
-      <div class="container">
-        <div class="row">
-          <div class='col-sm-3'>
-            <div class="form-group">
-              <div id='groupe'>
-                {%for date in dates:%}
-                  <div class='input-group date' id='datetimepicker2{{loop.index}}'>
-                    <input type='text' class="form-control" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}">
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                  </div>
-                  <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
-                  <label for="place" id="label{{loop.index}}"> - Places </label>
-                  <input type="button" value="Annuler" id="annule{{loop.index}}" name="annule{{loop.index}}" onclick="removeOneDate({{loop.index}})">
-                  <br>
-                  <script type="text/javascript">
-                    $(function () {
-                      $('#datetimepicker2{{loop.index}}').datetimepicker({
-                        locale: 'fr'
->>>>>>> f523b5eb78b4500447baab72e3548159b494ba16
                       });
                     });
                   </script>
@@ -602,7 +579,4 @@
       <button name="button" id="valide" value="valider" type="valide" }>Valider</button>
     </div>
 
-  </form>
-</div>
-
-{% endblock %}
+  {% endblock %}
