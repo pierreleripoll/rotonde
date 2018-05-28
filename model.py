@@ -268,6 +268,11 @@ def insert_photo(photo):
     db.session.commit()
     return
 
+def insert_session(admin):
+    db.session.add(admin)
+    db.session.commit()
+    return
+
 def update_photo(newPhoto):
     oldPhoto =  Photo.query.filter_by(id=newPhoto.id).first()
     oldPhoto.path = newPhoto.path
@@ -292,9 +297,12 @@ def update_spectacle(spectacle):
 
     return
 
-def update_session(session):
-    oldSession = Session.query.filter_by(login=session.login).first()
-    oldSession = session;
+def update_session(admin):
+    oldSession = Session.query.filter_by(login=admin.login).first()
+    oldSession.login=admin.login
+    oldSession.password=admin.password
+    oldSession.idContact=admin.idContact
+    oldSession.typeAdmin=admin.typeAdmin
     db.session.commit()
     return
 

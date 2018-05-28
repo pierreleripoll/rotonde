@@ -105,6 +105,7 @@
     var departSelect = $("#departSelect").val();
   $.ajax({
     url: "/api/ajoutContact/"+nomUser+"/"+prenomUser+"/"+tel+"/"+mail+"/"+anneeSelect+"/"+departSelect,
+    type: 'POST',
     success: function(data) {
       var option = document.createElement("option");
       option.value = data.id;
@@ -137,25 +138,27 @@
 
       <div class="form-group">
         <label for="password">Mot de passe:</label><br>
-        <input type="text" id="password" class="form-control" name="password" >
+        <input type="text" id="password" class="form-control" name="password" value='{{admin.password}}'>
       </div>
 
       <div class="form-group">
       </div>
 
+      {%if type=='super'%}
       {% if admin.typeAdmin == 'super'%}
         <div class="form-group">
           <label for="admintype">Cette session est:</label><br>
-          <input type="checkbox" name="admintype" value="admin"> Admin<br>
-  	    <input type="checkbox" name="admintype" value="admin" checked> SuperAdmin<br>
+          <input type="radio" name="admintype" value="normal"> Admin<br>
+  	    <input type="radio" name="admintype" value="super" checked> SuperAdmin<br>
   	   </div>
        {% else%}
        <div class="form-group">
          <label for="admintype">Cette session est:</label><br>
-         <input type="checkbox" name="admintype" value="admin" checked> Admin<br>
-       <input type="checkbox" name="admintype" value="admin" > SuperAdmin<br>
+         <input type="radio" name="admintype" value="normal" checked> Admin<br>
+       <input type="radio" name="admintype" value="super" > SuperAdmin<br>
       </div>
        {%endif%}
+      {%endif%} 
 
 	 <div class="form-group">
         <select name="ajoutContactDB" id="ajoutContactDB">
