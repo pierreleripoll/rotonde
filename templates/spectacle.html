@@ -103,8 +103,17 @@
               <button class="btn btn-valider" name="submit" value="valider" type="submit">Valider</button>
                 {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
                   <button class="btn btn-modifier" name="submit" value="modify" type="submit">Modifier</button>
-                {%endif%}
             </ul>
+              {%if spectacle.idContact != None %}
+                <div class="card-contact">
+                    Contact: {{spectacle.contact.nom}} {{spectacle.contact.prenom}}
+                    {%if spectacle.contact.annee != 0%}
+                    {{spectacle.contact.annee}} {{spectacle.contact.depart}}
+                    {%endif%}
+                    {{spectacle.contact.adresseMail}}      {{spectacle.contact.telephone}}
+              </div>
+              {%endif%}
+             {%endif%}
           </form>
         </div>
       </div>

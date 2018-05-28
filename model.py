@@ -28,6 +28,7 @@ class Spectacle(db.Model):
     tarif = db.Column(db.Integer,nullable=True)
     duree = db.Column(db.Integer,nullable=True)
     typeSpectacle = db.Column(db.String(20),nullable=True)
+    contact = db.relationship('Contact', backref = db.backref('spectacle', lazy = True))
     def __repr__(self):
         return '<Spectacle: %r>' % self.nom
     def getPhoto(self,ordre):
@@ -291,7 +292,19 @@ def update_photo(newPhoto):
 # Update un spectacle
 def update_spectacle(spectacle):
     oldSpectacle = Spectacle.query.filter_by(nom=spectacle.nom).first()
-    oldSpectacle = spectacle;
+    oldSpectacle.nom=spectacle.nom
+    oldSpectacle.resume=spectacle.resume
+    oldSpectacle.photos=spectacle.photos
+    oldSpectacle.liens=spectacle.liens
+    oldSpectacle.admin=spectacle.admin
+    oldSpectacle.idContact=spectacle.idContact
+    oldSpectacle.directeur=spectacle.directeur
+    oldSpectacle.auteur=spectacle.auteur
+    oldSpectacle.participants=spectacle.participants
+    oldSpectacle.infoComplementaire=spectacle.infoComplementaire
+    oldSpectacle.tarif=spectacle.tarif
+    oldSpectacle.duree=spectacle.duree
+    oldSpectacle.typeSpectacle=spectacle.typeSpectacle
     print("OLD Spectacle",oldSpectacle.auteur,oldSpectacle.directeur)
 
     db.session.commit()

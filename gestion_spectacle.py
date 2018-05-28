@@ -79,7 +79,7 @@ def set_spectacle(nomSpectacle):
                     calendrier.date = calendrier.date.strftime('%d/%m/%Y %H:%M')
                 print(thisDates)
 
-                return render_template('set_spectacle.html',photos=photos,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'])
+                return render_template('set_spectacle.html',photos=photos,spectacle = thisSpectacle,dates=thisDates,nDates = len(thisDates),contact=thisContact, maxsize=app.config['MAX_CONTENT_LENGTH'], type=session['admin'])
             else:
                 return abort(403);
         if request.method=="POST":
