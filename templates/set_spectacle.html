@@ -4,20 +4,21 @@
 
 {% block head %}
 
-  {{ super() }}
-  <!--<script type="text/javascript" src="/static/bower_components/jquery/dist/jquery.min.js"></script>-->
-  <script type="text/javascript" src="/static/bower_components/moment/min/moment.min.js"></script>
-  <script type="text/javascript" src="/static/bower_components/moment/locale/fr.js"></script>
-  <!--<script type="text/javascript" src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
-  <script type="text/javascript" src="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-  <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
-  <link rel="stylesheet" href="/static/bower_components/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
-
-
-
+{{ super() }}
+<!--<script type="text/javascript" src="/static/bower_components/jquery/dist/jquery.min.js"></script>-->
+<script type="text/javascript" src="/static/bower_components/moment/min/moment.min.js"></script>
+<script type="text/javascript" src="/static/bower_components/moment/locale/fr.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
 <link href="/static/jquery.guillotine.css" rel="stylesheet" type="text/css"/>
+
+<!--<script type="text/javascript" src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
+<script type="text/javascript" src="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+<link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" href="/static/bower_components/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+
+
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/js/plugins/piexif.min.js" type="text/javascript"></script>
 
@@ -40,6 +41,8 @@
 <script src="/static/color-thief.js"></script>
 <script src="/static/jquery.guillotine.js"></script>
 <script src="/static/jquery.guillotine.min.js"></script>
+<link href="/static/styles/charte.css" rel="stylesheet">
+
 <script>
     var contactAffiche = 0
     function addNewContact() {
@@ -212,6 +215,7 @@
 
       var nPlace = document.createElement("input");
       nPlace.setAttribute("type", "number");
+      nPlace.setAttribute("value", "300");
       nPlace.setAttribute("id", "nPlaces" + i.toString());
       nPlace.setAttribute("name", "nPlaces" + i.toString());
       nPlace.setAttribute("min", "0");
@@ -370,7 +374,7 @@
 
           var picture = $("#photo_to_crop");
           picture.attr("src",path);
-          picture.guillotine({width: 500, height: 300});
+          picture.guillotine({width: 1000, height: 600});
           $('#guillotine').modal()
           $('#zoom-in').click(function(){
           picture.guillotine('zoomIn');
@@ -399,26 +403,25 @@
 {% block title %}Modification spectacle{% endblock %}
 
 {% block content %}
-  <div class="container-fluid">
-    <p>Bienvenue sur la page de modification/création de spectacle : </p>
-    <p>{{spectacle.nom}}</p>
+<div class="container-fluid">
+  <p>Bienvenue sur la page de modification/création de spectacle : </p>
+  <p>{{spectacle.nom}}</p>
 
-    <label for="input-file">Photos:</label>
-    <div class="file-loading">
-        <input id="input-file" name="photos" type="file" multiple>
-    </div>
+  <label for="input-file">Photos:</label>
+  <div class="file-loading">
+      <input id="input-file" name="photos" type="file" multiple>
+  </div>
 
-    <label for="photos-ordre">Ordre des photos (la première sera celle utilisée pour l'acceuil!):</label>
-    <div id="photos-ordre" class="list-group">
-        {%for photo in photos%}
-        <div id="{{photo.id}}"class="list-group-item"><img id="photo_{{photo.id}}"src="{{photo.path}}" style="height:50px"> {{photo.path|nameFromPath}}
-            <button type='button'class="btn btn-primary" onclick="addGuillotine('{{photo.path}}',{{photo.id}})">Recadrer</button>
-        </div>
-        {%endfor%}
-    </div>
+  <label for="photos-ordre">Ordre des photos (la première sera celle utilisée pour l'acceuil!):</label>
+  <div id="photos-ordre" class="list-group">
+      {%for photo in photos%}
+      <div id="{{photo.id}}"class="list-group-item"><img id="photo_{{photo.id}}"src="{{photo.path}}" style="height:50px"> {{photo.path|nameFromPath}}
+          <button type='button'class="btn btn-primary" onclick="addGuillotine('{{photo.path}}',{{photo.id}})">Recadrer</button>
+      </div>
+      {%endfor%}
+  </div>
 
-
-    <script>
+  <script>
     var el = document.getElementById('photos-ordre');
     var sortable = new Sortable(el, {
       onUpdate: function(evt){
@@ -430,10 +433,9 @@
         });
       }
     });
+  </script>
 
-    </script>
-
-    <div class="modal fade" id="guillotine" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="guillotine" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -456,71 +458,79 @@
   </div>
 
 
-    <form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
-      <div class="form-group">
-        <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
-        <input type="text" id="nom" class="form-control" name="nom" value='{{spectacle.nom}}'><br>
-      </div>
-      <div class="form-group">
-        <label for="resume">Résumé:</label><br>
-        <textarea type="text" id="resume" row="4" class="form-control" name="resume" >{{spectacle.resume}}</textarea>
-      </div>
-      <div class="form-group">
-      </div>
+  <form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
+    <div class="form-group">
+      <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
+      <input type="text" id="nom" class="form-control" name="nom" value='{{spectacle.nom}}'><br>
+    </div>
+    <div class="form-group">
+      <label for="resume">Résumé:</label><br>
+      <textarea type="text" id="resume" row="4" class="form-control" name="resume" >{{spectacle.resume}}</textarea>
+    </div>
 
-      <div class="form-group">
-        <label for="liens">Liens:</label><br>
-        <input type="url" name="liens" class="form-control" value='{%if spectacle.liens != None%}{{spectacle.liens}}{%endif%}'><br>
-      </div>
-      <div class="form-group">
-        <label for="directeur">Par:</label><br>
-        <input type="text" name="directeur" class="form-control" value='{{spectacle.directeur}}'><br>
-      </div>
-      <div class="form-group">
-        <label for="auteur">Auteur:</label><br>
-        <input type="text" name="auteur" class="form-control" value='{{spectacle.auteur}}'><br>
-      </div>
-      <div class="form-group">
-        <label for="participants">Avec:</label><br>
-        <input type="text" name="participants" class="form-control" value='{{spectacle.participants}}'><br>
-      </div>
-      <div class="form-group">
-        <label for="typeSpectacle">Genre:</label><br>
-        <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}'>
-          <option value="Théâtre">Théâtre</option>
-          <option value="Musique">Musique</option>
-          <option value="Danse">Danse</option>
-          <option value="Impro">Impro</option>
-          <option value="Conférence">Conférence</option>
-          <option value="Cirque">Cirque</option>
-          <option value="Performance">Performance</option>
-          <option value="Autre">Autre</option>
-        </select><br>
-      </div>
-      <div class="form-group">
-        <label for="duree">Durée (en minutes):</label><br>
-        <input type="number" name="duree" class="form-control" value='{{spectacle.duree}}'><br>
-      </div>
-      <div class="form-group">
-        <label for="tarif">Tarif:</label><br>
-        <input type="number" name="tarif" class="form-control" value='{{spectacle.tarif}}'><br>
-      </div>
-      <div class="form-group">
-        <label for="infoComplementaire">Info complémentaire:</label><br>
-        <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
-      </div>
-      <div class="form-group">
-        <select name="ajoutContactDB" id="ajoutContactDB">
-          {%for c in contact:%}
-          <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
-          {%endfor%}
-        </select>
-        <button type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
-        <br>
-        <br>
-        <div id="contact"></div>
-      </div>
+    <div class="form-group">
+      <label for="liens">Liens:</label><br>
+      <input type="url" name="liens" class="form-control" value='{%if spectacle.liens != None%}{{spectacle.liens}}{%endif%}'><br>
+    </div>
+
+    <div class="form-group">
+      <label for="directeur">Par:</label><br>
+      <input type="text" name="directeur" class="form-control" value='{{spectacle.directeur}}'><br>
+    </div>
+
+    <div class="form-group">
+      <label for="auteur">Auteur:</label><br>
+      <input type="text" name="auteur" class="form-control" value='{{spectacle.auteur}}'><br>
+    </div>
+
+    <div class="form-group">
+      <label for="participants">Avec:</label><br>
+      <input type="text" name="participants" class="form-control" value='{{spectacle.participants}}'><br>
+    </div>
+
+    <div class="form-group">
+      <label for="typeSpectacle">Genre:</label><br>
+      <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}'>
+        <option value="Théâtre">Théâtre</option>
+        <option value="Musique">Musique</option>
+        <option value="Danse">Danse</option>
+        <option value="Impro">Impro</option>
+        <option value="Conférence">Conférence</option>
+        <option value="Cirque">Cirque</option>
+        <option value="Performance">Performance</option>
+        <option value="Autre">Autre</option>
+      </select><br>
+    </div>
+
+    <div class="form-group">
+      <label for="duree">Durée (en minutes):</label><br>
+      <input type="number" name="duree" class="form-control" value='{{spectacle.duree}}'><br>
+    </div>
+
+    <div class="form-group">
+      <label for="tarif">Tarif:</label><br>
+      <input type="number" name="tarif" class="form-control" value='{{spectacle.tarif}}'><br>
+    </div>
+
+    <div class="form-group">
+      <label for="infoComplementaire">Info complémentaire:</label><br>
+      <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
+    </div>
+
+    <div class="form-group">
+      <select name="ajoutContactDB" id="ajoutContactDB">
+        {%for c in contact:%}
+        <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
+        {%endfor%}
+      </select>
+      <button type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
       <br>
+      <br>
+      <div id="contact"></div>
+    </div>
+    <br>
+
+    <div>
       <div>
         <div id='annule'>
           <label for="dates">Dates :  </label>
@@ -537,7 +547,7 @@
                       <input type='text' class="form-control" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}">
                       <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
+                      </span>
                     </div>
                     <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
                     <label for="place" id="label{{loop.index}}"> - Places </label>
@@ -549,22 +559,19 @@
                           locale: 'fr'
                         });
                       });
-                    </script>
+                    });
+                  </script>
                 {%endfor%}
               </div>
             </div>
           </div>
         </div>
       </div>
+    </div>
 
-      <div>
-        <br><br>
-        <button name="button" id="valide" value="valider" type="valide" }>Valider</button>
-      </div>
-    </form>
-  </div>
+    <div>
+      <br><br>
+      <button name="button" id="valide" value="valider" type="valide" }>Valider</button>
+    </div>
 
-  <script>
-
-  </script>
-{% endblock %}
+  {% endblock %}

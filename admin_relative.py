@@ -22,7 +22,8 @@ def admin():
     # login = request.form["login"]
     if 'admin' in session :
         if request.method=='GET':
-            return render_template('admin.html',pseudo = session["pseudo"])
+            admin=get_session(session['pseudo'])
+            return render_template('admin.html',pseudo=session['pseudo'], type=session['admin'])
         if request.method=='POST':
             if request.form["bouton"]=="logout":
                 session.pop("pseudo",None)
@@ -39,6 +40,8 @@ def admin():
                 return redirect(url_for('admin_relative.set_admin',login="nouveladmin"))
             if request.form["bouton"]=="adminlist":
                 return redirect(url_for('admin_relative.adminlist'))
+            if request.form["bouton"]=="modifySelf":
+                return redirect(url_for('admin_relative.set_admin', login=session['pseudo'].lower()))
 
     else :
         return redirect(url_for('admin_relative.admin_log'))
@@ -85,13 +88,13 @@ def admin_log():
 
 @admin_relative.route('/set_admin/<login>', methods=['GET','POST'])
 def set_admin(login):
-    if session['admin']=="super":
+    if session['admin']=="super" or session['pseudo']==login.upper():
         if request.method=="GET":
             print(login)
             sessionAdmin=get_session(login)
             thisContact=get_contact()
             if login=="nouveladmin" or sessionAdmin.typeAdmin=="normal" or sessionAdmin.typeAdmin=="super":
-                return render_template('set_admin.html', admin=sessionAdmin, contact=thisContact)
+                return render_template('set_admin.html', admin=sessionAdmin, contact=thisContact, type=session['admin'])
             else:
                 return abort(403)
 
@@ -100,7 +103,7 @@ def set_admin(login):
 
                 cont = request.form
                 print("\n\n"+ str(cont) +"\n\n")
-                admin = Session(login=cont["login"],password=cont["password"],typeAdmin =cont["admintype"])
+                admin = Session(login=cont["login"],password=cont["password"],typeAdmin =cont["admintype"], idContact=cont["ajoutContactDB"])
                 print("\n\n"+ str(cont) +"\n\n")
                 alreadyIn = get_session(admin.login)
                 if alreadyIn:

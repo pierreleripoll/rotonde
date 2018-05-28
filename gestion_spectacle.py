@@ -12,7 +12,8 @@ from model import*
 from jinja2 import TemplateNotFound
 from datetime import datetime
 import re
-
+from PIL import Image
+import shutil
 
 UPLOAD_FOLDER = './static/uploads'
 
@@ -69,7 +70,7 @@ def set_spectacle(nomSpectacle):
 
             if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
                 thisDates = get_dates(nomSpectacle)
-                Photos = []
+                photos = []
                 if nomSpectacle != "nouveauSpectacle":
                     photos = get_all_photos(nomSpectacle)
                     print("Set spectacle : ",photos)
@@ -87,7 +88,7 @@ def set_spectacle(nomSpectacle):
                 print("\n\n"+ str(cont) +"\n\n")
                 spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0,
                     directeur=cont["directeur"],auteur=cont["auteur"],participants=cont["participants"],infoComplementaire=cont["infoComplementaire"],tarif=cont["tarif"],
-                    duree=cont["duree"],typeSpectacle=cont["typeSpectacle"])
+                    duree=cont["duree"],typeSpectacle=cont["typeSpectacle"], idContact=cont["ajoutContactDB"])
                 print("\n\n"+ str(cont) +"\n\n")
                 alreadyIn = get_spectacle(spectacle.nom)
                 if alreadyIn:
@@ -131,7 +132,7 @@ def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
             insert_contact(contact)
             return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
     else:
-        return render_template("accueil.html")
+        return abort(401)
 
 
 @gestion_spectacle.route('/api/deleteFile/<string:nomSpectacle>/<string:filename>',methods=['POST'])
@@ -146,7 +147,11 @@ def deleteFile (nomSpectacle,filename):
             print ("spectacle"+nomSpectacle)
             pathUpload =app.config['UPLOAD_FOLDER']+'/'+nomSpectacle+'/'
             pathPhoto = os.path.join(pathUpload,filename)
+            pathOriginal = os.path.join(pathUpload+'originals/',filename)
+            if os.path.exists("."+pathOriginal):
+                os.remove("."+pathOriginal)
             os.remove("."+pathPhoto)
+
             print("Spectacle.photos :",spectacle.photos)
 
 
@@ -187,14 +192,21 @@ def uploadFile (nomSpectacle):
 
             if not os.path.isdir("."+pathUpload):
                 os.mkdir("."+pathUpload)
+            if not os.path.isdir("."+pathUpload+'/originals'):
+                os.mkdir("."+pathUpload+"/originals")
             print("Spectacle.photos :",spectacle.photos)
             print(request.files)
 
             f = request.files['photos']
             numero = -1
-            nomFichier = f.filename
+            nomFichier = secure_filename(f.filename)
             path = os.path.join(pathUpload,nomFichier)
             f.save("."+path)
+            print("Path :",path)
+            pathOriginal = os.path.join(pathUpload,"originals",nomFichier)
+            print("Path original :",pathOriginal)
+            shutil.copyfile("."+path,"."+pathOriginal)
+
             photo = Photo(path=path,size=os.path.getsize('.'+path),spectacle=spectacle.nom,ordre=spectacle.photos)
             insert_photo(photo)
             spectacle.photos +=1
@@ -264,8 +276,21 @@ def crop(nomSpectacle,id):
     photo.x = int(form['x'])
     photo.y = int(form['y'])
     photo.scale = float(form['scale'])
-
     update_photo(photo)
+    print(photo.path)
+    pathSplit = photo.path.split('/')
+    pathCropped =photo.path
+    pathOriginal = pathCropped.replace(pathSplit[-1],'originals/'+pathSplit[-1])
+    img = Image.open("."+pathOriginal)
+    W, H = img.size
+    newSize = (int(W*photo.scale),int(H*photo.scale))
+    print("Original :",pathOriginal)
+    print("Cropped :",pathCropped)
+    s = 1/photo.scale
+    area=(int(s*photo.x),int(s*photo.y),int(s*(photo.x+photo.width)),int(s*(photo.y+photo.height)))
+    cropped_img = img.crop(area)
+    cropped_img.save("."+pathCropped,quality=90)
+
     return "fine"
 
 @gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/',methods=['POST'])

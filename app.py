@@ -40,6 +40,12 @@ def mainPhoto_filter(nom):
 	photo = spectacle.getPhoto(0)
 	return photo.path
 
+@app.template_filter('originalPhoto')
+def originalPhoto_filter(path):
+	pathSplit = path.split('/')
+	return path.replace(pathSplit[-1],'originals/'+pathSplit[-1])
+
+
 @app.template_filter('nameFromPath')
 def nameFromPath_filter(path):
 	return path.rsplit('/',1)[-1]
@@ -75,6 +81,14 @@ def empty_cart():
 		return redirect(url_for('panier_relative.panier'))
 	else:
 		return redirect(url_for('logout'))
+
+
+
+## CONTACT
+@app.route('/contact', methods=['GET','POST'])
+def pageContact():
+	if request.method=="GET":
+		return render_template('contact.html')
 
 ## CALENDRIER
 @app.route('/calendrier', methods=['GET','POST'])
