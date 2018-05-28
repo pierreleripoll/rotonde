@@ -1,22 +1,3 @@
-:root {
-  height: 100%;
-  --color-theme: rgb(50,50,50);
-  --color-font-light: rgb(240,240,240);
-  --jumbotron-padding-y: 3rem;
-
-}
-
-.jumbotron {
-  padding-top: var(--jumbotron-padding-y);
-  padding-bottom: var(--jumbotron-padding-y);
-  margin-bottom: 0;
-  background-color: #fff;
-}
-
-
-.jumbotron p:last-child {
-  margin-bottom: 0;
-}
 
 .card-body-tarifs-dates{
   font-size: 100%;
