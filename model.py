@@ -51,7 +51,8 @@ class Calendrier(db.Model):
     date = db.Column(db.DateTime, nullable = False, default=datetime.utcnow, primary_key = True)
     nom = db.Column(db.String(80),db.ForeignKey('spectacle.nom'), nullable = False)
     placesRestantes = db.Column(db.Integer,db.CheckConstraint('placesRestantes>=0'),nullable = False)
-    spectacle = db.relationship('Spectacle', backref = db.backref('calendriers', lazy = True)) # Peut etre a changer, pas sur de ce que je fais
+    spectacle = db.relationship('Spectacle', backref = db.backref('dates', lazy = True))
+
     def __repr__(self):
         return '<Calendrier: %r>' % self.date
 
@@ -142,6 +143,9 @@ def prettify_date(date, format='calendar'):
         string = "%d %s, %dh%d" % (date.day, mois, date.hour, date.minute)
     if format == 'mail':
         string = 'le %d %s a %dh%d' % (date.day, mois, date.hour, date.minute)
+    if format == 'spectacle':
+        string = '%d %s' % (date.day, mois)
+
     return string
 
 def connect():

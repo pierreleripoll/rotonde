@@ -43,8 +43,24 @@
     <div class="col-md-4 ">
       <div class="card card-eq-height">
         <div class="card-body card-body-tarifs-dates">
-          <h5 class="card-title card-title-tarifs-dates">Du JJ au JJ MM </h5>
-          <p>Tarifs<br>VA :EEE euros<br>NON VA :EEE euros</p>
+          <h5 class="card-title card-title-tarifs-dates">
+            {%if spectacle.dates|length > 1 %}
+              {% if spectacle.dates[0].date.month != spectacle.dates[-1].date.month %}
+                Du {{spectacle.dates[0].date|datetime(format='spectacle')}} au {{spectacle.dates[-1].date|datetime(format='spectacle')}}
+              {% else %}
+                Du {{spectacle.dates[0].date.day}} au {{spectacle.dates[-1].date|datetime(format='spectacle')}}
+              {% endif %}
+            {% else %}
+              Le {{spectacle.dates[0].date|datetime(format='spectacle')}}
+            {% endif %}
+           </h5>
+          <p>Tarif<br>
+          {% if spectacle.tarif == 0 %}
+            PRIX LIBRE
+          {% else %}
+            {{spectacle.tarif}}€ la place
+          {% endif %}
+          </p>
         </div>
         <div class="card-footer card-footer-billet" onclick="afficheBillets()">
           <p>BILLETS | DATES</p>
@@ -89,7 +105,7 @@
                 <table class="table">
                   <tbody>
                     <tr>
-                      <td id="date">{{date.date}}</td>
+                      <td id="date">{{date.date|datetime}}</td>
                       <td id="places-restantes">{{date.placesRestantes}}</td>
                       <td id="input-places"><input type="number" id="places" name="{{date.date}}" min="0" max="{{date.placesRestantes}}"></td>
                     </tr>
