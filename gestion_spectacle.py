@@ -70,7 +70,7 @@ def set_spectacle(nomSpectacle):
 
             if nomSpectacle == "nouveauSpectacle" or thisSpectacle.admin == session['pseudo'] or session['admin']=="super" :
                 thisDates = get_dates(nomSpectacle)
-                Photos = []
+                photos = []
                 if nomSpectacle != "nouveauSpectacle":
                     photos = get_all_photos(nomSpectacle)
                     print("Set spectacle : ",photos)
