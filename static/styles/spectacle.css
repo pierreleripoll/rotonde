@@ -218,6 +218,17 @@
   border-color: var(--color-font-light);
 }
 
+.btn-delete{
+  text-align:center;
+  width:100%;
+}
+
+.btn-delete:hover{
+  background-color: var(--color-font-light);
+  color:var(--color-theme);
+  border-color: var(--color-font-light);
+}
+
 .card-contact{
   padding : 5px 5px 0px 5px;
   text-align:left;

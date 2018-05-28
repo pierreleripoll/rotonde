@@ -36,6 +36,9 @@ def spectacle(nomSpectacle):
     if request.method == "POST":
         if request.form["submit"] == "modify" and session['pseudo'] == thisSpectacle.admin:
             return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle=nomSpectacle))
+        if request.form["submit"] == "delete" and session['pseudo'] == thisSpectacle.admin:
+            delete_spectacle(nomSpectacle)
+            return redirect(url_for('logout'))
         if request.form["submit"] == "valider" :
             print(request.form)
             if not 'panier' in session :

@@ -103,6 +103,7 @@
               <button class="btn btn-valider" name="submit" value="valider" type="submit">Valider</button>
                 {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
                   <button class="btn btn-modifier" name="submit" value="modify" type="submit">Modifier</button>
+                  <button class="btn btn-delete" name="submit" value="delete" type="submit">Supprimer</button>
             </ul>
               {%if spectacle.idContact != None %}
                 <div class="card-contact">
