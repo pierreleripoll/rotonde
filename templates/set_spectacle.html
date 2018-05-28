@@ -414,8 +414,8 @@
   <label for="photos-ordre">Ordre des photos (la première sera celle utilisée pour l'acceuil!):</label>
   <div id="photos-ordre" class="list-group">
       {%for photo in photos%}
-      <div id="{{photo.id}}"class="list-group-item"><img id="photo_{{photo.id}}"src="{{photo.path}}" style="height:50px"> {{photo.path|nameFromPath}}
-          <button type='button'class="btn btn-primary" onclick="addGuillotine('{{photo.path}}',{{photo.id}})">Recadrer</button>
+      <div id="{{photo.id}}"class="list-group-item"><img id="photo_{{photo.id}}"src="{{photo.path|originalPhoto}}" style="height:50px"> {{photo.path|nameFromPath}}
+          <button type='button'class="btn btn-primary" onclick="addGuillotine('{{photo.path|originalPhoto}}',{{photo.id}})">Recadrer</button>
       </div>
       {%endfor%}
   </div>
