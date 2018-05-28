@@ -20,7 +20,8 @@ def admin():
     # login = request.form["login"]
     if 'admin' in session :
         if request.method=='GET':
-            return render_template('admin.html',pseudo = session["pseudo"])
+            admin=get_session(session['pseudo'])
+            return render_template('admin.html',pseudo=session['pseudo'], type=session['admin'])
         if request.method=='POST':
             if request.form["bouton"]=="logout":
                 session.pop("pseudo",None)
@@ -98,7 +99,7 @@ def set_admin(login):
 
                 cont = request.form
                 print("\n\n"+ str(cont) +"\n\n")
-                admin = Session(login=cont["login"],password=cont["password"],typeAdmin =cont["admintype"])
+                admin = Session(login=cont["login"],password=cont["password"],typeAdmin =cont["admintype"], idContact=cont["ajoutContactDB"])
                 print("\n\n"+ str(cont) +"\n\n")
                 alreadyIn = get_session(admin.login)
                 if alreadyIn:
@@ -122,6 +123,8 @@ def adminlist():
     if session['admin']=="super":
         if request.method=="GET":
             admins=get_all_admins()
+            print admins[0].idContact
+            print admins[0].contact.nom
             return render_template('adminlist.html', admins=admins)
     else :
         return abort(403)

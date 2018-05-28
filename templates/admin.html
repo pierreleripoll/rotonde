@@ -11,8 +11,10 @@
       <button name="bouton" value="logout" type="submit">LOGOUT</button><br></br>
       <button name="bouton" value="createspectacle" type="submit">CREER SPECTACLE</button>
       <button name="bouton" value="showPlaces" type="submit">PLACES</button>
+      {%if type == "super"%}
       <button name="bouton" value="createadmin" type="submit">CREER ADMIN</button>
       <button name="bouton" value="adminlist" type="submit">LISTE DES ADMINS</button>
+      {%endif%}
     </form>
 
   </div>
