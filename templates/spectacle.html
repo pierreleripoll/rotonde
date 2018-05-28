@@ -43,7 +43,7 @@
     <div class="col-md-4 ">
       <div class="card card-eq-height">
         <div class="card-body card-body-tarifs-dates">
-          <h5 class="card-title card-title-tarifs-dates">Du JJ au JJ MM </h5>
+          <h5 class="card-title card-title-tarifs-dates">Du {{spectacle.dates[0].date|datetime(format='spectacle')}} au {{spectacle.dates[-1].date|datetime(format='spectacle')}} </h5>
           <p>Tarifs<br>VA :EEE euros<br>NON VA :EEE euros</p>
         </div>
         <div class="card-footer card-footer-billet" onclick="afficheBillets()">
