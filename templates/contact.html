@@ -1,0 +1,59 @@
+{% extends "layout.html" %}
+{% set active_page = 'contact' %}
+{% block title %}Accueil{% endblock %}
+
+
+{% block content %}
+
+
+<main role="main">
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">Où sommes-nous ?</h1>
+      <p class="lead text-muted">Voici le plan pour vous menez jusqu'à nous ! Et si vous avez besoin de nous contacter et si vous avez des questions, envoyez nous un mail ;)</p>
+    </div>
+    <br>
+    <br>
+    <!--<div id="rotondeMap" style="width:1700px;height:350px">-->
+    <div class="row">
+      <div  class="col-lg-12">
+        <div id="rotondeMap" style="height:350px">
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-4">
+          <label for="adresse">
+            <p> Notre adresse : </p>
+            <label for="adresseTexte"> La Rotonde <br/> INSA Lyon <br/> 20 Avenue des Arts <br/> 69100 Villeurbanne</label>
+          </label>
+        </div>
+        <div class="col-lg-4"> </div>
+        <div class="col-lg-4">
+          <label for="coord">
+            <p> Nos coordonnées : </p>
+            <label for="coordTexte"> rotonde@insa-lyon.fr <br/> +33 (0)6 27 11 04 75</label>
+          </label>
+        </div>
+      </div>
+    </div>
+
+
+    <script>
+    function myMap() {
+      var rotonde = {lat: 45.783844,lng: 4.874063};
+      var mapOptions = {
+        center: rotonde,
+        zoom: 16,
+        mapTypeId: google.maps.MapTypeId.ROADMAPS
+      }
+      var mapObject = new google.maps.Map(document.getElementById("rotondeMap"), mapOptions);
+      var marker = new google.maps.Marker({position: rotonde, map: mapObject});
+    }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+  </section>
+</main>
+{% endblock %}

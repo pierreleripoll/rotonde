@@ -87,7 +87,7 @@ def set_spectacle(nomSpectacle):
                 print("\n\n"+ str(cont) +"\n\n")
                 spectacle = Spectacle(nom=cont["nom"],resume=cont["resume"],liens =cont["liens"],admin=session['pseudo'],photos=0,
                     directeur=cont["directeur"],auteur=cont["auteur"],participants=cont["participants"],infoComplementaire=cont["infoComplementaire"],tarif=cont["tarif"],
-                    duree=cont["duree"],typeSpectacle=cont["typeSpectacle"])
+                    duree=cont["duree"],typeSpectacle=cont["typeSpectacle"], idContact=cont["ajoutContactDB"])
                 print("\n\n"+ str(cont) +"\n\n")
                 alreadyIn = get_spectacle(spectacle.nom)
                 if alreadyIn:
@@ -131,7 +131,7 @@ def ajoutContact(nomUser, prenomUser, tel, mail, anneeSelect, departSelect):
             insert_contact(contact)
             return jsonify(nom = nomUser, prenom = prenomUser, an = anneeSelect, dep = departSelect, id = getID_contact(nomUser, prenomUser))
     else:
-        return render_template("accueil.html")
+        return abort(401)
 
 
 @gestion_spectacle.route('/api/deleteFile/<string:nomSpectacle>/<string:filename>',methods=['POST'])

@@ -212,6 +212,7 @@
 
       var nPlace = document.createElement("input");
       nPlace.setAttribute("type", "number");
+      nPlace.setAttribute("value", "300");
       nPlace.setAttribute("id", "nPlaces" + i.toString());
       nPlace.setAttribute("name", "nPlaces" + i.toString());
       nPlace.setAttribute("min", "0");
@@ -537,7 +538,7 @@
                       <input type='text' class="form-control" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}">
                       <span class="input-group-addon">
                           <span class="glyphicon glyphicon-calendar"></span>
-                        </span>
+                      </span>
                     </div>
                     <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
                     <label for="place" id="label{{loop.index}}"> - Places </label>
