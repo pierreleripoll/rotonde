@@ -11,6 +11,11 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
 <link href="/static/jquery.guillotine.css" rel="stylesheet" type="text/css"/>
 
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha18/js/tempusdominus-bootstrap-4.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha18/css/tempusdominus-bootstrap-4.min.css" />
+
 <!--<script type="text/javascript" src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
 <script type="text/javascript" src="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
 
@@ -414,8 +419,8 @@
   <label for="photos-ordre">Ordre des photos (la première sera celle utilisée pour l'acceuil!):</label>
   <div id="photos-ordre" class="list-group">
       {%for photo in photos%}
-      <div id="{{photo.id}}"class="list-group-item"><img id="photo_{{photo.id}}"src="{{photo.path}}" style="height:50px"> {{photo.path|nameFromPath}}
-          <button type='button'class="btn btn-primary" onclick="addGuillotine('{{photo.path}}',{{photo.id}})">Recadrer</button>
+      <div id="{{photo.id}}"class="list-group-item"><img id="photo_{{photo.id}}"src="{{photo.path|originalPhoto}}" style="height:50px"> {{photo.path|nameFromPath}}
+          <button type='button'class="btn btn-primary" onclick="addGuillotine('{{photo.path|originalPhoto}}',{{photo.id}})">Recadrer</button>
       </div>
       {%endfor%}
   </div>
@@ -538,15 +543,16 @@
         <br>
         <div class="container">
           <div class="row">
+
             <div class='col-sm-3'>
               <div class="form-group">
                 <div id='groupe'>
                   {%for date in dates:%}
-                    <div class='input-group date' id='datetimepicker2{{loop.index}}'>
-                      <input type='text' class="form-control" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}">
-                      <span class="input-group-addon">
-                          <span class="glyphicon glyphicon-calendar"></span>
-                      </span>
+                  <div class="input-group date" id="datetimepicker2{{loop.index}}" data-target-input="nearest">
+                      <input type="text" value="{{date.date}}" class="form-control datetimepicker-input" data-target="#datetimepicker1" id="datetime{{loop.index}}" name="datetime{{loop.index}}"/>
+                      <div class="input-group-append" data-target="#datetimepicker2{{loop.index}}" data-toggle="datetimepicker">
+                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                      </div>
                     </div>
                     <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
                     <label for="place" id="label{{loop.index}}"> - Places </label>
