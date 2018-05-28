@@ -38,6 +38,8 @@ def admin():
                 return redirect(url_for('admin_relative.set_admin',login="nouveladmin"))
             if request.form["bouton"]=="adminlist":
                 return redirect(url_for('admin_relative.adminlist'))
+            if request.form["bouton"]=="modifySelf":
+                return redirect(url_for('admin_relative.set_admin', login=session['pseudo'].lower()))
 
     else :
         return redirect(url_for('admin_relative.admin_log'))
@@ -84,13 +86,13 @@ def admin_log():
 
 @admin_relative.route('/set_admin/<login>', methods=['GET','POST'])
 def set_admin(login):
-    if session['admin']=="super":
+    if session['admin']=="super" or session['pseudo']==login.upper():
         if request.method=="GET":
             print(login)
             sessionAdmin=get_session(login)
             thisContact=get_contact()
             if login=="nouveladmin" or sessionAdmin.typeAdmin=="normal" or sessionAdmin.typeAdmin=="super":
-                return render_template('set_admin.html', admin=sessionAdmin, contact=thisContact)
+                return render_template('set_admin.html', admin=sessionAdmin, contact=thisContact, type=session['admin'])
             else:
                 return abort(403)
 
@@ -123,8 +125,6 @@ def adminlist():
     if session['admin']=="super":
         if request.method=="GET":
             admins=get_all_admins()
-            print admins[0].idContact
-            print admins[0].contact.nom
             return render_template('adminlist.html', admins=admins)
     else :
         return abort(403)
