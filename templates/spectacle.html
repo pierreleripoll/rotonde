@@ -160,15 +160,21 @@
     month[6]="juillet";  month[7]="août";      month[8]="septembre";
     month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
     var paths = new Array({{photos|length}});
+    console.log({{photos|length}});
 
     var i =0;
-    var id={{photos[0].id}};
-    console.log(id);
-    {%for photo in photos%}
-      paths[i] ="{{photo.path}}" ;
-      console.log(paths[i]);
-      i++;
-    {%endfor%}
+    var id=0;
+    {%if photos|length >0%}
+      id={{photos[0].id}};
+      console.log(id);
+      {%for photo in photos%}
+        paths[i] ="{{photo.path}}" ;
+        console.log(paths[i]);
+        i++;
+      {%endfor%}
+      console.log("in the if condition",{{photos}});
+    {%endif%}  
+
     i=0;
     initColorPage();
     var colorThief = new ColorThief();

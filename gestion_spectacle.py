@@ -34,8 +34,9 @@ def spectacle(nomSpectacle):
         print("Paths :",paths)
         photoMain = get_photoSpectacle(thisSpectacle.nom,ordre=0);
         print("Voici toutes les photos : ",photos,"\net la photo principale :" ,photoMain, "\n et ses couleur : ");
-        for color in photoMain.colors:
-            print(color.hexa, " : ",color.actif)
+        if(photoMain):
+            for color in photoMain.colors:
+                print(color.hexa, " : ",color.actif)
         return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths,photos = photos)
     if request.method == "POST":
         if request.form["submit"] == "modify" and session['pseudo'] == thisSpectacle.admin:
