@@ -137,15 +137,17 @@
       </div>
     </div>
   </div>
+
 </div>
 
   <script>
-    var paths = new Array({{paths|length}});
+    var paths = new Array({{photos|length}});
     var i =0;
-    {%for path in paths%}
-    paths[i] ="{{path}}" ;
-    console.log(paths[i]);
-    i++;
+    var id=0;
+    {%for photo in photos%}
+      paths[i] ="{{photo.path}}" ;
+      console.log(paths[i]);
+      i++;
     {%endfor%}
     i=0;
 
@@ -161,7 +163,15 @@
 
     function chgPhoto(){
       var image = document.getElementById("imgSpectacle");
+      var photos = new Array({{photos|length}})
       image.onload = function(){
+        console.log(image);
+        var k=0;
+        {%for photo in photos%}
+          photos[k]='{{photo.colors[0].hexa}}';
+          k++;
+        {%endfor%}
+        console.log(photos);
         var c = colorThief.getColor(image);
         var p = colorThief.getPalette(image);
         var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
@@ -170,8 +180,8 @@
         for(j=0; j<9; j++){
           var cobox = "bg-color-box"+(j+2);
           document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
-          uploadColor(5,p[j],0);
         }
+        uploadColor(3,p[0],0);
       }
 
       i++;
@@ -180,7 +190,6 @@
       console.log(paths[i]);
     }
 
-    chgPhoto();
 
     var month=new Array(12);
     month[0]="janvier";  month[1]="février";   month[2]="mars";
@@ -190,21 +199,18 @@
 
     function uploadColor(id,color,bool) {
       var hex = rgbToHex(color[0],color[1],color[2]);
-      console.log(hex)
-      url2 = "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/";
-      console.log("url : ",url2);
-    $.ajax({
-      url: "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/",
-      success: function(data) {
-        console.log("c'est tout bon");
-      },
-      error: function() {
-        console.log("merdo");
-      }
-    });
+      console.log(hex);
+      $.ajax({
+        type:"POST",
+        url: "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/",
+        success: function(data) {
+          console.log("c'est tout bon");
+        },
+        error: function() {
+          console.log("merdo");
+        }
+      });
     }
-
-
 
     var something=[];
     var colors=[];

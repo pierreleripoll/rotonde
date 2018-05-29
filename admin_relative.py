@@ -130,3 +130,9 @@ def adminlist():
             return render_template('adminlist.html', admins=admins)
     else :
         return abort(403)
+
+## CONTACT
+@admin_relative.route('/contact', methods=['GET','POST'])
+def pageContact():
+	if request.method=="GET":
+		return render_template('contact.html')

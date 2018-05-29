@@ -105,6 +105,7 @@ class Photo(db.Model):
     x = db.Column(db.Integer,nullable = True)
     y = db.Column(db.Integer,nullable = True)
     scale = db.Column(db.Float,nullable=True)
+
     def __repr__(self):
         if not self.width:
             return '<Photo: %r %r N.%d>' % (self.path, self.spectacle, self.ordre)
@@ -115,8 +116,9 @@ class Photo(db.Model):
 
 class Color(db.Model):
     hexa = db.Column(db.String(6),nullable=False,primary_key=True)
-    photo = db.Column(db.Integer,db.ForeignKey('photo.id'),nullable=False, primary_key=True)
+    idPhoto = db.Column(db.Integer,db.ForeignKey('photo.id'),nullable=False, primary_key=True)
     actif = db.Column(db.Boolean)
+    photo = db.relationship('Photo', backref=db.backref('colors', lazy = True))
 
     def __repr__(self):
         return '<Color: %r>' % (self.hexa)
@@ -186,6 +188,7 @@ def get_photo(path):
 def get_photo_byid(id):
     photo = Photo.query.filter_by(id=id).first()
     return photo
+
 def get_main_color(idPhoto):
     colors = get_all_colors(idPhoto)
     for color in colors:
@@ -193,7 +196,7 @@ def get_main_color(idPhoto):
             return color
 
 def get_all_colors(idPhoto):
-    colors =  Color.query.filter_by(id=idPhoto).all()
+    colors =  Color.query.filter_by(idPhoto=idPhoto).all()
     return colors
 
 
@@ -393,11 +396,11 @@ def get_all_dates ():
 
 def get_color(hex, id):
     print("params",hex, id)
-    couleur = Color.query.filter_by(hexa=hex, photo=id).first()
+    couleur = Color.query.filter_by(hexa=hex, idPhoto=id).first()
     return couleur
 
 def get_color_hexa(hex, id):
-    couleur = Color.query.filter_by(hexa=hex, photo=id).all()
+    couleur = Color.query.filter_by(hexa=hex, idPhoto=id).all()
     return couleur.hexa
 
 def delete(elem):

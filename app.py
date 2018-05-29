@@ -83,13 +83,6 @@ def empty_cart():
 		return redirect(url_for('logout'))
 
 
-
-## CONTACT
-@app.route('/contact', methods=['GET','POST'])
-def pageContact():
-	if request.method=="GET":
-		return render_template('contact.html')
-
 ## CALENDRIER
 @app.route('/calendrier', methods=['GET','POST'])
 def calendrier():
@@ -138,5 +131,5 @@ def uploads(nomSpectacle):
 
 
 if __name__ == '__main__':
-	#app.run(debug='true')
-	app.run(host="192.168.0.14",port=5000)
+	app.run(debug='true')
+	#app.run(host="192.168.0.14",port=5000)

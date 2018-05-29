@@ -337,6 +337,41 @@
       });
     }
 
+
+
+    function updateColor(){
+      var something=[];
+      var colors=[];
+      var base = 'card bg-color-box';
+      var name = "";
+      var c = colorThief.getColor(image);
+      var p = colorThief.getPalette(image);
+      var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
+      document.documentElement.style.setProperty('--color-theme', color);
+      document.getElementsByClassName('bg-color-box1')[0].style.backgroundColor = color;
+      for(j=0; j<9; j++){
+        var cobox = "bg-color-box"+(j+2);
+        document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
+        uploadColor(5,p[j],0);
+      }
+
+      for(i=0;i<10;i++){
+        name=base+(i+1);
+        elem=document.getElementsByClassName(name);
+        console.
+        something[i]=elem;
+        something[i][0].style.cursor = 'pointer';
+
+        something[i][0].onclick=function(){
+          color=window.getComputedStyle(this,null).getPropertyValue("background-color");
+
+          console.log("in function",i,color);
+          document.documentElement.style.setProperty('--color-theme', color);
+        };
+      }
+    }
+
+
     $(document).ready(function() {
 
       var urls = [];
@@ -375,7 +410,10 @@
         setTimeout(function() {
             window.alert('Suppression réussie ! ');
         });
-    });
+      }).on('fileuploaded', function(){
+          console.log("wow on ajoute un fichier");
+      })
+      ;
     });
 
 
@@ -445,14 +483,19 @@
     var el = document.getElementById('photos-ordre');
     var sortable = new Sortable(el, {
       onUpdate: function(evt){
+
         console.log(evt.item.id);
         console.log(evt.oldIndex,' -> ',evt.newIndex);
+        if(evt.newIndex == 0){
+          console.log("voici la nouvelle photo de vignette : ",evt.item);
+        }
         $.ajax({
           type:"POST",
           url: "/api/changeOrder/{{spectacle.nom}}/"+evt.oldIndex+"/"+evt.newIndex+'/'
         });
       }
     });
+    console.log("l'ordre",el);
   </script>
 
   <div class="modal fade" id="guillotine" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

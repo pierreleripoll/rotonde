@@ -29,10 +29,12 @@ def spectacle(nomSpectacle):
         print(thisDates)
         if thisSpectacle == None :
             return abort(404)
-
+        photos = get_all_photos(thisSpectacle.nom)
         paths = get_paths_photos(thisSpectacle.nom)
         print("Paths :",paths)
-        return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths)
+        photoMain = get_photoSpectacle(thisSpectacle.nom,ordre=0);
+        print("Voici toutes les photos : ",photos,"\net la photo principale :" ,photoMain, "\n et sa couleur : ", photoMain.colors);
+        return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths,photos = photos)
     if request.method == "POST":
         if request.form["submit"] == "modify" and session['pseudo'] == thisSpectacle.admin:
             return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle=nomSpectacle))
@@ -306,7 +308,8 @@ def crop(nomSpectacle,id):
 @gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/',methods=['POST'])
 def uploadColor(id,hex,bool):
     test = get_color(hex,id);
-    color = Color(hexa=hex,photo=id,actif=bool);
+    color = Color(hexa=hex,idPhoto=id,actif=bool);
+    photo = get_photo_byid(id);
 
     if(test is None):
         print("elles sont différentes");
