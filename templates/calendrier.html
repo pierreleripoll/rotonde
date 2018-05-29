@@ -14,12 +14,14 @@
     <th>Prix</th>
   </tr>
   {% for date in dates %}
-  <tr>
-    <td>{{ date.date|datetime }}</td>
-    <td><a href="/spectacle/{{date.nom}}">{{date.nom}}</a></td>
-    <td>{{date.placesRestantes}}</td>
-    <td>{{date.spectacle.tarif}}€</td>
-  </tr>
+    {%if date.date> date.date.now()%}
+      <tr>
+        <td>{{ date.date|datetime }}</td>
+        <td><a href="/spectacle/{{date.nom}}">{{date.nom}}</a></td>
+        <td>{{date.placesRestantes}}</td>
+        <td>{{date.spectacle.tarif}}€</td>
+      </tr>
+    {%endif%}
   {% endfor %}
 
 </table>

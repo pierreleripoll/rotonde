@@ -11,12 +11,18 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-fileinput/4.4.5/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
 <link href="/static/jquery.guillotine.css" rel="stylesheet" type="text/css"/>
 
+<!--
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.min.js"></script> -->
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha18/js/tempusdominus-bootstrap-4.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tempusdominus-bootstrap-4/5.0.0-alpha18/css/tempusdominus-bootstrap-4.min.css" />
+
 <!--<script type="text/javascript" src="/static/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>-->
 <script type="text/javascript" src="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-<!-- <link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.min.css" /> -->
+<script type="text/javascript" src="/static/fr.js"></script>
+
 <link rel="stylesheet" href="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
 <link rel="stylesheet" href="/static/bower_components/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
-<!-- <link href="/static/styles/set_spectacle.css" rel="stylesheet"> -->
+<link href="/static/styles/set_spectacle.css" rel="stylesheet">
 
 
 
@@ -189,28 +195,44 @@
 
           document.getElementById("annule").appendChild(boutonAnnule);
       }
-      i++;
+
 
       var br = document.createElement("br");
+
       var lastDate = document.getElementById("datetime" + i.toString());
       var lastNPlaces = document.getElementById("nPlaces" + i.toString());
+
+      i++;
 
       var datePick = document.createElement("div");
       datePick.setAttribute("class", "input-group date");
       datePick.setAttribute("id", "datetimepicker2" + i.toString());
+      datePick.setAttribute("data-target-input", "nearest");
 
       var iconDate = document.createElement("input");
-      iconDate.setAttribute("type", "form-control");
+
+      iconDate.setAttribute("type", "text");
       iconDate.setAttribute("name", "datetime" + i.toString());
       iconDate.setAttribute("id", "datetime" + i.toString());
-      var span1 = document.createElement("span");
-      span1.setAttribute("class", "input-group-addon");
-      var span2 = document.createElement("span");
-      span2.setAttribute("class", "glyphicon glyphicon-calendar");
-      span1.appendChild(span2);
+      iconDate.setAttribute("class", "form-control datetimepicker-input");
+      iconDate.setAttribute("data-target", "#datetimepicker1");
 
+      var div1 = document.createElement("div");
+      div1.setAttribute("class", "input-group-append");
+      div1.setAttribute("data-target", "#datetimepicker2"+i.toString());
+      div1.setAttribute("data-toggle", "datetimepicker");
+
+      var div2 = document.createElement("div");
+      div2.setAttribute("class","input-group-text");
+
+      var iElem= document.createElement("i");
+      iElem.setAttribute("class", "fa fa-calendar");
+
+      div2.appendChild(iElem);
+      div1.appendChild(div2);
       datePick.appendChild(iconDate);
-      datePick.appendChild(span1);
+      datePick.appendChild(div1);
+
 
       var nPlace = document.createElement("input");
       nPlace.setAttribute("type", "number");
@@ -219,6 +241,7 @@
       nPlace.setAttribute("name", "nPlaces" + i.toString());
       nPlace.setAttribute("min", "0");
       nPlace.setAttribute("max", "500");
+
 
       var nom = document.createElement("label");
       nom.setAttribute("id", "label" + i.toString());
@@ -239,19 +262,17 @@
       document.getElementById("groupe").appendChild(br);
 
       if (lastDate) {
-        inputDate.setAttribute("value", lastDate.value);
+        iconDate.setAttribute("value", lastDate.value);
       }
       if (lastNPlaces) {
         nPlace.setAttribute("value", lastNPlaces.value);
       }
 
-      var t = 0;
-      for(t=0; t<=i; t++) {
-        var nom = "#datetimepicker2"+t.toString()
-        $(nom).datetimepicker({
-          locale: 'fr'
-        });
-      }
+      var nom = "#datetimepicker2"+i.toString();
+      $(nom).datetimepicker({
+        locale: 'fr'
+      });
+
     }
 
     function removeOneDate(i) {
@@ -287,7 +308,34 @@
       return componentToHex(r) + componentToHex(g) + componentToHex(b);
     }
 
-    function createColorBase(id, reader){
+    function initColorPage(){
+      console.log("on initialise la page !",{{photos[0].color}});
+      var photos =[];
+      var k =0;
+      {%for color in photos[0].color%}
+        photos[k]='{{color.hexa}}';
+        console.log('{{color.actif}}');
+        if('{{color.actif}}'=='True'){
+          console.log("yesai on a trouvé une couleur active !");
+          color = '#'+photos[k];
+          document.documentElement.style.setProperty('--color-theme', color);
+        }
+        console.log(photos[k]);
+        k++;
+      {%endfor%}
+      for(j=0; j<9; j++){
+        var cobox = "bg-color-box"+(j+2);
+        var color = '#'+photos[j]
+        console.log("voici la couleur d'init du bouton : ", photos[j]);
+        document.getElementsByClassName(cobox)[0].style.backgroundColor = color;
+      }
+    }
+
+    function createColorBase(objetPhoto){
+      var colorThief = new ColorThief();
+      console.log(objetPhoto);
+      id=objetPhoto.response['id'];
+      reader=objetPhoto['reader']
       console.log('YO image : ', id, reader.result);
       var img = new Image();
       img.src = reader.result;
@@ -295,18 +343,38 @@
       var p = colorThief.getPalette(img);
       uploadColor(id,c,0);
       for(j=0; j<9; j++){
+        var cobox = "bg-color-box"+(j+2);
+        document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
         uploadColor(id,p[j],0);
       }
+
+    }
+
+
+    function hexc(colorval) {
+      var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+      delete(parts[0]);
+      for (var i = 1; i <= 3; ++i) {
+          parts[i] = parseInt(parts[i]).toString(16);
+          if (parts[i].length == 1) parts[i] = '0' + parts[i];
+      }
+      color = parts.join('');
+      return color;
     }
 
     function uploadColor(id,color,bool) {
-      var hex = rgbToHex(color[0],color[1],color[2]);
-      console.log(hex)
-      url2 = "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/";
-      console.log("url : ",url2);
+      console.log("on entre dans upload avec : ", color);
+      if(color[0]=='r'){
+        console.log("la méthode hexc");
+        var hex = hexc(color);
+      }else{
+        console.log("la méthode RGB");
+        var hex = rgbToHex(color[0],color[1],color[2]);
+      }
+      console.log(hex);
       $.ajax({
+        type:"POST",
         url: "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/",
-        type: "POST",
         success: function(data) {
           console.log("c'est tout bon");
         },
@@ -315,6 +383,7 @@
         }
       });
     }
+
 
     $(document).ready(function() {
 
@@ -338,7 +407,7 @@
         showDrag : true,
         initialPreviewConfig: [
           {%for i in range(photos|length)%}
-          {caption:'{{photos[i].path|nameFromPath}}', size: {{photos[i].size}}, filename:'{{photos[i].path|nameFromPath}}',url:'/api/deleteFile/{{spectacle.nom}}/{{photos[i].path|nameFromPath}}',key: {{i}} }{%if i != paths|length-1%},{%endif%}
+          {caption:'{{photos[i].path|nameFromPath}}', size: {{photos[i].size}}, filename:'{{photos[i].path|nameFromPath}}',url:'/api/deleteFile/{{spectacle.nom}}/{{photos[i].path|nameFromPath}}',key: {{photos[i].id}} }{%if i != paths|length-1%},{%endif%}
           {%endfor%}
         ],
         deleteUrl:'/api/deleteFile/{{spectacle.nom}}/{filename}',
@@ -350,11 +419,38 @@
         var aborted = !window.confirm('Êtes-vous sûr de vouloir supprimer cette photo ?');
         return aborted;
 
-      }).on('filedeleted', function() {
+      }).on('filedeleted', function(event, key, jqXHR, data) {
         setTimeout(function() {
-            window.alert('Suppression réussie ! ');
+            // window.info('Suppression réussie ! ');
+            console.log("Deleted :"+key);
+            var photoDeleted = document.getElementById(key);
+            console.log(photoDeleted);
+            photoDeleted.parentNode.removeChild(photoDeleted);
+
         });
-    });
+      }).on('fileuploaded', function(event, data, previewId, index){
+            var photosOrdre = document.getElementById("photos-ordre");
+            var photo = document.createElement("div");
+            console.log(data.response);
+            photo.id = data.response['id'];
+            objectForPalette = data;
+            photo.setAttribute("class","list-group-item");
+            var picture = document.createElement("img");
+            picture.id = "photo_"+photo.id.toString();
+            picture.setAttribute("style","height:50px");
+            picture.setAttribute("src", data.response['pathOriginal']);
+            var button = document.createElement("button");
+            button.type='button';
+            button.setAttribute("class","btn btn-primary float-right");
+            button.setAttribute("onclick","addGuillotine('"+data.response['pathOriginal']+"',"+data.response['id']+")");
+            button.innerHTML="Recadrer";
+            photo.appendChild(picture);
+            photo.innerHTML+=data.response['initialPreviewConfig'][0]['caption'];
+            photo.appendChild(button);
+            photosOrdre.appendChild(photo);
+            createColorBase(objectForPalette);
+      })
+      ;
     });
 
 
@@ -391,9 +487,7 @@
           });
 
     }
-
-
-
+  initColorPage();
 </script>
 
 
@@ -403,35 +497,82 @@
 
 {% block content %}
 <div class="container-fluid">
-  <p>Bienvenue sur la page de modification/création de spectacle : </p>
-  <p>{{spectacle.nom}}</p>
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">Bienvenue sur la page de création/modifaction de spectacles</h1>
+      <p class="lead text-muted">{{spectacle.nom}}</p>
+    </div>
+  </section>
 
-  <label for="input-file">Photos:</label>
-  <div class="file-loading">
-      <input id="input-file" name="photos" type="file" multiple>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card card-eq-height">
+          <div class="card-header ">
+            <label for="input-file">Photos:</label>
+          </div>
+          <div class="card-body card-body-input">
+            <div class="file-loading">
+                <input id="input-file" name="photos" type="file" multiple>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card card-eq-height">
+        <div class="card-header">
+          <label for="photos-ordre">Ordre des photos | la première sera celle utilisée pour l'accueil</label>
+        </div>
+        <div class ="card-body">
+          <div id="photos-ordre" class="list-group">
+              {%for photo in photos%}
+              <div id="{{photo.id}}"class="list-group-item">
+                  <img id="photo_{{photo.id}}"src="{{photo.path|originalPhoto}}" style="height:50px"> {{photo.path|nameFromPath}}
+                  <button type='button'class="btn btn-primary float-right" onclick="addGuillotine('{{photo.path|originalPhoto}}',{{photo.id}})">Recadrer</button>
+              </div>
+              {%endfor%}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <label for="photos-ordre">Ordre des photos (la première sera celle utilisée pour l'acceuil!):</label>
-  <div id="photos-ordre" class="list-group">
-      {%for photo in photos%}
-      <div id="{{photo.id}}"class="list-group-item"><img id="photo_{{photo.id}}"src="{{photo.path}}" style="height:50px"> {{photo.path|nameFromPath}}
-          <button type='button'class="btn btn-primary" onclick="addGuillotine('{{photo.path}}',{{photo.id}})">Recadrer</button>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="content">
+        <div onmouseleave="mouseLeave()" onmouseEnter="mouseEnter()" class="card-group">
+          <div id="color-box" class="card bg-color-box1"></div>
+          <div id="color-box" class="card bg-color-box2"></div>
+          <div id="color-box" class="card bg-color-box3"></div>
+          <div id="color-box" class="card bg-color-box4"></div>
+          <div id="color-box" class="card bg-color-box5"></div>
+          <div id="color-box" class="card bg-color-box6"></div>
+          <div id="color-box" class="card bg-color-box7"></div>
+          <div id="color-box" class="card bg-color-box8"></div>
+          <div id="color-box" class="card bg-color-box9"></div>
+          <div id="color-box" class="card bg-color-box10"></div>
+        </div>
       </div>
-      {%endfor%}
+    </div>
   </div>
 
   <script>
     var el = document.getElementById('photos-ordre');
     var sortable = new Sortable(el, {
       onUpdate: function(evt){
+
         console.log(evt.item.id);
         console.log(evt.oldIndex,' -> ',evt.newIndex);
+        if(evt.newIndex == 0){
+          console.log("voici la nouvelle photo de vignette : ",evt.item);
+        }
         $.ajax({
           type:"POST",
           url: "/api/changeOrder/{{spectacle.nom}}/"+evt.oldIndex+"/"+evt.newIndex+'/'
         });
       }
     });
+    console.log("l'ordre",el);
   </script>
 
   <div class="modal fade" id="guillotine" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -456,121 +597,139 @@
     </div>
   </div>
 
-
   <form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
-    <div class="form-group">
-      <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
-      <input type="text" id="nom" class="form-control" name="nom" value='{{spectacle.nom}}'><br>
-    </div>
-    <div class="form-group">
-      <label for="resume">Résumé:</label><br>
-      <textarea type="text" id="resume" row="4" class="form-control" name="resume" >{{spectacle.resume}}</textarea>
-    </div>
+    <div class = "row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="row form-group">
+            <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
+            <input type="text" id="nom" class="form-control" name="nom" value='{{spectacle.nom}}'><br>
+          </div>
+          <div class="row form-group">
+            <label for="resume">Résumé:</label><br>
+            <textarea type="text" id="resume" row="4" class="form-control" name="resume" >{{spectacle.resume}}</textarea>
+          </div>
 
-    <div class="form-group">
-      <label for="liens">Liens:</label><br>
-      <input type="url" name="liens" class="form-control" value='{%if spectacle.liens != None%}{{spectacle.liens}}{%endif%}'><br>
-    </div>
-
-    <div class="form-group">
-      <label for="directeur">Par:</label><br>
-      <input type="text" name="directeur" class="form-control" value='{{spectacle.directeur}}'><br>
-    </div>
-
-    <div class="form-group">
-      <label for="auteur">Auteur:</label><br>
-      <input type="text" name="auteur" class="form-control" value='{{spectacle.auteur}}'><br>
-    </div>
-
-    <div class="form-group">
-      <label for="participants">Avec:</label><br>
-      <input type="text" name="participants" class="form-control" value='{{spectacle.participants}}'><br>
-    </div>
-
-    <div class="form-group">
-      <label for="typeSpectacle">Genre:</label><br>
-      <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}'>
-        <option value="Théâtre">Théâtre</option>
-        <option value="Musique">Musique</option>
-        <option value="Danse">Danse</option>
-        <option value="Impro">Impro</option>
-        <option value="Conférence">Conférence</option>
-        <option value="Cirque">Cirque</option>
-        <option value="Performance">Performance</option>
-        <option value="Autre">Autre</option>
-      </select><br>
-    </div>
-
-    <div class="form-group">
-      <label for="duree">Durée (en minutes):</label><br>
-      <input type="number" name="duree" class="form-control" value='{{spectacle.duree}}'><br>
-    </div>
-
-    <div class="form-group">
-      <label for="tarif">Tarif:</label><br>
-      <input type="number" name="tarif" class="form-control" value='{{spectacle.tarif}}'><br>
-    </div>
-
-    <div class="form-group">
-      <label for="infoComplementaire">Info complémentaire:</label><br>
-      <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
-    </div>
-
-    <div class="form-group">
-      <select name="ajoutContactDB" id="ajoutContactDB">
-        {%for c in contact:%}
-        <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
-        {%endfor%}
-      </select>
-      <button type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
-      <br>
-      <br>
-      <div id="contact"></div>
-    </div>
-    <br>
-
-    <div>
-      <div>
-        <div id='annule'>
-          <label for="dates">Dates :  </label>
-          <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button>
-        </div>
-        <br>
-        <div class="container">
-          <div class="row">
-            <div class='col-sm-3'>
-              <div class="form-group">
-                <div id='groupe'>
-                  {%for date in dates:%}
-                    <div class='input-group date' id='datetimepicker2{{loop.index}}'>
-                      <input type='text' class="form-control" value="{{date.date}}" id="datetime{{loop.index}}" name="datetime{{loop.index}}">
-                      <span class="input-group-addon">
-                          <span class="glyphicon glyphicon-calendar"></span>
-                      </span>
-                    </div>
-                    <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
-                    <label for="place" id="label{{loop.index}}"> - Places </label>
-                    <input type="button" value="Annuler" id="annule{{loop.index}}" name="annule{{loop.index}}" onclick="removeOneDate({{loop.index}})">
-                    <br>
-                    <script type="text/javascript">
-                      $(function () {
-                        $('#datetimepicker2{{loop.index}}').datetimepicker({
-                          locale: 'fr'
-                        });
-                      });
-                  </script>
-                {%endfor%}
-              </div>
-            </div>
+          <div class="row form-group">
+            <label for="liens">Liens:</label><br>
+            <input type="url" name="liens" class="form-control" value='{%if spectacle.liens != None%}{{spectacle.liens}}{%endif%}'><br>
           </div>
         </div>
       </div>
     </div>
 
-    <div>
-      <br><br>
-      <button name="button" id="valide" value="valider" type="valide" }>Valider</button>
-      <button name="button" id="delete" value="delete_spectacle" }>Supprimer le spectacle</button>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="row form-group">
+            <label for="directeur">Par:</label><br>
+            <input type="text" name="directeur" class="form-control" value='{{spectacle.directeur}}'><br>
+          </div>
+
+          <div class="row form-group">
+            <label for="auteur">Auteur:</label><br>
+            <input type="text" name="auteur" class="form-control" value='{{spectacle.auteur}}'><br>
+          </div>
+
+          <div class="row form-group">
+            <label for="participants">Avec:</label><br>
+            <input type="text" name="participants" class="form-control" value='{{spectacle.participants}}'><br>
+          </div>
+        </div>
+      </div>
     </div>
 
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="row form-group">
+            <label for="typeSpectacle">Genre:</label><br>
+            <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}'>
+              <option value="Théâtre">Théâtre</option>
+              <option value="Musique">Musique</option>
+              <option value="Danse">Danse</option>
+              <option value="Impro">Impro</option>
+              <option value="Conférence">Conférence</option>
+              <option value="Cirque">Cirque</option>
+              <option value="Performance">Performance</option>
+              <option value="Autre">Autre</option>
+            </select><br>
+          </div>
+
+          <div class="row form-group">
+            <label for="duree">Durée (en minutes):</label><br>
+            <input type="number" name="duree" class="form-control" value='{{spectacle.duree}}'><br>
+          </div>
+
+          <div class="row form-group">
+            <label for="tarif">Tarif:</label><br>
+            <input type="number" name="tarif" class="form-control" value='{{spectacle.tarif}}'><br>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="row form-group">
+            <label for="infoComplementaire">Info complémentaire:</label><br>
+            <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
+          </div>
+
+          <div class="row form-group">
+            <select name="ajoutContactDB" id="ajoutContactDB">
+              {%for c in contact:%}
+              <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
+              {%endfor%}
+            </select>
+            <button class = "btn" type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
+            <br>
+            <br>
+            <div id="contact"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="row" id='groupe'>
+      
+      <div class="col-sm-12 col-date" id='annule'>
+        <label for="dates">Dates :  </label>
+        <button class="btn" type="button" id="addDate" onclick="addOneDate()" name="addDate" value="addDate">Add</button>
+        </br>
+      </div>
+      {%for date in dates:%}
+      <div class='col-sm-3'>
+        <div class="input-group date" id="datetimepicker2{{loop.index}}" data-target-input="nearest">
+          <input type="text" value="{{date.date}}" class="form-control datetimepicker-input" data-target="#datetimepicker1" id="datetime{{loop.index}}" name="datetime{{loop.index}}" />
+          <div class="input-group-append" data-target="#datetimepicker2{{loop.index}}" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+          </div>
+        </div>
+        <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
+        <label for="place" id="label{{loop.index}}"> - Places </label>
+        <input type="button" value="Annuler" class="btn" id="annule{{loop.index}}" name="annule{{loop.index}}" onclick="removeOneDate({{loop.index}})">
+        <br>
+        <script type="text/javascript">
+          $(function() {
+            $('#datetimepicker2{{loop.index}}').datetimepicker({
+              locale: 'fr'
+            });
+          });
+        </script>
+      </div>
+      {%endfor%}
+    </div>
+
+
+  </div>
+
+    <div class="row">
+      <br><br>
+      <button class = "btn" name="button" id="valide" value="valider" type="valide" }>Valider</button>
+      <button class = "btn" name="button" id="delete" value="delete_spectacle" }>Supprimer le spectacle</button>
+    </div>
+</div>
   {% endblock %}
