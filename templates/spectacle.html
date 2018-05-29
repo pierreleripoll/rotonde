@@ -198,12 +198,17 @@
       image.onload = function(){
         console.log(image);
         var k=0;
-        {%for photo in photos%}
-          photos[k]='{{photo.colors.hexa}}';
-          console.log(photos[k]);
-          k++;
-        {%endfor%}
-
+        {%if photos%}
+          {%for photo in photos%}
+            photos[k]='{{photo.colors.hexa}}';
+            console.log(photos[k]);
+            k++;
+          {%endfor%}
+        {%endif%}
+        for(j=0; j<9; j++){
+          var cobox = "bg-color-box"+(j+2);
+          document.getElementsByClassName(cobox)[0].style.backgroundColor = photos[j];
+        }
         console.log(photos);
         // var c = colorThief.getColor(image);
         // var p = colorThief.getPalette(image);
@@ -216,10 +221,7 @@
         //   document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
         //   uploadColor(id,p[j],0);
         // }
-        for(j=0; j<9; j++){
-          var cobox = "bg-color-box"+(j+2);
-          document.getElementsByClassName(cobox)[0].style.backgroundColor = photos[j];
-        }
+
 
       }
 
