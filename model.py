@@ -199,6 +199,21 @@ def get_all_colors(idPhoto):
     colors =  Color.query.filter_by(idPhoto=idPhoto).all()
     return colors
 
+def set_active_colors(idPhoto, hexa):
+    colors =  Color.query.filter_by(idPhoto=idPhoto).all() #on récupère toutes les couleurs pour cette photo
+    colorReturn = None;
+    for color in colors:
+        if(color.hexa==hexa):   #on vérifie quelle couleur est celle à rendre active
+            color.actif=1
+            colorReturn=color
+        else:
+            color.actif=0
+    if(colorReturn==None):
+        colorReturn = Color(hexa=hexa,idPhoto=idPhoto,actif=1);
+        db.session.add(colorReturn);
+        db.session.commit();
+    return colorReturn
+
 
 def get_all_places():
     places = Place.query.all()

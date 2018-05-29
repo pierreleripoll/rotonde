@@ -311,10 +311,13 @@ def uploadColor(id,hex,bool):
     color = Color(hexa=hex,idPhoto=id,actif=bool);
     photo = get_photo_byid(id);
 
-    if(test is None):
-        print("elles sont différentes");
-        insert_color(color)
+    if(bool==1):
+        set_active_colors(id,hex)
     else:
-        print("couleur déjà registered pour cette image")
+        if(test is None):
+            print("elles sont différentes");
+            insert_color(color)
+        else:
+            print("couleur déjà registered pour cette image")
 
     return "niquel chrome";
