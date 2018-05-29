@@ -186,7 +186,7 @@ def deleteFile (nomSpectacle,filename):
             spectacle.photos -= 1
             db.session.commit()
             print(photos)
-            dic = {"succes":"total"}
+            dic = {'key':id}
             return json.dumps(dic)
         else:
             return abort(401)
@@ -231,7 +231,7 @@ def uploadFile (nomSpectacle):
             dic = {
             'initialPreview': [path],
             'initialPreviewConfig': [
-              {'caption': nomFichier, 'size':str(photo.size),'filename': nomFichier,'url':'/api/deleteFile/'+spectacle.nom+'/'+nomFichier,'key': str(photo.ordre) },
+              {'caption': nomFichier, 'size':str(photo.size),'filename': nomFichier,'url':'/api/deleteFile/'+spectacle.nom+'/'+nomFichier,'key': str(photo.id) },
             ],
             'initialPreviewThumbTags': [    ],
             'append': 'true',
