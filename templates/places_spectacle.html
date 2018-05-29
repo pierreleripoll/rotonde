@@ -7,14 +7,11 @@
 <div class="container">
   <p>{{spectacle.nom}}</p>
   {%for date in spectacle.dates%}
-    {{date}}
-      {%for place in date.places)%}
-        {{place.idPlace}} {{place.nomUser}} {{place.adresseMail}}       {{place.date}}
-        {% if place.valide == 0%}
-          <input type="radio" name="admintype" value="normal" > Validé<br>
-        {%elif place.valide == 1%}
-          <input type="radio" name="admintype" value="normal" checked> Validé<br>
-        {%endif%}
+    {{date.date|datetime}}
+    <ul>
+      {%for place in date.places%}
+        <li>{{place.idPlace}} {{place.nomUser}} {{place.adresseMail}}       {{place.date}}</li>
       {%endfor%}
+    </ul>
   {%endfor%}
 {% endblock %}

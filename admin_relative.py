@@ -131,3 +131,13 @@ def adminlist():
             return render_template('adminlist.html', admins=admins)
     else :
         return abort(403)
+
+@admin_relative.route('/voirPlaces/<spectacle>')
+def voirPlaces(spectacle):
+
+    show = get_spectacle(spectacle)
+    print (show)
+    if 'pseudo' in session and (session['pseudo'] == show.adminSpectacle.login or session['admin']=="super"):
+        return render_template('places_spectacle.html', spectacle = show)
+    else:
+        return abort(403)
