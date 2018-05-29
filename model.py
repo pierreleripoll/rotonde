@@ -236,6 +236,12 @@ def get_spectacle(nomSpectacle):
 
     return spectacle
 
+def valide_place (id, full):
+    place= Place.query.filter_by(idPlace=id).first()
+    place.valide=full
+    db.session.commit()
+    return
+
 # Renvoie l'objet Date correspondant a la date en param
 def get_date (date):
 	date= Calendrier.query.filter_by(date=date).first()
