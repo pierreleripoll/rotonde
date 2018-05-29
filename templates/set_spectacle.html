@@ -408,8 +408,10 @@
 
       }).on('filedeleted', function(event, key, jqXHR, data) {
         setTimeout(function() {
-            window.alert('Suppression réussie ! ');
+            // window.info('Suppression réussie ! ');
+            console.log("Deleted :"+key);
             var photoDeleted = document.getElementById(key);
+            console.log(photoDeleted);
             photoDeleted.parentNode.removeChild(photoDeleted);
 
         });
@@ -426,10 +428,10 @@
             var button = document.createElement("button");
             button.type='button';
             button.setAttribute("class","btn btn-primary float-right");
-            button.onlick="addGuillotine("+picture.src+","+picture.id+");";
+            button.setAttribute("onclick","addGuillotine('"+data.response['pathOriginal']+"',"+data.response['id']+")");
             button.innerHTML="Recadrer";
             photo.appendChild(picture);
-            photo.innerHTML=data.response['initialPreviewConfig'][0]['caption'];
+            photo.innerHTML+=data.response['initialPreviewConfig'][0]['caption'];
             photo.appendChild(button);
             photosOrdre.appendChild(photo);
       })
