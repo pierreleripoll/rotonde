@@ -64,6 +64,7 @@ class Place(db.Model):
     date = db.Column(db.DateTime, db.ForeignKey('calendrier.date'), nullable = False)
     nomUser = db.Column(db.String(80), nullable = False)
     adresseMail = db.Column(db.String(100),nullable=True)
+    valide= db.Column(db.Integer, nullable=False)
     calendrier = db.relationship('Calendrier', backref = db.backref('places', lazy = True)) #idem qu'au dessus
     def __repr__(self):
         return '<Place: %r>' % self.idPlace
