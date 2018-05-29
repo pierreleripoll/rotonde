@@ -107,6 +107,7 @@ class Photo(db.Model):
     x = db.Column(db.Integer,nullable = True)
     y = db.Column(db.Integer,nullable = True)
     scale = db.Column(db.Float,nullable=True)
+
     def __repr__(self):
         if not self.width:
             return '<Photo: %r %r N.%d>' % (self.path, self.spectacle, self.ordre)
@@ -117,8 +118,9 @@ class Photo(db.Model):
 
 class Color(db.Model):
     hexa = db.Column(db.String(6),nullable=False,primary_key=True)
-    photo = db.Column(db.Integer,db.ForeignKey('photo.id'),nullable=False, primary_key=True)
+    idPhoto = db.Column(db.Integer,db.ForeignKey('photo.id'),nullable=False, primary_key=True)
     actif = db.Column(db.Boolean)
+    photo = db.relationship('Photo', backref=db.backref('colors', lazy = True))
 
     def __repr__(self):
         return '<Color: %r>' % (self.hexa)
@@ -139,7 +141,7 @@ def urlify(s):
      return s.lower()
 
 def prettify_date(date, format='calendar'):
-    moiss = [ 'janvier', 'fevrier', 'mars', 'avril', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'decembre']
+    moiss = [ 'janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre']
     mois = moiss[date.month-1]
     if format == 'calendar':
         string = "%d %s, %dh%d" % (date.day, mois, date.hour, date.minute)
@@ -188,6 +190,7 @@ def get_photo(path):
 def get_photo_byid(id):
     photo = Photo.query.filter_by(id=id).first()
     return photo
+
 def get_main_color(idPhoto):
     colors = get_all_colors(idPhoto)
     for color in colors:
@@ -195,8 +198,28 @@ def get_main_color(idPhoto):
             return color
 
 def get_all_colors(idPhoto):
-    colors =  Color.query.filter_by(id=idPhoto).all()
+    colors =  Color.query.filter_by(idPhoto=idPhoto).all()
     return colors
+
+def set_active_colors(idPhoto, hexa):
+    colors =  Color.query.filter_by(idPhoto=idPhoto).all() #on récupère toutes les couleurs pour cette photo
+    colorReturn = None;
+    for color in colors:
+        if(color.hexa==hexa):   #on vérifie quelle couleur est celle à rendre active
+            color.actif=1
+            colorReturn=color
+        else:
+            color.actif=0
+    if(colorReturn==None):
+        colorReturn = Color(hexa=hexa,idPhoto=idPhoto,actif=1);
+        try:
+            db.session.add(colorReturn);
+            db.session.commit();
+            print("je set bien la couleur comme étant la bonne");
+        except:
+            print("ERROR LOSER")
+    db.session.commit();
+    return colorReturn
 
 
 def get_all_places():
@@ -391,7 +414,7 @@ def datePytoHTML(date_in):
 
 # Renvoie les dates disponibles pour un spectacle
 def get_dates(nomSpectacle):
-    dates = Calendrier.query.filter_by(nom = nomSpectacle).all()
+    dates = Calendrier.query.filter_by(nom = nomSpectacle).order_by(Calendrier.date).all()
 
     return dates
 
@@ -403,11 +426,11 @@ def get_all_dates ():
 
 def get_color(hex, id):
     print("params",hex, id)
-    couleur = Color.query.filter_by(hexa=hex, photo=id).first()
+    couleur = Color.query.filter_by(hexa=hex, idPhoto=id).first()
     return couleur
 
 def get_color_hexa(hex, id):
-    couleur = Color.query.filter_by(hexa=hex, photo=id).all()
+    couleur = Color.query.filter_by(hexa=hex, idPhoto=id).all()
     return couleur.hexa
 
 def delete(elem):

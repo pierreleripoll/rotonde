@@ -168,6 +168,12 @@ def adminlist():
     else :
         return abort(403)
 
+## CONTACT
+@admin_relative.route('/contact', methods=['GET','POST'])
+def pageContact():
+	if request.method=="GET":
+		return render_template('contact.html')
+
 @admin_relative.route('/voirPlaces/<spectacle>')
 def voirPlaces(spectacle):
 
@@ -182,3 +188,4 @@ def voirPlaces(spectacle):
 def validePlace (id, full):
     valide_place(id, full)
     return "success"
+

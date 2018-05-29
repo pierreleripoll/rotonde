@@ -9,6 +9,15 @@
 
 }
 
+.jumbotron-heading{
+  font-family: Lato;
+  font-weight: 400;
+}
+
+.text-muted{
+  font-weight: 400;
+}
+
 a{
   color:black;
 }
@@ -18,6 +27,7 @@ a:hover{
   font-weight: bold;
   text-decoration: none
 }
+
 
 
 .navbar-custom{
@@ -30,6 +40,19 @@ a:hover{
   top:0;
 }
 
+.navbar-toggler{
+  color: var(--color-font-light);
+  border-color: rgba(250,250,250,0.3);
+  border-radius: 0px;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(250, 250, 250, 1  )' stroke-width='2' stroke-linecap='square' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+
+  
+
+}
+
 .navbar-nav li a{
   color: var(--color-font-light);
   font-family:Lato;
@@ -40,6 +63,9 @@ a:hover{
 }
 
 .navbar-nav li a:hover{
+  color: var(--color-insa);
+}
+.nav-item .active{
   color: var(--color-insa);
 }
 
@@ -120,6 +146,10 @@ super-small {
   border-radius: 0px;
   background-color: yellow;
   border-color: yellow;
+}
+
+.btn-primary{
+  float: right !important;
 }
 
 
