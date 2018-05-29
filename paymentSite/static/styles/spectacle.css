@@ -40,6 +40,11 @@
 }
 
 
+
+.card-eq-height {
+  height: 100%;
+}
+
 .card-resume{
   text-align: justify;
   text-justify: inter-character;
@@ -52,7 +57,7 @@
 .card-imgSpectacle{
   cursor: pointer;
   width:100%;
-  height : 50vh;
+  height : 40vh;
   background-color: var(--color-theme);
   object-fit: contain;
   border:1px solid;
@@ -212,13 +217,4 @@
   background-color: var(--color-theme);
   color:var(--color-font-light);
   border-color: var(--color-theme);
-}
-
-.infos{
-  font-size: 21px;
-}
-
-.lien-fb{
-  font-weight: bold;
-  color: #3b5998;
 }

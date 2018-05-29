@@ -1,0 +1,103 @@
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon"
+      type="image/png"
+      href="/static/img/paypal.png" />
+
+  <title>Payment</title>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+  <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+  <link href="/static/styles/charte.css" rel="stylesheet">
+  <link href="/static/styles/spectacle.css" rel="stylesheet">
+</head>
+
+<script>
+  function ValidatePayment() {
+    /*
+    $.ajax({
+      url: "http://localhost:5000/panier/"+{{idSite}}+"/{{idClient}}/{{mail}}/"+{{places}}+"/"+{{price}}+"/"+"token",
+      type: "POST",
+      data: 0
+    });
+    window.alert("VALIDER et ENVOYER");*/
+    window.location.href="http://localhost:5000/panier/"+{{idSite}}+"/{{idClient}}/{{mail}}/"+{{places}}+"/"+{{price}}+"/"+"token";
+  }
+  function CancelPayment() {
+    $.ajax({
+      url: "http://localhost:5000/panier/"+{{idSite}}+"/{{idClient}}/{{mail}}/"+{{places}}+"/"+{{price}}+"/"+"invalidate",
+      type: "POST",
+      data: 0
+    });
+    window.close();
+  }
+</script>
+
+<body>
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">Payment</h1>
+      <p class="lead text-muted">You have passed a command on the site : {{nomSite}}. </br>
+        You have {{places}} items in your cart, for an amount of {{price}} euros.</br>
+        To achieve the payment, please select one payment's method and validate. </p>
+    </div>
+  </section>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8">
+        <h2>Payment's methods</h2>
+        <div class="list-group">
+          <a href="#" class="list-group-item">Master Card</a>
+          <a href="#" class="list-group-item">Visa</a>
+          <a href="#" class="list-group-item">Bank account</a>
+          <a href="#" class="list-group-item">Izly</a>
+          <a href="#" class="list-group-item">Cash</a>
+          <a href="#" class="list-group-item">In kind</a>
+        </div>
+        <script>
+        $('.list-group-item').on('click', function() {
+          var $this = $(this);
+          var $alias = $this.data('alias');
+
+          $('.active').removeClass('active');
+          $this.toggleClass('active')
+
+          myfunction($this, $alias)
+        })
+
+        function myfunction($this,  $alias) {
+          document.getElementById("validateButton").value = $this.text() + "'s payment";
+          document.getElementById("validateButton").disabled = false;
+        }
+        </script>
+      </div>
+      <div class="col-md-1">
+      </div>
+      <div class="col-md-2">
+        <br>
+        <br>
+        <br>
+        <br>
+        <input type="button" name="cancel" class="btn-lg" value="Cancel payment" onclick="CancelPayment()"></input>
+        <br>
+        <br>
+        <br>
+        <br>
+        <input type="button" name="validate" class="btn-lg" disabled="disabled" value="Validate payment" id="validateButton" onclick="ValidatePayment()"></input>
+      </div>
+    </div>
+  </div>
+</body>
+
+<footer id="footer" class="footer" role="footer">
+    <small class="copyright col-md-4"><p>Created in 2018</p>
+      <p>A payment's site by A. Flamant, M. Humbert, A. Navarro, P. Ripoll, J-N. Winter</p>
+    </small>
+  </div>
+</footer>

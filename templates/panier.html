@@ -2,8 +2,50 @@
 {% set active_page = 'panier' %}
 {% block title %}Panier{% endblock %}
 
-
 {% block content %}
+<script>
+function paiementPAYER() {
+  if(document.getElementById("nom").value != "" && document.getElementById("mail").value != "") {
+    var totalPlace = 0;
+    var totalPrice = 0;
+    var x = 0;
+    var index=0;
+
+    for(x=0; x<{{len}}; x+=1) {
+      index=x+1;
+      totalPrice += parseInt(document.getElementById(index.toString()).value) * parseInt(document.getElementById("prix"+index.toString()).value);
+      totalPlace += parseInt(document.getElementById(index.toString()).value);
+    }
+
+
+    if(totalPlace > 0) {
+      //window.alert("Attention - "+document.getElementById("nom").value.toUpperCase()+" - vous allez être redirigé(e) vers la page de paiement");
+      var dataEnvoyer = [];
+      for(var i=1; i<={{len}}; i++) {
+        var obj = {"obj" : parseInt(document.getElementById(i.toString()).value)};
+        dataEnvoyer.push(obj);
+      }
+
+      $.ajax({
+        url: "http://localhost:5500/payment/123456789/"+document.getElementById("nom").value+"/"+document.getElementById("mail").value+"/"+totalPlace+"/"+totalPrice,
+        type: "POST",
+        data: dataEnvoyer
+      });
+      openInNewTab("http://localhost:5500/payment/123456789/"+document.getElementById("nom").value+"/"+document.getElementById("mail").value+"/"+totalPlace+"/"+totalPrice);
+    } else if (totalPlace == 0) {
+      window.location.href= "/empty_cart";
+    } else {
+      window.location.href= 'http://localhost:5500/payment/123456789/'+document.getElementById("nom").value+"/"+document.getElementById("mail").value+"/"+totalPlace+"/"+totalPrice;
+      window.location.href="/";
+    }
+  }
+}
+function openInNewTab(url) {
+  var win = window.open(url, '_blank');
+  win.focus();
+}
+</script>
+
   <div class="container">
     <form action="" method="POST">
       <table class="table table-striped">
@@ -12,6 +54,7 @@
           <th>Date</th>
           <th>Places diponibles</th>
           <th>Vos places</th>
+          <th>Prix</th>
 
         </tr>
         {% for place in display_cart %}
@@ -19,21 +62,20 @@
           <td>{{place["nomSpectacle"]}}</td>
           <td>{{place["date"]}}</td>
           <td>{{place["left"]}}</td>
-          <td><input type="number" method="POST" name=qte{{loop.index}} min="0" max="{{place['left']}}" value="{{place['qte']}}"></td>
+          <td><input type="number" method="POST" name=qte{{loop.index}} min="0" max="{{place['left']}}" value="{{place['qte']}}" id="{{loop.index}}"></td>
+          <td><input type="hidden" id="prix{{loop.index}}" name="{{place["price"]}}" value="{{place["price"]}}" >{{place["price"]}}</input>
         </tr>
         {% endfor %}
 
       </table>
       </br>
       <h3>Valider la réservation: </h3> Nom:<br>
-      <input type="text" name="nom"><br>
+      <input type="text" name="nom" id="nom"><br>
       Adresse mail:<br>
-      <input type="text" name="mail"><br>
+      <input type="text" name="mail" id="mail"><br>
       <br>
-      <button class="btn btn-primary" name="foo" value="valider" type="submit" }>Valider</button>
       <a href="/empty_cart" class="btn btn-large btn-primary">Vider panier</a>
+      <input type="button" name="buttonPayer" class="btn btn-large btn-primary" value="Payer" onclick="paiementPAYER()"></input>
     </form>
-
-
   </div>
 {% endblock %}
