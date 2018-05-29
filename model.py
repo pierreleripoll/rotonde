@@ -236,9 +236,9 @@ def get_spectacle(nomSpectacle):
 
     return spectacle
 
-def valide_place (id):
+def valide_place (id, full):
     place= Place.query.filter_by(idPlace=id).first()
-    place.valide=1
+    place.valide=full
     db.session.commit()
     return
 
