@@ -201,7 +201,7 @@
         for(j=0; j<9; j++){
           var cobox = "bg-color-box"+(j+2);
           document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
-          uploadColor(3,p[j],0);
+          uploadColor(id,p[j],0);
         }
 
       }
@@ -272,7 +272,7 @@
         color=window.getComputedStyle(this,null).getPropertyValue("background-color");
         console.log("in function",i, color);
         document.documentElement.style.setProperty('--color-theme', color);
-        uploadColor(3,color,1)
+        uploadColor(id,color,1)
         console.log("postUpload", color);
       };
     }
