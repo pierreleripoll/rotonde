@@ -54,7 +54,7 @@ def spectacle(nomSpectacle):
                     if n> 0 :
                         print("Add a place !")
                         for i in range(n):
-                            place = Place(nomSpectacle=nomSpectacle,date=date,nomUser="")
+                            place = Place(nomSpectacle=nomSpectacle,date=date,nomUser="",valide=0)
                             placeJSON = place.serialize()
                             print(placeJSON)
                             places.append(place.serialize())

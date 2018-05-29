@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% set active_page = 'admin' %}
+{% block title %}Administration{% endblock %}
+
+{% block head %}
+  {{ super() }}
+  <script>
+    function check (place, full){
+      $.ajax({
+        url: "/api/validePlace/"+place+"/"+full,
+        type: 'POST',
+        success: function(data) {
+          console.log("yes");
+        },
+        error: function() {
+          console.log("probleme");
+        }
+      });
+
+    }
+  </script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1>{{spectacle.nom}}</h1>
+  {%for date in spectacle.dates%}
+    <div class="row">
+      <h2>{{date.date|datetime}}</h2>
+      <table class="table table-striped">
+        <tr>
+          <th>ID Place</th>
+          <th>NOM</th>
+          <th>MAIL</th>
+          <th>VALIDÉ</th>
+        </tr>
+        {%for place in date.places%}
+          <tr>
+            <td>{{place.idPlace}}</td>
+            <td>{{place.nomUser}}</td>
+            <td>{{place.adresseMail}}</td>
+            <td>{%if place.valide == 0%}
+              <input type="checkbox" name="valide" value="empty" onchange="check({{place.idPlace}},1)"><br>
+            {%elif place.valide==1%}
+              <input type="checkbox" name="valide" value="full"  onchange="check({{place.idPlace}},0)" checked><br>
+            {%endif%}</td>
+        {%endfor%}
+      </table>
+    </div>
+  {%endfor%}
+</div>
+
+{% endblock %}

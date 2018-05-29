@@ -19,7 +19,7 @@ class Spectacle(db.Model):
     resume = db.Column(db.Text, nullable = True)
     photos = db.Column(db.Integer, nullable = True)
     liens = db.Column(db.String(150), nullable = True)
-    admin = db.Column(db.String(20), nullable =True)
+    admin = db.Column(db.String(80),db.ForeignKey('session.login'),nullable=False)
     idContact = db.Column(db.Integer, db.ForeignKey('contact.id'), nullable = True)
     directeur = db.Column(db.String(30),nullable=True)
     auteur = db.Column(db.String(30),nullable=True)
@@ -29,6 +29,7 @@ class Spectacle(db.Model):
     duree = db.Column(db.Integer,nullable=True)
     typeSpectacle = db.Column(db.String(20),nullable=True)
     contact = db.relationship('Contact', backref = db.backref('spectacle', lazy = True))
+    adminSpectacle=db.relationship('Session', backref=db.backref('spectacles',lazy=True))
     def __repr__(self):
         return '<Spectacle: %r>' % self.nom
     def getPhoto(self,ordre):
@@ -63,6 +64,7 @@ class Place(db.Model):
     date = db.Column(db.DateTime, db.ForeignKey('calendrier.date'), nullable = False)
     nomUser = db.Column(db.String(80), nullable = False)
     adresseMail = db.Column(db.String(100),nullable=True)
+    valide= db.Column(db.Integer, nullable=False)
     calendrier = db.relationship('Calendrier', backref = db.backref('places', lazy = True)) #idem qu'au dessus
     def __repr__(self):
         return '<Place: %r>' % self.idPlace
@@ -257,12 +259,19 @@ def get_spectacle(nomSpectacle):
 
     return spectacle
 
+def valide_place (id, full):
+    place= Place.query.filter_by(idPlace=id).first()
+    place.valide=full
+    db.session.commit()
+    return
+
 # Renvoie l'objet Date correspondant a la date en param
 def get_date (date):
 	date= Calendrier.query.filter_by(date=date).first()
 	return date
 
 def get_session(login):
+
     session=Session.query.filter_by(login=login).first()
     return session
 
