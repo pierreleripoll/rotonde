@@ -235,7 +235,9 @@ def uploadFile (nomSpectacle):
             ],
             'initialPreviewThumbTags': [    ],
             'append': 'true',
-            'id':photo.id
+            'id':photo.id,
+            'key':photo.id,
+            'pathOriginal':pathOriginal
             }
             return json.dumps(dic)
 
