@@ -133,7 +133,7 @@
       ------------------------------------- */
       .btn {
         box-sizing: border-box;
-        width: 100%; }
+         }
         .btn > tbody > tr > td {
           padding-bottom: 15px; }
         .btn table {
@@ -289,34 +289,19 @@
               <!-- START MAIN CONTENT AREA -->
               <tr>
                 <td class="wrapper">
-                  <table>
-                    <tr>
-                      <td>
                         <p>Bonjour {{nomUser}},</p>
                         <p>Vous venez de réserver des places pour la Rotonde de l'INSA. Gardez bien l'id de votre place, il vous sera demandé pour entrer.</p>
-                        <table >
-                          <tbody>
-                            <tr>
-                              <td align="left">
-                                <table >
-                                  <tbody>
-                                      {% for place in places %}
-                                    <tr>
-                                      <td>Place numero: {{place.idPlace}}</td>
-                                      <td> {{place.date|datetime('mail')}}</td>
-                                      <td class="btn btn-secondary"> <a href="/spectacle/{{place.nomSpectacle}}" target="_blank">{{place.nomSpectacle}}</a> </td>
-                                    </tr>
-                                      {% endfor %}
-                                  </tbody>
-                                </table>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
+                        <table>
+                          {% for place in places %}
+                                <tr>
+                                  <td>Place numero: {{place.idPlace}} {{place.date|datetime('mail')}}</p>
+                                  <td class="btn btn-secondary"> <a href="/spectacle/{{place.nomSpectacle}}" target="_blank">{{place.nomSpectacle}}</a> </td>
+                                </tr>
+                          {% endfor %}
 
-                      </td>
-                    </tr>
-                  </table>
+
+
+                        </table>
                 </td>
               </tr>
 
