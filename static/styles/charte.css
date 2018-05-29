@@ -9,6 +9,17 @@
 
 }
 
+a{
+  color:black;
+}
+
+a:hover{
+  color:black;
+  font-weight: bold;
+  text-decoration: none
+}
+
+
 .navbar-custom{
   background-color: var(--color-theme);
   color: var(--color-font-light);
@@ -16,7 +27,7 @@
   padding-top:1px;
   padding-bottom:3px;
   position:fixed;
-  top:0;  
+  top:0;
 }
 
 .navbar-nav li a{

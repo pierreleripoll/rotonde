@@ -23,21 +23,31 @@
 
 {% block content %}
 <div class="container">
-  <p>{{spectacle.nom}}</p>
+  <h1>{{spectacle.nom}}</h1>
   {%for date in spectacle.dates%}
-  {%if date.places != []%}
-    {{date.date|datetime}}
-  {%endif%}
-    <ul>
-      {%for place in date.places%}
-        <li>{{place.idPlace}} {{place.nomUser}} {{place.adresseMail}}       {{place.date}}
-        {%if place.valide == 0%}
-          <input type="checkbox" name="valide" value="empty" onchange="check({{place.idPlace}},1)">  Validé<br>
-        {%elif place.valide==1%}
-          <input type="checkbox" name="valide" value="full"  onchange="check({{place.idPlace}},0)" checked>  Validé<br>
-        {%endif%}
-        </li>
-      {%endfor%}
-    </ul>
+    <div class="row">
+      <h2>{{date.date|datetime}}</h2>
+      <table class="table table-striped">
+        <tr>
+          <th>ID Place</th>
+          <th>NOM</th>
+          <th>MAIL</th>
+          <th>VALIDÉ</th>
+        </tr>
+        {%for place in date.places%}
+          <tr>
+            <td>{{place.idPlace}}</td>
+            <td>{{place.nomUser}}</td>
+            <td>{{place.adresseMail}}</td>
+            <td>{%if place.valide == 0%}
+              <input type="checkbox" name="valide" value="empty" onchange="check({{place.idPlace}},1)"><br>
+            {%elif place.valide==1%}
+              <input type="checkbox" name="valide" value="full"  onchange="check({{place.idPlace}},0)" checked><br>
+            {%endif%}</td>
+        {%endfor%}
+      </table>
+    </div>
   {%endfor%}
+</div>
+
 {% endblock %}
