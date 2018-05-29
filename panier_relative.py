@@ -90,7 +90,7 @@ def udpateQte(cont):
 							change += 1
 							break
 				else:
-					place = Place(nomSpectacle=show['nomSpectacle'],date=show['date'],nomUser="")
+					place = Place(nomSpectacle=show['nomSpectacle'],date=show['date'],nomUser="", valide=0)
 					placeJSON = place.serialize()
 					print("on ajoute une places : "+str(placeJSON))
 					session['panier'].append(placeJSON)
@@ -144,7 +144,7 @@ def panier():
 					for i in range(1, show['qte']+1):
 						added+=1
 						print(i)
-						place = Place(ordre=added,nomSpectacle=show['nomSpectacle'],nomUser=name,date=date, adresseMail=mail)
+						place = Place(ordre=added,nomSpectacle=show['nomSpectacle'],nomUser=name,date=date, adresseMail=mail, valide=0)
 						insert_place(place)
 					res=update_placesRestantes(datemodif,added)
 					if(res==-1):

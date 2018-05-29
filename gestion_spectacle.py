@@ -29,10 +29,14 @@ def spectacle(nomSpectacle):
         print(thisDates)
         if thisSpectacle == None :
             return abort(404)
-
+        photos = get_all_photos(thisSpectacle.nom)
         paths = get_paths_photos(thisSpectacle.nom)
         print("Paths :",paths)
-        return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths)
+        photoMain = get_photoSpectacle(thisSpectacle.nom,ordre=0);
+        print("Voici toutes les photos : ",photos,"\net la photo principale :" ,photoMain, "\n et ses couleur : ");
+        for color in photoMain.colors:
+            print(color.hexa, " : ",color.actif)
+        return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths,photos = photos)
     if request.method == "POST":
         if request.form["submit"] == "modify" and session['pseudo'] == thisSpectacle.admin:
             return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle=nomSpectacle))
@@ -50,7 +54,7 @@ def spectacle(nomSpectacle):
                     if n> 0 :
                         print("Add a place !")
                         for i in range(n):
-                            place = Place(nomSpectacle=nomSpectacle,date=date,nomUser="")
+                            place = Place(nomSpectacle=nomSpectacle,date=date,nomUser="",valide=0)
                             placeJSON = place.serialize()
                             print(placeJSON)
                             places.append(place.serialize())
@@ -108,9 +112,12 @@ def set_spectacle(nomSpectacle):
                     else:
                         insert_spectacle(spectacle)
 
-                    delete_date(nomSpectacle)
+                    delete_date_spectacle(nomSpectacle)
                     for dates in cont:
                         if "datetime" in dates:
+                            # strDate = cont[dates];
+                            # print(strDate)
+                            # strDate = strDate[0:len(strDate)-3]
                             datePy = datetime.strptime(cont[dates], '%d/%m/%Y %H:%M')
                             date = Calendrier(date=datePy,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(re.findall(r'\d+', dates)[0])]))
                             alreadyIn = "false"
@@ -181,7 +188,7 @@ def deleteFile (nomSpectacle,filename):
             spectacle.photos -= 1
             db.session.commit()
             print(photos)
-            dic = {"succes":"total"}
+            dic = {'key':id}
             return json.dumps(dic)
         else:
             return abort(401)
@@ -226,11 +233,13 @@ def uploadFile (nomSpectacle):
             dic = {
             'initialPreview': [path],
             'initialPreviewConfig': [
-              {'caption': nomFichier, 'size':str(photo.size),'filename': nomFichier,'url':'/api/deleteFile/'+spectacle.nom+'/'+nomFichier,'key': str(photo.ordre) },
+              {'caption': nomFichier, 'size':str(photo.size),'filename': nomFichier,'url':'/api/deleteFile/'+spectacle.nom+'/'+nomFichier,'key': str(photo.id) },
             ],
             'initialPreviewThumbTags': [    ],
             'append': 'true',
-            'id':photo.id
+            'id':photo.id,
+            'key':photo.id,
+            'pathOriginal':pathOriginal
             }
             return json.dumps(dic)
 
@@ -303,12 +312,19 @@ def crop(nomSpectacle,id):
 @gestion_spectacle.route('/api/uploadColor/<int:id>/<string:hex>/<int:bool>/',methods=['POST'])
 def uploadColor(id,hex,bool):
     test = get_color(hex,id);
-    color = Color(hexa=hex,photo=id,actif=bool);
+    color = Color(hexa=hex,idPhoto=id,actif=bool);
+    photo = get_photo_byid(id);
 
-    if(test is None):
-        print("elles sont différentes");
-        insert_color(color)
+    if(bool==1):
+        print("wow on demande à activer une couleur !");
+        set_active_colors(id,hex)
+        for color in photo.colors :
+            print(color.hexa, color.actif);
     else:
-        print("couleur déjà registered pour cette image")
+        if(test is None):
+            print("elles sont différentes");
+            insert_color(color)
+        else:
+            print("couleur déjà registered pour cette image")
 
     return "niquel chrome";
