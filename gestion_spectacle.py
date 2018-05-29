@@ -33,7 +33,9 @@ def spectacle(nomSpectacle):
         paths = get_paths_photos(thisSpectacle.nom)
         print("Paths :",paths)
         photoMain = get_photoSpectacle(thisSpectacle.nom,ordre=0);
-        print("Voici toutes les photos : ",photos,"\net la photo principale :" ,photoMain, "\n et sa couleur : ", photoMain.colors);
+        print("Voici toutes les photos : ",photos,"\net la photo principale :" ,photoMain, "\n et ses couleur : ");
+        for color in photoMain.colors:
+            print(color.hexa, " : ",color.actif)
         return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths,photos = photos)
     if request.method == "POST":
         if request.form["submit"] == "modify" and session['pseudo'] == thisSpectacle.admin:
@@ -314,7 +316,10 @@ def uploadColor(id,hex,bool):
     photo = get_photo_byid(id);
 
     if(bool==1):
+        print("wow on demande à activer une couleur !");
         set_active_colors(id,hex)
+        for color in photo.colors :
+            print(color.hexa, color.actif);
     else:
         if(test is None):
             print("elles sont différentes");
