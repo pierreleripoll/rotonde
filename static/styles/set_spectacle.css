@@ -1,3 +1,19 @@
 .btn-primary{
   text-align: right;
 }
+
+.card{
+  border-color:var(--color-border);
+  border:1px solid;
+}
+
+.card-body{
+  padding:2rem;
+
+}
+
+.card-header{
+  background-color: var(--color-theme);
+  color: var(--color-font-light);
+  font-size:120%;
+}
