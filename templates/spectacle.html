@@ -38,63 +38,63 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-4 ">
-      <div class="card card-eq-height">
-        <div class="card-body card-body-tarifs-dates">
-          <h5 class="card-title card-title-tarifs-dates">
-            {%if dates %}
-              {%if dates|length > 1 %}
-                {% if dates[0].date.month != dates[-1].date.month %}
-                  Du {{dates[0].date|datetime(format='spectacle')}} au {{dates[-1].date|datetime(format='spectacle')}}
+<div class="row">
+  <div class="col-md-4 ">
+    <div class="card card-eq-height">
+      <div class="card-body card-body-tarifs-dates">
+        <h3 class="card-title card-title-tarifs-dates" style="margin-bottom:5px;">
+              {%if dates %}
+                {%if dates|length > 1 %}
+                  {% if dates[0].date.month != dates[-1].date.month %}
+                    Du {{dates[0].date|datetime(format='spectacle')}} au {{dates[-1].date|datetime(format='spectacle')}}
+                  {% else %}
+                    Du {{dates[0].date.day}} au {{dates[-1].date|datetime(format='spectacle')}}
+                  {% endif %}
                 {% else %}
-                  Du {{dates[0].date.day}} au {{dates[-1].date|datetime(format='spectacle')}}
+                  Le {{dates[0].date|datetime(format='spectacle')}}
                 {% endif %}
-              {% else %}
-                Le {{dates[0].date|datetime(format='spectacle')}}
-              {% endif %}
+              {%endif%}
+            </h3>
+        <h4 style="margin-bottom:12px;">{{spectacle.typeSpectacle}}</h4>
+        <div class="infos">
+            <p>Tarif {% if spectacle.tarif == 0 %} PRIX LIBRE {% else %} {{spectacle.tarif}}€ {% endif %}<br>
+            {%if spectacle.duree%}{{spectacle.duree}}{%endif%} minutes<br>
+            {%if spectacle.liens%}<a href="{{spectacle.liens}}" class="lien-fb">facebook</a>
+            {%else%}<a href="https://www.facebook.com/RotondeInsa/" class="lien-fb">facebook</a>
             {%endif%}
-           </h5>
-          <p>Tarif<br>
-          {% if spectacle.tarif == 0 %}
-            PRIX LIBRE
-          {% else %}
-            {{spectacle.tarif}}€ la place
-          {% endif %}
-          <br>
-          {{spectacle.typeSpectacle}}
-          <br>
-          {{spectacle.duree}} minutes
+            </p>
+        </div>
 
-          </p>
-        </div>
-        <div class="card-footer card-footer-billet" onclick="afficheBillets()">
-          <p>BILLETS | DATES</p>
-        </div>
+      </div>
+      <div class="card-footer card-footer-billet" onclick="afficheBillets()">
+        <p>BILLETS | DATES</p>
       </div>
     </div>
+  </div>
 
     {% if paths|length != 0 %}
       <div id="showImage"  class="col-md-8 ">
-        <div class="imageSpectacle">
-          <img onclick="chgPhoto()" onmouseEnter="mouseEnter()"  onmouseleave="mouseLeave()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
-        </div>
-        {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
-        <div class="content">
-          <div onmouseleave="mouseLeave()" onmouseEnter="mouseEnter()" class="card-group">
-            <div id="color-box" class="card bg-color-box1"></div>
-            <div id="color-box" class="card bg-color-box2"></div>
-            <div id="color-box" class="card bg-color-box3"></div>
-            <div id="color-box" class="card bg-color-box4"></div>
-            <div id="color-box" class="card bg-color-box5"></div>
-            <div id="color-box" class="card bg-color-box6"></div>
-            <div id="color-box" class="card bg-color-box7"></div>
-            <div id="color-box" class="card bg-color-box8"></div>
-            <div id="color-box" class="card bg-color-box9"></div>
-            <div id="color-box" class="card bg-color-box10"></div>
+        <div class="card-eq-height">
+          <div class="imageSpectacle">
+            <img onclick="chgPhoto()" onmouseEnter="mouseEnter()"  onmouseleave="mouseLeave()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
           </div>
+          {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
+          <div class="content">
+            <div onmouseleave="mouseLeave()" onmouseEnter="mouseEnter()" class="card-group">
+              <div id="color-box" class="card bg-color-box1"></div>
+              <div id="color-box" class="card bg-color-box2"></div>
+              <div id="color-box" class="card bg-color-box3"></div>
+              <div id="color-box" class="card bg-color-box4"></div>
+              <div id="color-box" class="card bg-color-box5"></div>
+              <div id="color-box" class="card bg-color-box6"></div>
+              <div id="color-box" class="card bg-color-box7"></div>
+              <div id="color-box" class="card bg-color-box8"></div>
+              <div id="color-box" class="card bg-color-box9"></div>
+              <div id="color-box" class="card bg-color-box10"></div>
+            </div>
+          </div>
+          {%endif%}
         </div>
-        {%endif%}
       </div>
     {% endif %}
   </div>
