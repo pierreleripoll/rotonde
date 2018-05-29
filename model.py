@@ -324,10 +324,11 @@ def update_spectacle(spectacle):
 
     return
 
-def update_session(admin):
+def update_session(admin, psswd=True):
     oldSession = Session.query.filter_by(login=admin.login).first()
     oldSession.login=admin.login
-    oldSession.password=admin.password
+    if psswd:
+        oldSession.password=admin.password
     oldSession.idContact=admin.idContact
     oldSession.typeAdmin=admin.typeAdmin
     db.session.commit()

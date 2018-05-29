@@ -148,7 +148,7 @@ def set_admin(login):
                         if alreadyIn:
                             print("\nSESSION ALREADY IN\n")
                             print("CALL update_session")
-                            update_session(admin)
+                            update_session(admin, psswd=False)
                         else:
                             insert_session(admin)
                         db.session.commit();
