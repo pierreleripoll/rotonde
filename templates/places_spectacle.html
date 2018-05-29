@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% set active_page = 'admin' %}
+{% block title %}Administration{% endblock %}
+
+
+{% block content %}
+<div class="container">
+  <p>spectacle.nom</p>
+  {%for date in spectacle.dates%}
+    {{date}}
+      {%for place in date.places)%}
+        {{place.idPlace}} {{place.nomUser}} {{place.adresseMail}}       {{place.date}}
+      {%endfor%}
+  {%endfor%}
+{% endblock %}
