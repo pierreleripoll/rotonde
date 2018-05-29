@@ -23,8 +23,8 @@ def admin():
     if 'admin' in session :
         if request.method=='GET':
             admin=get_session(session['pseudo'])
-            print(admin)
-            return render_template('admin.html',admin=admin)
+            spectacles=get_spectacles()
+            return render_template('admin.html',admin=admin, spectacles=spectacles)
         if request.method=='POST':
             if request.form["bouton"]=="logout":
                 session.pop("pseudo",None)
