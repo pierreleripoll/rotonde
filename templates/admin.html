@@ -1,7 +1,12 @@
 {% extends "layout.html" %}
 {% set active_page = 'admin' %}
 {% block title %}Administration{% endblock %}
+{%block head%}
+{{super()}}
+  <link href="/static/styles/admin.css" rel="stylesheet">
 
+{%endblock%}
+<link href="/static"
 
 {% block content %}
   <div class="container">
@@ -25,11 +30,18 @@
       <ul class="list-group">
         {% for spectacle in admin.spectacles%}
         <div class="list-group-item">
-          <a href="/spectacle/{{spectacle.nom}}">{{spectacle.nom}}</a>
-          <a href="/voirPlaces/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Voir les réservations</a>
-          <a href="/set_spectacle/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Modifier</a>
+          <div class="row">
+            <a class="col-md-8 liste-admin" href="/spectacle/{{spectacle.nom}}">
+              <p>{{spectacle.nom}}</p>
+            </a>
+            <div class="col-md-4">
+              <a href="/voirPlaces/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Voir les réservations</a>
+              <a href="/set_spectacle/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Modifier</a>
+            </div>
+          </div>
         </div>
         {%endfor%}
+      </ul>
       {%endif%}
       {%elif admin.typeAdmin =='super'%}
       </br>
@@ -38,9 +50,15 @@
       <ul class="list-group">
         {% for spectacle in spectacles %}
         <div class="list-group-item">
-          <a href="/spectacle/{{spectacle.nom}}">{{spectacle.nom}}</a>
-          <a href="/voirPlaces/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Voir les réservations</a>
-          <a href="/set_spectacle/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Modifier</a>
+          <div class="row">
+            <a class="col-md-8 liste-admin" href="/spectacle/{{spectacle.nom}}">
+              <p>{{spectacle.nom}}</p>
+            </a>
+            <div class="col-md-4">
+              <a href="/voirPlaces/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Voir les réservations</a>
+              <a href="/set_spectacle/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Modifier</a>
+            </div>
+          </div>
         </div>
         {%endfor%}
       {%endif%}
