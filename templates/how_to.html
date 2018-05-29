@@ -79,9 +79,13 @@
         <br>
       <li>Modifier un spectacle<ul>
             <li>Depuis l'accueil comme depuis la page du spectacle<ul>
-                <li>Bouton "Edit"</li>
-            </ul></li></li>
-        <br>
+                <li>Bouton "Edit"</li></ul></li>
+            <li>Depuis la page spectacle<ul>
+                <li>Panneau Billets/Dates<ul>
+                    <li>Bouton "Modifier"</li></ul></li></ul></li>
+            <li>Depuis la page admin<ul>
+                <li>Bouton “Modifier” correspondant au spectacle</li></ul></li>
+      <br>
       <li>Saisie des informations (DANS L'ORDRE DES OPÉRATIONS)<ul>
             <li>Ajouter une image<ul>
                 <li>Bouton “Browse” ou (Drag & Drop)</li>
@@ -96,81 +100,59 @@
                 <li>Choix dans la liste des contacts existants</li>
                 <li>Ou création d'un nouveau contact<ul>
                     <li>Bouton "Ajouter Contact"</li></ul></li>
-                </ul>
+                </ul></li>
             <li>Ajouter une date<ul>
                 <li>Bouton "Add"<ul>
-                    <li>Sélection de la date</li></ul></li></ul></li>
-            <li>Supprimer un spectacle<ul>
-                <li>Depuis la page spectalce<ul>
-                    <li>Bouton "Supprimer"</li></ul></li>
-                <li>Depuis la page de modification du spectacle<ul>
-                    <li>Bouton "Supprimer"</li></ul></li>
-                </ul></li>
-            <li>Voir la liste des spectacles de l'admin<ul>
-                <li>Onglet Admin</li></ul></li>
-            <li>
+                    <li>Sélection de la date</li></ul></li></ul></li></ul></li>
+      <li>Supprimer un spectacle<ul>
+          <li>Depuis la page spectalce<ul>
+              <li>Bouton "Supprimer"</li></ul></li>
+          <li>Depuis la page de modification du spectacle<ul>
+              <li>Bouton "Supprimer"</li></ul></li></ul></li>
 
+      <li>Voir la liste des spectacles de l'admin<ul>
+          <li>Onglet Admin</li></ul></li>
+      <li>Voir les places réservées pour un spectacle<ul>
+          <li>Depuis la page Admin<ul>
+              <li>Bouton "Voir les réservations" correspondant au spectacle</li>
+              <li>Possibilité de cocher la place correspondante</li></ul></li></ul></li></ul></li></ul>
 
-
-      </li>
-    </ul>
     <br><br>
 
+    <h4>Gestion des sessions</h4><br>
+    <ul>
+      <li>Modifier le compte Admin<ul>
+          <li>Depuis la page admin<ul>
+              <li>Bouton "Infos du compte"<ul>
+                  <li>Modification des données(login, mot de passe)</li>
+                  <li>Ajout de contacts IDEM que pour CRÉER SPECTACLE</li></ul></li></ul></li></ul></li>
 
+      <li>Se déconnecter<ul>
+          <li>Depuis la page admin<ul>
+              <li>Bouton "se déconnecter"</li></ul></li></ul></li>
+    </ul>
+    <br><br>
+    <h4>Session Superadmin</h4>
+    <br>
+    <ul>
+      <li>Voir la liste des admins<ul>
+          <li>Depuis la page Admin<ul>
+              <li>Bouton "Liste des admins"</li></ul></li></ul>
+      </li>
 
-  Voir la liste des spectacles de l’admin:
-  Onglet Admin
+      <li>Ajouter un admin<ul>
+          <li>Depuis la page admin<ul>
+              <li>Bouton "Ajouter un admin"<ul>
+                  <li>Saisie des données de l'admin et de son statut</li></ul>
+              </li>
+              <li>Ajout de contacts IDEM que pour CRÉER SPECTACLE</li></ul></li></ul>
+      </li>
 
-  Modifier un spectacle:
-  Depuis la page d’accueil:
-      Bouton “Edit” du spectacle
-  Depuis la page du spectacle:
-      Onglet Billets/Dates
-      Bouton “Modifier”
-  Depuis la page Admin:
-      Bouton “Modifier” correspondant au spectacle
-
-  Voir les places réservées pour un spectacle:
-  Depuis la page Admin:
-      Bouton “Voir les réservations” correspondant au spectacle
-      Possibilité de cocher la place correspondante à l’arrivée du spectateur
-
-  Modifier le compte Admin:
-  Depuis la page Admin:
-      Bouton “Infos du compte”
-      Modification des données (login, mot de passe)
-      Ajout de contacts: Idem que pour Créer un spectacle
-
-  Se déconnecter:
-  Depuis la page Admin:
-      Bouton “Se déconnecter”
-
-
-  Session Superadmin:
-
-  Voir la liste des admins:
-  Depuis la page Admin:
-      Bouton “Liste des admins”
-
-  Ajouter un admin:
-  Depuis la page Admin:
-      Bouton “Ajouter un admin”
-      Saisie des données de l’admin et de son statut
-      Ajout de contacts: Idem que pour Créer spectacle
-
-  Modifier le compte d’un admin:
-  Depuis la liste des admins:
-  Bouton “Modifier”
-
-  Toutes les opérations autorisées pour les admins le sont aussi pour les superadmins
-
-
-
-
-
-
-</table>
-</br>
+      <li>Modifier le compte d'un admin<ul>
+          <li>Depuis la liste d'admins<ul>
+              <li>Bouton "Modifier"</li></ul></li></ul>
+      </li>
+    </ul>
 </div>
 
 {% endblock %}
