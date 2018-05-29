@@ -5,11 +5,13 @@
 
 {% block content %}
 <div class="container">
-  <p>spectacle.nom</p>
+  <p>{{spectacle.nom}}</p>
   {%for date in spectacle.dates%}
-    {{date}}
-      {%for place in date.places)%}
-        {{place.idPlace}} {{place.nomUser}} {{place.adresseMail}}       {{place.date}}
+    {{date.date|datetime}}
+    <ul>
+      {%for place in date.places%}
+        <li>{{place.idPlace}} {{place.nomUser}} {{place.adresseMail}}       {{place.date}}</li>
       {%endfor%}
+    </ul>
   {%endfor%}
 {% endblock %}
