@@ -112,7 +112,7 @@ def set_spectacle(nomSpectacle):
                     else:
                         insert_spectacle(spectacle)
 
-                    delete_date(nomSpectacle)
+                    delete_date_spectacle(nomSpectacle)
                     for dates in cont:
                         if "datetime" in dates:
                             # strDate = cont[dates];

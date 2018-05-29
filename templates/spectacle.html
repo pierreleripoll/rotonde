@@ -61,6 +61,11 @@
           {% else %}
             {{spectacle.tarif}}€ la place
           {% endif %}
+          <br>
+          {{spectacle.typeSpectacle}}
+          <br>
+          {{spectacle.duree}} minutes
+
           </p>
         </div>
         <div class="card-footer card-footer-billet" onclick="afficheBillets()">
@@ -92,6 +97,10 @@
         {%endif%}
       </div>
     {% endif %}
+  </div>
+
+  <div class="row">
+
   </div>
 
   <div class="row"> <!--billeterie -->
