@@ -158,6 +158,9 @@ def get_spectacles():
     spectacles = Spectacle.query.all()
     return spectacles
 
+def get_spect_price(nomSpectacle):
+    spectacle = Spectacle.query.filter_by(nom=nomSpectacle).first()
+    return spectacle.tarif
 
 
 def get_all_photos(nomSpectacle):
