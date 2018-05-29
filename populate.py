@@ -34,17 +34,17 @@ lorem = 'Bacon ipsum dolor amet nostrud tongue tail corned beef minim porchetta 
 
 content = [
 
-Session(login='ami',password='friendly',typeAdmin='normal'),
+Session(login='aMi',password='friendly',typeAdmin='normal'),
 Session(login='cgr',password='cafards',typeAdmin='super'),
 Session(login='superadmin',password='larotonde',typeAdmin='super'),
 Contact(nom="---",prenom="---",annee="",depart=""),
 
-Spectacle(nom='Candide',resume=lorem,admin='AMI',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=3,duree=60,typeSpectacle='Theatre'),
-Spectacle(nom='Spectacle sans photo',resume=lorem,admin='AMI',photos=0,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Theatre'),
-Spectacle(nom='Chroniques Nocturne',resume=lorem,admin='AMI',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Theatre'),
-Spectacle(nom='Hamlet 60',resume=lorem,admin='AMI',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Theatre'),
-Spectacle(nom='Jeanne de Derteil',resume=lorem,admin='AMI',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Theatre'),
-Spectacle(nom='Rapa Nui',resume=lorem,admin='AMI',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Theatre'),
+Spectacle(nom='Candide',resume=lorem,admin='aMi',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=3,duree=60,typeSpectacle='Theatre'),
+Spectacle(nom='Spectacle sans photo',resume=lorem,admin='aMi',photos=0,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Theatre'),
+Spectacle(nom='Chroniques Nocturne',resume=lorem,admin='aMi',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Theatre'),
+Spectacle(nom='Hamlet 60',resume=lorem,admin='aMi',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Theatre'),
+Spectacle(nom='Jeanne de Derteil',resume=lorem,admin='aMi',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Theatre'),
+Spectacle(nom='Rapa Nui',resume=lorem,admin='aMi',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=0,duree=60,typeSpectacle='Theatre'),
 
 Photo(path="/static/uploads/hamlet-60/fight-for-the-water-hole-1903.jpg",spectacle="Hamlet 60",ordre=0,size=141619),
 Photo(path="/static/uploads/chroniques-nocturne/dance-class-at-the-opera-1872.jpg",spectacle="Chroniques Nocturne",ordre=0,size=216401),

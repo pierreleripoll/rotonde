@@ -5,18 +5,28 @@
 
 {% block content %}
   <div class="container">
-    <p>Bienvenue {{pseudo}} ! </p>
+    <p>Bienvenue {{admin.login}} ! </p>
 
     <form action="" method="POST">
       <button name="bouton" value="logout" type="submit">LOGOUT</button><br></br>
       <button name="bouton" value="createspectacle" type="submit">CREER SPECTACLE</button>
       <button name="bouton" value="showPlaces" type="submit">PLACES</button>
       <button name="bouton" value="modifySelf" type="submit">COMPTE</button>
-      {%if type == "super"%}
+      {%if admin.typeAdmin == "super"%}
       <button name="bouton" value="createadmin" type="submit">CREER ADMIN</button>
       <button name="bouton" value="adminlist" type="submit">LISTE DES ADMINS</button>
       {%endif%}
     </form>
 
+    {%if admin.spectacles != []%}
+    <p>Spectacles:</p>
+    <ul class="list-group">
+      {% for spectacle in admin.spectacles%}
+        <li> {{spectacle.nom}} </li>
+        <a href="/spectacle/{{spectacle.nom}}" class="btn btn-primary">Voir</a>
+        <a href="/set_spectacle/{{spectacle.nom}}" class="btn btn-primary">Modifier</a>
+      {%endfor%}
+    </ul>
+  {%endif%}
   </div>
 {% endblock %}

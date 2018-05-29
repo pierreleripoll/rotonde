@@ -23,7 +23,8 @@ def admin():
     if 'admin' in session :
         if request.method=='GET':
             admin=get_session(session['pseudo'])
-            return render_template('admin.html',pseudo=session['pseudo'], type=session['admin'])
+            print(admin)
+            return render_template('admin.html',admin=admin)
         if request.method=='POST':
             if request.form["bouton"]=="logout":
                 session.pop("pseudo",None)
@@ -41,7 +42,7 @@ def admin():
             if request.form["bouton"]=="adminlist":
                 return redirect(url_for('admin_relative.adminlist'))
             if request.form["bouton"]=="modifySelf":
-                return redirect(url_for('admin_relative.set_admin', login=session['pseudo'].lower()))
+                return redirect(url_for('admin_relative.set_admin', login=session['pseudo']))
 
     else :
         return redirect(url_for('admin_relative.admin_log'))
@@ -80,7 +81,7 @@ def admin_log():
                 print(welcomeString)
                 print(len(welcomeString)*'*')
                 print("\n\n")
-                session['pseudo']=login.upper()
+                session['pseudo']=sess.login
                 session['admin']=sess.typeAdmin
                 print(session)
 
@@ -88,7 +89,7 @@ def admin_log():
 
 @admin_relative.route('/set_admin/<login>', methods=['GET','POST'])
 def set_admin(login):
-    if session['admin']=="super" or session['pseudo']==login.upper():
+    if session['admin']=="super" or session['pseudo']==login:
         if request.method=="GET":
             print(login)
             sessionAdmin=get_session(login)
