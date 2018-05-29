@@ -67,27 +67,29 @@
       </div>
     </div>
 
-    <div id="showImage"  class="col-md-8 ">
-      <div class="imageSpectacle">
-        <img onclick="chgPhoto()" onmouseEnter="mouseEnter()"  onmouseleave="mouseLeave()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
-      </div>
-      {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
-      <div class="content">
-        <div onmouseleave="mouseLeave()" onmouseEnter="mouseEnter()" class="card-group">
-          <div id="color-box" class="card bg-color-box1"></div>
-          <div id="color-box" class="card bg-color-box2"></div>
-          <div id="color-box" class="card bg-color-box3"></div>
-          <div id="color-box" class="card bg-color-box4"></div>
-          <div id="color-box" class="card bg-color-box5"></div>
-          <div id="color-box" class="card bg-color-box6"></div>
-          <div id="color-box" class="card bg-color-box7"></div>
-          <div id="color-box" class="card bg-color-box8"></div>
-          <div id="color-box" class="card bg-color-box9"></div>
-          <div id="color-box" class="card bg-color-box10"></div>
+    {% if paths|length != 0 %}
+      <div id="showImage"  class="col-md-8 ">
+        <div class="imageSpectacle">
+          <img onclick="chgPhoto()" onmouseEnter="mouseEnter()"  onmouseleave="mouseLeave()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
         </div>
+        {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
+        <div class="content">
+          <div onmouseleave="mouseLeave()" onmouseEnter="mouseEnter()" class="card-group">
+            <div id="color-box" class="card bg-color-box1"></div>
+            <div id="color-box" class="card bg-color-box2"></div>
+            <div id="color-box" class="card bg-color-box3"></div>
+            <div id="color-box" class="card bg-color-box4"></div>
+            <div id="color-box" class="card bg-color-box5"></div>
+            <div id="color-box" class="card bg-color-box6"></div>
+            <div id="color-box" class="card bg-color-box7"></div>
+            <div id="color-box" class="card bg-color-box8"></div>
+            <div id="color-box" class="card bg-color-box9"></div>
+            <div id="color-box" class="card bg-color-box10"></div>
+          </div>
+        </div>
+        {%endif%}
       </div>
-      {%endif%}
-    </div>
+    {% endif %}
   </div>
 
   <div class="row"> <!--billeterie -->
