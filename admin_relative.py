@@ -141,3 +141,8 @@ def voirPlaces(spectacle):
         return render_template('places_spectacle.html', spectacle = show)
     else:
         return abort(403)
+
+@admin_relative.route('/api/validePlace/<int:id>', methods=['POST'])
+def validePlace (id):
+    valide_place(id)
+    return "success"

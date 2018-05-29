@@ -2,6 +2,24 @@
 {% set active_page = 'admin' %}
 {% block title %}Administration{% endblock %}
 
+{% block head %}
+  {{ super() }}
+  <script>
+    function check (place){
+      $.ajax({
+        url: "/api/validePlace/"+place,
+        type: 'POST',
+        success: function(data) {
+          console.log("yes");
+        },
+        error: function() {
+          console.log("probleme");
+        }
+      });
+
+    }
+  </script>
+{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -11,6 +29,11 @@
     <ul>
       {%for place in date.places%}
         <li>{{place.idPlace}} {{place.nomUser}} {{place.adresseMail}}       {{place.date}}</li>
+        {%if place.valide == 0%}
+          <input type="checkbox" name="valide" value="empty" onchange="check({{place.idPlace}})">Valide
+        {%elif place.valide==1%}
+          <input type="checkbox" name="valide" value="full" checked> Validé<br>
+        {%endif%}
       {%endfor%}
     </ul>
   {%endfor%}
