@@ -312,7 +312,7 @@
       console.log("on initialise la page !",{{photos[0].color}});
       var photos =[];
       var k =0;
-      {%for color in photos%}
+      {%for color in photos[0].color%}
         photos[k]='{{color.hexa}}';
         console.log('{{color.actif}}');
         if('{{color.actif}}'=='True'){
@@ -639,91 +639,97 @@
       </div>
     </div>
 
-    <div class="form-group">
-      <label for="typeSpectacle">Genre:</label><br>
-      <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}'>
-        <option value="Théâtre">Théâtre</option>
-        <option value="Musique">Musique</option>
-        <option value="Danse">Danse</option>
-        <option value="Impro">Impro</option>
-        <option value="Conférence">Conférence</option>
-        <option value="Cirque">Cirque</option>
-        <option value="Performance">Performance</option>
-        <option value="Autre">Autre</option>
-      </select><br>
-    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="row form-group">
+            <label for="typeSpectacle">Genre:</label><br>
+            <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}'>
+              <option value="Théâtre">Théâtre</option>
+              <option value="Musique">Musique</option>
+              <option value="Danse">Danse</option>
+              <option value="Impro">Impro</option>
+              <option value="Conférence">Conférence</option>
+              <option value="Cirque">Cirque</option>
+              <option value="Performance">Performance</option>
+              <option value="Autre">Autre</option>
+            </select><br>
+          </div>
 
-    <div class="form-group">
-      <label for="duree">Durée (en minutes):</label><br>
-      <input type="number" name="duree" class="form-control" value='{{spectacle.duree}}'><br>
-    </div>
+          <div class="row form-group">
+            <label for="duree">Durée (en minutes):</label><br>
+            <input type="number" name="duree" class="form-control" value='{{spectacle.duree}}'><br>
+          </div>
 
-    <div class="form-group">
-      <label for="tarif">Tarif:</label><br>
-      <input type="number" name="tarif" class="form-control" value='{{spectacle.tarif}}'><br>
-    </div>
-
-    <div class="form-group">
-      <label for="infoComplementaire">Info complémentaire:</label><br>
-      <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
-    </div>
-
-    <div class="form-group">
-      <select name="ajoutContactDB" id="ajoutContactDB">
-        {%for c in contact:%}
-        <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
-        {%endfor%}
-      </select>
-      <button type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
-      <br>
-      <br>
-      <div id="contact"></div>
-    </div>
-    <br>
-
-    <div>
-      <div>
-        <div id='annule'>
-          <label for="dates">Dates :  </label>
-          <button type="button" id="addDate" onclick="addOneDate()" name="addDate" valur="addDate">Add</button>
-        </div>
-        <br>
-        <div class="container">
-          <div class="row">
-
-            <div class='col-sm-3'>
-              <div class="form-group">
-                <div id='groupe'>
-                  {%for date in dates:%}
-                  <div class="input-group date" id="datetimepicker2{{loop.index}}" data-target-input="nearest">
-                      <input type="text" value="{{date.date}}" class="form-control datetimepicker-input" data-target="#datetimepicker1" id="datetime{{loop.index}}" name="datetime{{loop.index}}"/>
-                      <div class="input-group-append" data-target="#datetimepicker2{{loop.index}}" data-toggle="datetimepicker">
-                          <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                      </div>
-                    </div>
-                    <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
-                    <label for="place" id="label{{loop.index}}"> - Places </label>
-                    <input type="button" value="Annuler" id="annule{{loop.index}}" name="annule{{loop.index}}" onclick="removeOneDate({{loop.index}})">
-                    <br>
-                    <script type="text/javascript">
-                      $(function () {
-                        $('#datetimepicker2{{loop.index}}').datetimepicker({
-                          locale: 'fr'
-                        });
-                      });
-                  </script>
-                {%endfor%}
-              </div>
-            </div>
+          <div class="row form-group">
+            <label for="tarif">Tarif:</label><br>
+            <input type="number" name="tarif" class="form-control" value='{{spectacle.tarif}}'><br>
           </div>
         </div>
       </div>
     </div>
 
-    <div>
-      <br><br>
-      <button name="button" id="valide" value="valider" type="valide" }>Valider</button>
-      <button name="button" id="delete" value="delete_spectacle" }>Supprimer le spectacle</button>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="row form-group">
+            <label for="infoComplementaire">Info complémentaire:</label><br>
+            <input type="text" name="infoComplementaire" class="form-control" value='{{spectacle.infoComplementaire}}'><br>
+          </div>
+
+          <div class="row form-group">
+            <select name="ajoutContactDB" id="ajoutContactDB">
+              {%for c in contact:%}
+              <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
+              {%endfor%}
+            </select>
+            <button class = "btn" type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
+            <br>
+            <br>
+            <div id="contact"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
+
+    <div class="row" id='groupe'>
+      
+      <div class="col-sm-12 col-date" id='annule'>
+        <label for="dates">Dates :  </label>
+        <button class="btn" type="button" id="addDate" onclick="addOneDate()" name="addDate" value="addDate">Add</button>
+        </br>
+      </div>
+      {%for date in dates:%}
+      <div class='col-sm-3'>
+        <div class="input-group date" id="datetimepicker2{{loop.index}}" data-target-input="nearest">
+          <input type="text" value="{{date.date}}" class="form-control datetimepicker-input" data-target="#datetimepicker1" id="datetime{{loop.index}}" name="datetime{{loop.index}}" />
+          <div class="input-group-append" data-target="#datetimepicker2{{loop.index}}" data-toggle="datetimepicker">
+            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+          </div>
+        </div>
+        <input type="number" value="{{date.placesRestantes}}" id="nPlaces{{loop.index}}" name="nPlaces{{loop.index}}" min="0" max="500">
+        <label for="place" id="label{{loop.index}}"> - Places </label>
+        <input type="button" value="Annuler" class="btn" id="annule{{loop.index}}" name="annule{{loop.index}}" onclick="removeOneDate({{loop.index}})">
+        <br>
+        <script type="text/javascript">
+          $(function() {
+            $('#datetimepicker2{{loop.index}}').datetimepicker({
+              locale: 'fr'
+            });
+          });
+        </script>
+      </div>
+      {%endfor%}
+    </div>
+
+
+  </div>
+
+    <div class="row">
+      <br><br>
+      <button class = "btn" name="button" id="valide" value="valider" type="valide" }>Valider</button>
+      <button class = "btn" name="button" id="delete" value="delete_spectacle" }>Supprimer le spectacle</button>
+    </div>
+</div>
   {% endblock %}
