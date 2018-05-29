@@ -436,7 +436,7 @@
   <div id="photos-ordre" class="list-group">
       {%for photo in photos%}
       <div id="{{photo.id}}"class="list-group-item"><img id="photo_{{photo.id}}"src="{{photo.path|originalPhoto}}" style="height:50px"> {{photo.path|nameFromPath}}
-          <button type='button'class="btn btn-primary" onclick="addGuillotine('{{photo.path|originalPhoto}}',{{photo.id}})">Recadrer</button>
+          <button type='button'class="btn btn-primary float-right" onclick="addGuillotine('{{photo.path|originalPhoto}}',{{photo.id}})">Recadrer</button>
       </div>
       {%endfor%}
   </div>
