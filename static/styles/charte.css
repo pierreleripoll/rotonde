@@ -9,6 +9,15 @@
 
 }
 
+.jumbotron-heading{
+  font-family: Lato;
+  font-weight: 400;
+}
+
+.text-muted{
+  font-weight: 400;
+}
+
 .navbar-custom{
   background-color: var(--color-theme);
   color: var(--color-font-light);

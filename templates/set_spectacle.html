@@ -22,7 +22,7 @@
 
 <link rel="stylesheet" href="/static/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
 <link rel="stylesheet" href="/static/bower_components/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
-<!-- <link href="/static/styles/set_spectacle.css" rel="stylesheet"> -->
+<link href="/static/styles/set_spectacle.css" rel="stylesheet">
 
 
 
@@ -484,22 +484,44 @@
 
 {% block content %}
 <div class="container-fluid">
-  <p>Bienvenue sur la page de modification/création de spectacle : </p>
-  <p>{{spectacle.nom}}</p>
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">Bienvenue sur la page de création/modifaction de spectacles</h1>
+      <p class="lead text-muted">{{spectacle.nom}}</p>
+    </div>
+  </section>
 
-  <label for="input-file">Photos:</label>
-  <div class="file-loading">
-      <input id="input-file" name="photos" type="file" multiple>
-  </div>
-
-  <label for="photos-ordre">Ordre des photos (la première sera celle utilisée pour l'acceuil!):</label>
-  <div id="photos-ordre" class="list-group">
-      {%for photo in photos%}
-      <div id="{{photo.id}}"class="list-group-item">
-          <img id="photo_{{photo.id}}"src="{{photo.path|originalPhoto}}" style="height:50px"> {{photo.path|nameFromPath}}
-          <button type='button'class="btn btn-primary float-right" onclick="addGuillotine('{{photo.path|originalPhoto}}',{{photo.id}})">Recadrer</button>
+  <div class="row">
+    <div class="col-md-8">
+      <div class="card card-eq-height">
+          <div class="card-header ">
+            <label for="input-file">Photos:</label>
+          </div>
+          <div class="card-body card-body-input">
+            <div class="file-loading">
+                <input id="input-file" name="photos" type="file" multiple>
+            </div>
+        </div>
       </div>
-      {%endfor%}
+    </div>
+
+    <div class="col-md-4">
+      <div class="card card-eq-height">
+        <div class="card-header">
+          <label for="photos-ordre">Ordre des photos | la première sera celle utilisée pour l'accueil</label>
+        </div>
+        <div class ="card-body">
+          <div id="photos-ordre" class="list-group">
+              {%for photo in photos%}
+              <div id="{{photo.id}}"class="list-group-item">
+                  <img id="photo_{{photo.id}}"src="{{photo.path|originalPhoto}}" style="height:50px"> {{photo.path|nameFromPath}}
+                  <button type='button'class="btn btn-primary float-right" onclick="addGuillotine('{{photo.path|originalPhoto}}',{{photo.id}})">Recadrer</button>
+              </div>
+              {%endfor%}
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -543,35 +565,46 @@
     </div>
   </div>
 
-
   <form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
-    <div class="form-group">
-      <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
-      <input type="text" id="nom" class="form-control" name="nom" value='{{spectacle.nom}}'><br>
-    </div>
-    <div class="form-group">
-      <label for="resume">Résumé:</label><br>
-      <textarea type="text" id="resume" row="4" class="form-control" name="resume" >{{spectacle.resume}}</textarea>
+    <div class = "row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="row form-group">
+            <label for="nom du spectacle">Nom du spectacle:<abbr title="required"></abbr></label><br>
+            <input type="text" id="nom" class="form-control" name="nom" value='{{spectacle.nom}}'><br>
+          </div>
+          <div class="row form-group">
+            <label for="resume">Résumé:</label><br>
+            <textarea type="text" id="resume" row="4" class="form-control" name="resume" >{{spectacle.resume}}</textarea>
+          </div>
+
+          <div class="row form-group">
+            <label for="liens">Liens:</label><br>
+            <input type="url" name="liens" class="form-control" value='{%if spectacle.liens != None%}{{spectacle.liens}}{%endif%}'><br>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="form-group">
-      <label for="liens">Liens:</label><br>
-      <input type="url" name="liens" class="form-control" value='{%if spectacle.liens != None%}{{spectacle.liens}}{%endif%}'><br>
-    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="row form-group">
+            <label for="directeur">Par:</label><br>
+            <input type="text" name="directeur" class="form-control" value='{{spectacle.directeur}}'><br>
+          </div>
 
-    <div class="form-group">
-      <label for="directeur">Par:</label><br>
-      <input type="text" name="directeur" class="form-control" value='{{spectacle.directeur}}'><br>
-    </div>
+          <div class="row form-group">
+            <label for="auteur">Auteur:</label><br>
+            <input type="text" name="auteur" class="form-control" value='{{spectacle.auteur}}'><br>
+          </div>
 
-    <div class="form-group">
-      <label for="auteur">Auteur:</label><br>
-      <input type="text" name="auteur" class="form-control" value='{{spectacle.auteur}}'><br>
-    </div>
-
-    <div class="form-group">
-      <label for="participants">Avec:</label><br>
-      <input type="text" name="participants" class="form-control" value='{{spectacle.participants}}'><br>
+          <div class="row form-group">
+            <label for="participants">Avec:</label><br>
+            <input type="text" name="participants" class="form-control" value='{{spectacle.participants}}'><br>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="form-group">
