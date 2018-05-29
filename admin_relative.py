@@ -89,7 +89,7 @@ def admin_log():
 
 @admin_relative.route('/set_admin/<login>', methods=['GET','POST'])
 def set_admin(login):
-    if session['admin']=="super" or session['pseudo']==login:
+    if 'admin' in session and (session['admin']=="super" or session['pseudo']==login):
         if request.method=="GET":
             print(login)
             sessionAdmin=get_session(login)
