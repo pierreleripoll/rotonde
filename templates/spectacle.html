@@ -168,7 +168,7 @@
         console.log(image);
         var k=0;
         {%for photo in photos%}
-          photos[k]='{{photo.colors[0].hexa}}';
+          photos[k]='{{photo.colors.hexa}}';
           console.log(photos[k]);
           k++;
         {%endfor%}
@@ -222,7 +222,7 @@
 
     function initColorPage(){
       var photos;
-      photos='{{photos[0].colors[0]}}';
+      photos='{{photos.colors}}';
       console.log(photos.hexa);
     }
 
