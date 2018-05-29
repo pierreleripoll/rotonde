@@ -6,7 +6,6 @@
 {% block content %}
   <div class="container">
     <p>Bienvenue {{admin.login}} ! </p>
-
     <form action="" method="POST">
       <button name="bouton" value="logout" type="submit">LOGOUT</button><br></br>
       <button name="bouton" value="createspectacle" type="submit">CREER SPECTACLE</button>
@@ -18,18 +17,31 @@
       {%endif%}
     </form>
 
-    {%if admin.spectacles != []%}
-    </br>
-    </br>
-    <p>Spectacles:</p>
-    <ul class="list-group">
-      {% for spectacle in admin.spectacles%}
-      <div class="list-group-item">
-        <a href="/spectacle/{{spectacle.nom}}">{{spectacle.nom}}</a>
-        <a href="/set_spectacle/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Modifier</a>
-      </div>
-      {%endfor%}
+      {%if admin.typeAdmin == 'normal'%}
+      {%if admin.spectacles != []%}
+      </br>
+      </br>
+      <p>Spectacles:</p>
+      <ul class="list-group">
+        {% for spectacle in admin.spectacles%}
+        <div class="list-group-item">
+          <a href="/spectacle/{{spectacle.nom}}">{{spectacle.nom}}</a>
+          <a href="/set_spectacle/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Modifier</a>
+        </div>
+        {%endfor%}
+      {%endif%}
+      {%elif admin.typeAdmin =='super'%}
+      </br>
+      </br>
+      <p>Spectacles:</p>
+      <ul class="list-group">
+        {% for spectacle in spectacles %}
+        <div class="list-group-item">
+          <a href="/spectacle/{{spectacle.nom}}">{{spectacle.nom}}</a>
+          <a href="/set_spectacle/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Modifier</a>
+        </div>
+        {%endfor%}
+      {%endif%}
     </ul>
-  {%endif%}
   </div>
 {% endblock %}
