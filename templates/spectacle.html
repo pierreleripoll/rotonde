@@ -260,23 +260,25 @@
       console.log("on initialise la page !");
       var photos =[];
       var k =0;
-      {%for color in photos[0].colors%}
-        photos[k]='{{color.hexa}}';
-        console.log('{{color.actif}}');
-        if('{{color.actif}}'=='True'){
-          console.log("yesai on a trouvé une couleur active !");
-          color = '#'+photos[k];
-          document.documentElement.style.setProperty('--color-theme', color);
+      {%if photos[0]%}
+        {%for color in photos[0].colors%}
+          photos[k]='{{color.hexa}}';
+          console.log('{{color.actif}}');
+          if('{{color.actif}}'=='True'){
+            console.log("yesai on a trouvé une couleur active !");
+            color = '#'+photos[k];
+            document.documentElement.style.setProperty('--color-theme', color);
+          }
+          console.log(photos[k]);
+          k++;
+        {%endfor%}
+        for(j=0; j<9; j++){
+          var cobox = "bg-color-box"+(j+2);
+          var color = '#'+photos[j]
+          console.log("voici la couleur d'init du bouton : ", photos[j]);
+          document.getElementsByClassName(cobox)[0].style.backgroundColor = color;
         }
-        console.log(photos[k]);
-        k++;
-      {%endfor%}
-      for(j=0; j<9; j++){
-        var cobox = "bg-color-box"+(j+2);
-        var color = '#'+photos[j]
-        console.log("voici la couleur d'init du bouton : ", photos[j]);
-        document.getElementsByClassName(cobox)[0].style.backgroundColor = color;
-      }
+      {%endif%}
     }
 
     for(i=0;i<10;i++){
