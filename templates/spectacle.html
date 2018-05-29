@@ -43,15 +43,17 @@
       <div class="card card-eq-height">
         <div class="card-body card-body-tarifs-dates">
           <h5 class="card-title card-title-tarifs-dates">
-            {%if spectacle.dates|length > 1 %}
-              {% if spectacle.dates[0].date.month != spectacle.dates[-1].date.month %}
-                Du {{spectacle.dates[0].date|datetime(format='spectacle')}} au {{spectacle.dates[-1].date|datetime(format='spectacle')}}
+            {%if dates %}
+              {%if dates|length > 1 %}
+                {% if dates[0].date.month != dates[-1].date.month %}
+                  Du {{dates[0].date|datetime(format='spectacle')}} au {{dates[-1].date|datetime(format='spectacle')}}
+                {% else %}
+                  Du {{dates[0].date.day}} au {{dates[-1].date|datetime(format='spectacle')}}
+                {% endif %}
               {% else %}
-                Du {{spectacle.dates[0].date.day}} au {{spectacle.dates[-1].date|datetime(format='spectacle')}}
+                Le {{dates[0].date|datetime(format='spectacle')}}
               {% endif %}
-            {% else %}
-              Le {{spectacle.dates[0].date|datetime(format='spectacle')}}
-            {% endif %}
+            {%endif%}
            </h5>
           <p>Tarif<br>
           {% if spectacle.tarif == 0 %}

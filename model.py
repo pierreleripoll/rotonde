@@ -381,7 +381,7 @@ def datePytoHTML(date_in):
 
 # Renvoie les dates disponibles pour un spectacle
 def get_dates(nomSpectacle):
-    dates = Calendrier.query.filter_by(nom = nomSpectacle).all()
+    dates = Calendrier.query.filter_by(nom = nomSpectacle).order_by(Calendrier.date).all()
 
     return dates
 
