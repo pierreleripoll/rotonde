@@ -15,7 +15,7 @@
     <div class="container-fluid">
       <div class="card-columns">
         {%for spectacle in spectacles%}
-
+        {%if spectacle.dates %}
         {%if spectacle.dates[-1].date> spectacle.dates[-1].date.now()%}
             <div class="card mb-4">
               <a href="/spectacle/{{spectacle.nom}}">
@@ -43,6 +43,7 @@
               </div>
             </div>
           {%endif%}
+          {% endif %}
         {%endfor%}
       </div>
     </div>
