@@ -192,16 +192,20 @@
         {%endfor%}
 
         console.log(photos);
-        var c = colorThief.getColor(image);
-        var p = colorThief.getPalette(image);
-        var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
-        document.documentElement.style.setProperty('--color-theme', color);
-        document.getElementsByClassName('bg-color-box1')[0].style.backgroundColor = color;
-        uploadColor(id,c,0);
+        // var c = colorThief.getColor(image);
+        // var p = colorThief.getPalette(image);
+        // var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
+        // document.documentElement.style.setProperty('--color-theme', color);
+        // document.getElementsByClassName('bg-color-box1')[0].style.backgroundColor = color;
+        // uploadColor(id,c,0);
+        // for(j=0; j<9; j++){
+        //   var cobox = "bg-color-box"+(j+2);
+        //   document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
+        //   uploadColor(id,p[j],0);
+        // }
         for(j=0; j<9; j++){
           var cobox = "bg-color-box"+(j+2);
-          document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
-          uploadColor(id,p[j],0);
+          document.getElementsByClassName(cobox)[0].style.backgroundColor = photos[j];
         }
 
       }

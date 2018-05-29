@@ -308,7 +308,34 @@
       return componentToHex(r) + componentToHex(g) + componentToHex(b);
     }
 
-    function createColorBase(id, reader){
+    function initColorPage(){
+      console.log("on initialise la page !",{{photos[0].color}});
+      var photos =[];
+      var k =0;
+      {%for color in photos%}
+        photos[k]='{{color.hexa}}';
+        console.log('{{color.actif}}');
+        if('{{color.actif}}'=='True'){
+          console.log("yesai on a trouvé une couleur active !");
+          color = '#'+photos[k];
+          document.documentElement.style.setProperty('--color-theme', color);
+        }
+        console.log(photos[k]);
+        k++;
+      {%endfor%}
+      for(j=0; j<9; j++){
+        var cobox = "bg-color-box"+(j+2);
+        var color = '#'+photos[j]
+        console.log("voici la couleur d'init du bouton : ", photos[j]);
+        document.getElementsByClassName(cobox)[0].style.backgroundColor = color;
+      }
+    }
+
+    function createColorBase(objetPhoto){
+      var colorThief = new ColorThief();
+      console.log(objetPhoto);
+      id=objetPhoto.response['id'];
+      reader=objetPhoto['reader']
       console.log('YO image : ', id, reader.result);
       var img = new Image();
       img.src = reader.result;
@@ -316,18 +343,38 @@
       var p = colorThief.getPalette(img);
       uploadColor(id,c,0);
       for(j=0; j<9; j++){
+        var cobox = "bg-color-box"+(j+2);
+        document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
         uploadColor(id,p[j],0);
       }
+
+    }
+
+
+    function hexc(colorval) {
+      var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+      delete(parts[0]);
+      for (var i = 1; i <= 3; ++i) {
+          parts[i] = parseInt(parts[i]).toString(16);
+          if (parts[i].length == 1) parts[i] = '0' + parts[i];
+      }
+      color = parts.join('');
+      return color;
     }
 
     function uploadColor(id,color,bool) {
-      var hex = rgbToHex(color[0],color[1],color[2]);
-      console.log(hex)
-      url2 = "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/";
-      console.log("url : ",url2);
+      console.log("on entre dans upload avec : ", color);
+      if(color[0]=='r'){
+        console.log("la méthode hexc");
+        var hex = hexc(color);
+      }else{
+        console.log("la méthode RGB");
+        var hex = rgbToHex(color[0],color[1],color[2]);
+      }
+      console.log(hex);
       $.ajax({
+        type:"POST",
         url: "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/",
-        type: "POST",
         success: function(data) {
           console.log("c'est tout bon");
         },
@@ -335,40 +382,6 @@
           console.log("merdo");
         }
       });
-    }
-
-
-
-    function updateColor(){
-      var something=[];
-      var colors=[];
-      var base = 'card bg-color-box';
-      var name = "";
-      var c = colorThief.getColor(image);
-      var p = colorThief.getPalette(image);
-      var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
-      document.documentElement.style.setProperty('--color-theme', color);
-      document.getElementsByClassName('bg-color-box1')[0].style.backgroundColor = color;
-      for(j=0; j<9; j++){
-        var cobox = "bg-color-box"+(j+2);
-        document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
-        uploadColor(5,p[j],0);
-      }
-
-      for(i=0;i<10;i++){
-        name=base+(i+1);
-        elem=document.getElementsByClassName(name);
-        console.
-        something[i]=elem;
-        something[i][0].style.cursor = 'pointer';
-
-        something[i][0].onclick=function(){
-          color=window.getComputedStyle(this,null).getPropertyValue("background-color");
-
-          console.log("in function",i,color);
-          document.documentElement.style.setProperty('--color-theme', color);
-        };
-      }
     }
 
 
@@ -420,6 +433,7 @@
             var photo = document.createElement("div");
             console.log(data.response);
             photo.id = data.response['id'];
+            objectForPalette = data;
             photo.setAttribute("class","list-group-item");
             var picture = document.createElement("img");
             picture.id = "photo_"+photo.id.toString();
@@ -434,6 +448,7 @@
             photo.innerHTML+=data.response['initialPreviewConfig'][0]['caption'];
             photo.appendChild(button);
             photosOrdre.appendChild(photo);
+            createColorBase(objectForPalette);
       })
       ;
     });
@@ -472,9 +487,7 @@
           });
 
     }
-
-
-
+  initColorPage();
 </script>
 
 
@@ -519,6 +532,25 @@
               </div>
               {%endfor%}
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="content">
+        <div onmouseleave="mouseLeave()" onmouseEnter="mouseEnter()" class="card-group">
+          <div id="color-box" class="card bg-color-box1"></div>
+          <div id="color-box" class="card bg-color-box2"></div>
+          <div id="color-box" class="card bg-color-box3"></div>
+          <div id="color-box" class="card bg-color-box4"></div>
+          <div id="color-box" class="card bg-color-box5"></div>
+          <div id="color-box" class="card bg-color-box6"></div>
+          <div id="color-box" class="card bg-color-box7"></div>
+          <div id="color-box" class="card bg-color-box8"></div>
+          <div id="color-box" class="card bg-color-box9"></div>
+          <div id="color-box" class="card bg-color-box10"></div>
         </div>
       </div>
     </div>
