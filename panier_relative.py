@@ -98,8 +98,6 @@ def panier():
 		#flash("There is nothing in your cart.")
 		return render_template("panier.html", display_cart = {}, total = 0)
 
-	global display_cart
-	display_cart = calculCart(session['panier'])
 
 	if request.method == "GET":
 		"""TODO: Display the contents of the shopping cart."""
@@ -108,8 +106,9 @@ def panier():
 		if "panier" not in session:
 			#flash("There is nothing in your cart.")
 			return render_template("panier.html", display_cart = {}, total = 0)
-
 		else:
+			global display_cart
+			display_cart = calculCart(session['panier'])
 			return render_template("panier.html", display_cart = display_cart, total = 10)
 	if request.method == "POST":
 		print("\n\n\n\n\n\n\n\nEntering in POST\n\n\n\n\n\n\n\n\n");

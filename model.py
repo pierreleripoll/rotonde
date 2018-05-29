@@ -162,6 +162,9 @@ def get_spectacles():
     spectacles = Spectacle.query.all()
     return spectacles
 
+def get_spect_price(nomSpectacle):
+    spectacle = Spectacle.query.filter_by(nom=nomSpectacle).first()
+    return spectacle.tarif
 
 
 def get_all_photos(nomSpectacle):
@@ -220,6 +223,11 @@ def set_active_colors(idPhoto, hexa):
             print("ERROR LOSER")
     db.session.commit();
     return colorReturn
+
+def enleverDB(datedb):
+    delete_places_by_date(datedb)
+    delete_date_by_date(datedb)
+
 
 
 def get_all_places():
@@ -284,6 +292,7 @@ def commit_place_insertion():
 
 def insert_date(date):
     db.session.add(date)
+    db.session.commit();
     return
 
 def insert_color(color):
@@ -373,8 +382,20 @@ def delete_date(nomSpectacle):
         delete(d)
     return
 
+def delete_date_by_date(datedb):
+    date = Calendrier.query.filter_by(date=datedb).all()
+    for d in date:
+        delete(d)
+    return
+
 def delete_places(nomSpectacle):
     places=Place.query.filter_by(nomSpectacle=nomSpectacle).all()
+    for place in places:
+        delete(place)
+    return
+
+def delete_places_by_date(dateDB):
+    places=Place.query.filter_by(date=dateDB).all()
     for place in places:
         delete(place)
     return
