@@ -39,6 +39,9 @@
 .navbar-nav li a:hover{
   color: var(--color-insa);
 }
+.nav-item .active{
+  color: var(--color-insa);
+}
 
 .row > [class*='card'] {
   display: flex;
