@@ -43,15 +43,17 @@
       <div class="card card-eq-height">
         <div class="card-body card-body-tarifs-dates">
           <h5 class="card-title card-title-tarifs-dates">
-            {%if spectacle.dates|length > 1 %}
-              {% if spectacle.dates[0].date.month != spectacle.dates[-1].date.month %}
-                Du {{spectacle.dates[0].date|datetime(format='spectacle')}} au {{spectacle.dates[-1].date|datetime(format='spectacle')}}
+            {%if dates %}
+              {%if dates|length > 1 %}
+                {% if dates[0].date.month != dates[-1].date.month %}
+                  Du {{dates[0].date|datetime(format='spectacle')}} au {{dates[-1].date|datetime(format='spectacle')}}
+                {% else %}
+                  Du {{dates[0].date.day}} au {{dates[-1].date|datetime(format='spectacle')}}
+                {% endif %}
               {% else %}
-                Du {{spectacle.dates[0].date.day}} au {{spectacle.dates[-1].date|datetime(format='spectacle')}}
+                Le {{dates[0].date|datetime(format='spectacle')}}
               {% endif %}
-            {% else %}
-              Le {{spectacle.dates[0].date|datetime(format='spectacle')}}
-            {% endif %}
+            {%endif%}
            </h5>
           <p>Tarif<br>
           {% if spectacle.tarif == 0 %}
@@ -139,18 +141,27 @@
       </div>
     </div>
   </div>
+
 </div>
 
   <script>
-    var paths = new Array({{paths|length}});
+    var month=new Array(12);
+    month[0]="janvier";  month[1]="février";   month[2]="mars";
+    month[3]="avril";    month[4]="mai";       month[5]="juin";
+    month[6]="juillet";  month[7]="août";      month[8]="septembre";
+    month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
+    var paths = new Array({{photos|length}});
+
     var i =0;
-    {%for path in paths%}
-    paths[i] ="{{path}}" ;
-    console.log(paths[i]);
-    i++;
+    var id={{photos[0].id}};
+    console.log(id);
+    {%for photo in photos%}
+      paths[i] ="{{photo.path}}" ;
+      console.log(paths[i]);
+      i++;
     {%endfor%}
     i=0;
-
+    initColorPage();
     var colorThief = new ColorThief();
     function componentToHex(c) {
       var hex = c.toString(16);
@@ -161,19 +172,46 @@
       return componentToHex(r) + componentToHex(g) + componentToHex(b);
     }
 
+    function hexc(colorval) {
+      var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+      delete(parts[0]);
+      for (var i = 1; i <= 3; ++i) {
+          parts[i] = parseInt(parts[i]).toString(16);
+          if (parts[i].length == 1) parts[i] = '0' + parts[i];
+      }
+      color = parts.join('');
+      return color;
+    }
+
     function chgPhoto(){
       var image = document.getElementById("imgSpectacle");
+      var photos = new Array({{photos|length}})
       image.onload = function(){
-        var c = colorThief.getColor(image);
-        var p = colorThief.getPalette(image);
-        var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
-        document.documentElement.style.setProperty('--color-theme', color);
-        document.getElementsByClassName('bg-color-box1')[0].style.backgroundColor = color;
+        console.log(image);
+        var k=0;
+        {%for photo in photos%}
+          photos[k]='{{photo.colors.hexa}}';
+          console.log(photos[k]);
+          k++;
+        {%endfor%}
+
+        console.log(photos);
+        // var c = colorThief.getColor(image);
+        // var p = colorThief.getPalette(image);
+        // var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
+        // document.documentElement.style.setProperty('--color-theme', color);
+        // document.getElementsByClassName('bg-color-box1')[0].style.backgroundColor = color;
+        // uploadColor(id,c,0);
+        // for(j=0; j<9; j++){
+        //   var cobox = "bg-color-box"+(j+2);
+        //   document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
+        //   uploadColor(id,p[j],0);
+        // }
         for(j=0; j<9; j++){
           var cobox = "bg-color-box"+(j+2);
-          document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
-          uploadColor(5,p[j],0);
+          document.getElementsByClassName(cobox)[0].style.backgroundColor = photos[j];
         }
+
       }
 
       i++;
@@ -182,37 +220,55 @@
       console.log(paths[i]);
     }
 
-    chgPhoto();
-
-    var month=new Array(12);
-    month[0]="janvier";  month[1]="février";   month[2]="mars";
-    month[3]="avril";    month[4]="mai";       month[5]="juin";
-    month[6]="juillet";  month[7]="août";      month[8]="septembre";
-    month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
-
     function uploadColor(id,color,bool) {
-      var hex = rgbToHex(color[0],color[1],color[2]);
-      console.log(hex)
-      url2 = "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/";
-      console.log("url : ",url2);
-    $.ajax({
-      url: "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/",
-      success: function(data) {
-        console.log("c'est tout bon");
-      },
-      error: function() {
-        console.log("merdo");
+      console.log("on entre dans upload avec : ", color);
+      if(color[0]=='r'){
+        console.log("la méthode hexc");
+        var hex = hexc(color);
+      }else{
+        console.log("la méthode RGB");
+        var hex = rgbToHex(color[0],color[1],color[2]);
       }
-    });
+      console.log(hex);
+      $.ajax({
+        type:"POST",
+        url: "/api/uploadColor/"+id+"/"+hex+"/"+bool+"/",
+        success: function(data) {
+          console.log("c'est tout bon");
+        },
+        error: function() {
+          console.log("merdo");
+        }
+      });
     }
-
-
 
     var something=[];
     var colors=[];
     var base = 'card bg-color-box';
     var name = "";
 
+    function initColorPage(){
+      console.log("on initialise la page !");
+      var photos =[];
+      var k =0;
+      {%for color in photos[0].colors%}
+        photos[k]='{{color.hexa}}';
+        console.log('{{color.actif}}');
+        if('{{color.actif}}'=='True'){
+          console.log("yesai on a trouvé une couleur active !");
+          color = '#'+photos[k];
+          document.documentElement.style.setProperty('--color-theme', color);
+        }
+        console.log(photos[k]);
+        k++;
+      {%endfor%}
+      for(j=0; j<9; j++){
+        var cobox = "bg-color-box"+(j+2);
+        var color = '#'+photos[j]
+        console.log("voici la couleur d'init du bouton : ", photos[j]);
+        document.getElementsByClassName(cobox)[0].style.backgroundColor = color;
+      }
+    }
 
     for(i=0;i<10;i++){
       name=base+(i+1);
@@ -222,8 +278,10 @@
 
       something[i][0].onclick=function(){
         color=window.getComputedStyle(this,null).getPropertyValue("background-color");
-        console.log("in function",i,color);
+        console.log("in function",i, color);
         document.documentElement.style.setProperty('--color-theme', color);
+        uploadColor(id,color,1)
+        console.log("postUpload", color);
       };
     }
 
