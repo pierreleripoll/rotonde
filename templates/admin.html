@@ -7,13 +7,13 @@
   <div class="container">
     <p>Bienvenue {{admin.login}} ! </p>
     <form action="" method="POST">
-      <button name="bouton" value="logout" type="submit">LOGOUT</button><br></br>
-      <button name="bouton" value="createspectacle" type="submit">CREER SPECTACLE</button>
-      <button name="bouton" value="showPlaces" type="submit">PLACES</button>
-      <button name="bouton" value="modifySelf" type="submit">COMPTE</button>
+      <button name="bouton" value="logout" type="submit" class=btn btn-primary">LOGOUT</button><br></br>
+      <button name="bouton" value="createspectacle" type="submit" class=btn btn-primary">CREER SPECTACLE</button>
+      <button name="bouton" value="showPlaces" type="submit" class=btn btn-primary">PLACES</button>
+      <button name="bouton" value="modifySelf" type="submit" class=btn btn-primary">COMPTE</button>
       {%if admin.typeAdmin == "super"%}
-      <button name="bouton" value="createadmin" type="submit">CREER ADMIN</button>
-      <button name="bouton" value="adminlist" type="submit">LISTE DES ADMINS</button>
+      <button name="bouton" value="createadmin" type="submit" class=btn btn-primary">CREER ADMIN</button>
+      <button name="bouton" value="adminlist" type="submit" class=btn btn-primary">LISTE DES ADMINS</button>
       {%endif%}
     </form>
 
@@ -26,6 +26,7 @@
         {% for spectacle in admin.spectacles%}
         <div class="list-group-item">
           <a href="/spectacle/{{spectacle.nom}}">{{spectacle.nom}}</a>
+          <a href="/voirPlaces/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Voir les réservations</a>
           <a href="/set_spectacle/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Modifier</a>
         </div>
         {%endfor%}
