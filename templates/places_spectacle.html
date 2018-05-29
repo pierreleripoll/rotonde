@@ -30,12 +30,13 @@
   {%endif%}
     <ul>
       {%for place in date.places%}
-        <li>{{place.idPlace}} {{place.nomUser}} {{place.adresseMail}}       {{place.date}}</li>
+        <li>{{place.idPlace}} {{place.nomUser}} {{place.adresseMail}}       {{place.date}}
         {%if place.valide == 0%}
           <input type="checkbox" name="valide" value="empty" onchange="check({{place.idPlace}},1)">  Validé<br>
         {%elif place.valide==1%}
           <input type="checkbox" name="valide" value="full"  onchange="check({{place.idPlace}},0)" checked>  Validé<br>
         {%endif%}
+        </li>
       {%endfor%}
     </ul>
   {%endfor%}

@@ -100,26 +100,62 @@ def set_admin(login):
                 return abort(403)
 
         if request.method=="POST":
-            if request.form["login"] != "" and request.form["password"] != "":
+            if request.form["login"] != "":
+                if login=='nouveladmin':
+                    if request.form["password"] != "":
+                        cont = request.form
+                        print("\n\n"+ str(cont) +"\n\n")
+                        admin = Session(login=cont["login"],password=cont["password"],typeAdmin =cont["admintype"], idContact=cont["ajoutContactDB"])
+                        print("\n\n"+ str(cont) +"\n\n")
+                        alreadyIn = get_session(admin.login)
+                        if alreadyIn:
+                            print("\nSESSION ALREADY IN\n")
+                            if not(session['admin']=="super"):
+                                print("\n\nNOT ALLOWED MODIFY THIS SPECTACLE\n\n")
+                                return abort(403)
+                            print("CALL update_session")
+                            update_session(admin)
+                        else:
+                            insert_session(admin)
+                        db.session.commit();
+                        return redirect(url_for('admin_relative.admin'))
+                    else:
+                        return redirect(url_for('admin_relative.set_admin',login="nouveladmin"))
 
-                cont = request.form
-                print("\n\n"+ str(cont) +"\n\n")
-                admin = Session(login=cont["login"],password=cont["password"],typeAdmin =cont["admintype"], idContact=cont["ajoutContactDB"])
-                print("\n\n"+ str(cont) +"\n\n")
-                alreadyIn = get_session(admin.login)
-                if alreadyIn:
-                    print("\nSESSION ALREADY IN\n")
-                    if not(session['admin']=="super"):
-                        print("\n\nNOT ALLOWED MODIFY THIS SPECTACLE\n\n")
-                        return abort(403)
-                    print("CALL update_session")
-                    update_session(admin)
-                else:
-                    insert_session(admin)
-                db.session.commit();
-                return redirect(url_for('admin_relative.admin'))
+                if login != 'nouveladmin':
+                    if request.form["password"] != "":
+                        cont = request.form
+                        print("\n\n"+ str(cont) +"\n\n")
+                        admin = Session(login=cont["login"],password=cont["password"],typeAdmin =cont["admintype"], idContact=cont["ajoutContactDB"])
+                        print("\n\n"+ str(cont) +"\n\n")
+                        alreadyIn = get_session(admin.login)
+                        if alreadyIn:
+                            print("\nSESSION ALREADY IN\n")
+
+                            print("CALL update_session")
+                            update_session(admin)
+                        else:
+                            insert_session(admin)
+                        db.session.commit();
+                        return redirect(url_for('admin_relative.admin'))
+                    else:
+                        cont = request.form
+                        print("\n\n"+ str(cont) +"\n\n")
+                        alreadyIn = get_session(login)
+                        admin = Session(login=cont["login"],password=alreadyIn.password,typeAdmin =cont["admintype"], idContact=cont["ajoutContactDB"])
+                        print("\n\n"+ str(cont) +"\n\n")
+
+                        if alreadyIn:
+                            print("\nSESSION ALREADY IN\n")
+                            print("CALL update_session")
+                            update_session(admin)
+                        else:
+                            insert_session(admin)
+                        db.session.commit();
+                        return redirect(url_for('admin_relative.admin'))
+
             else :
-                return redirect(url_for('admin_relative.set_admin',login="nouveladmin"))
+                return redirect(url_for('admin_relative.set_admin',login=login))
     else :
         return abort(403)
 
