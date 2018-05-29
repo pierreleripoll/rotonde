@@ -1,0 +1,175 @@
+{% extends "layout.html" %}
+{% set active_page = 'calendrier' %}
+
+{% block title %}Calendrier{% endblock %}
+
+
+{% block content %}
+<div class="container">
+
+  <h1>HOW TO USE THE WEBSITE</h1>
+  <br><br>
+
+  <h2>Session Client</h2>
+  <br><br>
+
+    <h4>Voir les spectacles à l’affiche</h4><br>
+    <ul>
+      <li>Depuis la page d’accueil, par spectacle</li>
+      <br>
+      <li>Depuis le calendrier, par dates</li>
+    </ul>
+    <br><br>
+
+    <h4>Obtenir des informations supplémentaires sur un spectacle</h4><br>
+    <ul>
+      <li>Depuis l'accueil<ul>
+            <li>Vignette du spectacle</li>
+          </ul></li>
+        <br>
+      <li>Depuis le calendrier, par dates<ul>
+            <li>Lien vers la page spectacle</li>
+          </ul></li>
+      </li>
+    </ul>
+    <br><br>
+
+    <h4>Réserver une place</h4>
+    <ul>
+      <li>Depuis la page spectacle<ul>
+            <li>Rubrique: Billets/Dates</li>
+            <li>Affichage des dates disponibles: sélection des places souhaitées</li>
+            <li>Bouton “Valider”</li>
+          </ul></li>
+      <li>Pour valider la commande<ul>
+            <li>Onglet “Panier”</li>
+            <li>Possibilité de modifier la quantité de places souhaitées</li>
+            <li>Saisie du nom et de l’adresse mail</li>
+            <li>Bouton “Valider”</li>
+          </ul></li>
+      <li>Sur place<ul>
+            <li>Validation de la place par la billetterie grâce à l'identifiant de la place envoyé par mail</li>
+          </ul></li>
+      <li>Contacter/Trouver la Rotonde<ul>
+            <li>Onglet "Contacts"</li>
+          </ul></li>
+    </ul>
+    <br><br>
+
+
+
+  <h2>Session Admin</h2>
+  <br><br>
+
+    <h4>Se logger</h4><br>
+    <ul>
+      <li>Onglet “Admin”<ul>
+            <li>Identification par login et mot de passe</li>
+      </ul></li>
+    </ul>
+    <br><br>
+
+
+
+    <h4>Gestion des spectacles</h4><br>
+    <ul>
+      <li>Créer un spectacle<ul>
+            <li>Bouton “Créer spectacle”</li>
+          </ul></li>
+        <br>
+      <li>Modifier un spectacle<ul>
+            <li>Depuis l'accueil comme depuis la page du spectacle<ul>
+                <li>Bouton "Edit"</li>
+            </ul></li></li>
+        <br>
+      <li>Saisie des informations (DANS L'ORDRE DES OPÉRATIONS)<ul>
+            <li>Ajouter une image<ul>
+                <li>Bouton “Browse” ou (Drag & Drop)</li>
+                <li>Sélection du fichier</li></ul></li>
+            <li>Charger une image<ul>
+                <li>Bouton “Upload”</li></ul></li>
+            <li>Modifier une image<ul>
+                <li>Bouton "Recadrer"</li></ul></li>
+            <li>Supprimer une image<ul>
+                <li>Bouton "supprimer"</li></ul></li>
+            <li>Ajouter un contact<ul>
+                <li>Choix dans la liste des contacts existants</li>
+                <li>Ou création d'un nouveau contact<ul>
+                    <li>Bouton "Ajouter Contact"</li></ul></li>
+                </ul>
+            <li>Ajouter une date<ul>
+                <li>Bouton "Add"<ul>
+                    <li>Sélection de la date</li></ul></li></ul></li>
+            <li>Supprimer un spectacle<ul>
+                <li>Depuis la page spectalce<ul>
+                    <li>Bouton "Supprimer"</li></ul></li>
+                <li>Depuis la page de modification du spectacle<ul>
+                    <li>Bouton "Supprimer"</li></ul></li>
+                </ul></li>
+            <li>Voir la liste des spectacles de l'admin<ul>
+                <li>
+
+
+
+      </li>
+    </ul>
+    <br><br>
+
+
+
+  Voir la liste des spectacles de l’admin:
+  Onglet Admin
+
+  Modifier un spectacle:
+  Depuis la page d’accueil:
+      Bouton “Edit” du spectacle
+  Depuis la page du spectacle:
+      Onglet Billets/Dates
+      Bouton “Modifier”
+  Depuis la page Admin:
+      Bouton “Modifier” correspondant au spectacle
+
+  Voir les places réservées pour un spectacle:
+  Depuis la page Admin:
+      Bouton “Voir les réservations” correspondant au spectacle
+      Possibilité de cocher la place correspondante à l’arrivée du spectateur
+
+  Modifier le compte Admin:
+  Depuis la page Admin:
+      Bouton “Infos du compte”
+      Modification des données (login, mot de passe)
+      Ajout de contacts: Idem que pour Créer un spectacle
+
+  Se déconnecter:
+  Depuis la page Admin:
+      Bouton “Se déconnecter”
+
+
+  Session Superadmin:
+
+  Voir la liste des admins:
+  Depuis la page Admin:
+      Bouton “Liste des admins”
+
+  Ajouter un admin:
+  Depuis la page Admin:
+      Bouton “Ajouter un admin”
+      Saisie des données de l’admin et de son statut
+      Ajout de contacts: Idem que pour Créer spectacle
+
+  Modifier le compte d’un admin:
+  Depuis la liste des admins:
+  Bouton “Modifier”
+
+  Toutes les opérations autorisées pour les admins le sont aussi pour les superadmins
+
+
+
+
+
+
+</table>
+</br>
+</div>
+
+{% endblock %}

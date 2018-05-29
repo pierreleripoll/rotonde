@@ -82,6 +82,9 @@ def empty_cart():
 	else:
 		return redirect(url_for('logout'))
 
+@app.route('/how_to')
+def how_to():
+    return render_template('how_to.html')
 
 ## CALENDRIER
 @app.route('/calendrier', methods=['GET','POST'])

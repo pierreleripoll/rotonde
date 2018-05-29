@@ -312,23 +312,25 @@
       console.log("on initialise la page !",{{photos[0].color}});
       var photos =[];
       var k =0;
-      {%for color in photos[0].color%}
-        photos[k]='{{color.hexa}}';
-        console.log('{{color.actif}}');
-        if('{{color.actif}}'=='True'){
-          console.log("yesai on a trouvé une couleur active !");
-          color = '#'+photos[k];
-          document.documentElement.style.setProperty('--color-theme', color);
+      {%if photos%}
+        {%for color in photos[0].color%}
+          photos[k]='{{color.hexa}}';
+          console.log('{{color.actif}}');
+          if('{{color.actif}}'=='True'){
+            console.log("yesai on a trouvé une couleur active !");
+            color = '#'+photos[k];
+            document.documentElement.style.setProperty('--color-theme', color);
+          }
+          console.log(photos[k]);
+          k++;
+        {%endfor%}
+        for(j=0; j<9; j++){
+          var cobox = "bg-color-box"+(j+2);
+          var color = '#'+photos[j]
+          console.log("voici la couleur d'init du bouton : ", photos[j]);
+          document.getElementsByClassName(cobox)[0].style.backgroundColor = color;
         }
-        console.log(photos[k]);
-        k++;
-      {%endfor%}
-      for(j=0; j<9; j++){
-        var cobox = "bg-color-box"+(j+2);
-        var color = '#'+photos[j]
-        console.log("voici la couleur d'init du bouton : ", photos[j]);
-        document.getElementsByClassName(cobox)[0].style.backgroundColor = color;
-      }
+      {%endif%}
     }
 
     function createColorBase(objetPhoto){
@@ -694,7 +696,7 @@
 
 
     <div class="row" id='groupe'>
-      
+
       <div class="col-sm-12 col-date" id='annule'>
         <label for="dates">Dates :  </label>
         <button class="btn" type="button" id="addDate" onclick="addOneDate()" name="addDate" value="addDate">Add</button>
