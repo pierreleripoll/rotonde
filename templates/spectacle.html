@@ -141,9 +141,16 @@
 </div>
 
   <script>
+    var month=new Array(12);
+    month[0]="janvier";  month[1]="février";   month[2]="mars";
+    month[3]="avril";    month[4]="mai";       month[5]="juin";
+    month[6]="juillet";  month[7]="août";      month[8]="septembre";
+    month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
     var paths = new Array({{photos|length}});
+
     var i =0;
-    var id=0;
+    var id={{photos[0].id}};
+    console.log(id);
     {%for photo in photos%}
       paths[i] ="{{photo.path}}" ;
       console.log(paths[i]);
@@ -159,6 +166,17 @@
 
     function rgbToHex(r, g, b) {
       return componentToHex(r) + componentToHex(g) + componentToHex(b);
+    }
+
+    function hexc(colorval) {
+      var parts = colorval.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+      delete(parts[0]);
+      for (var i = 1; i <= 3; ++i) {
+          parts[i] = parseInt(parts[i]).toString(16);
+          if (parts[i].length == 1) parts[i] = '0' + parts[i];
+      }
+      color = parts.join('');
+      return color;
     }
 
     function chgPhoto(){
@@ -179,6 +197,7 @@
         var color = 'rgb(' + [c[0],c[1],c[2]].join(',') + ')';
         document.documentElement.style.setProperty('--color-theme', color);
         document.getElementsByClassName('bg-color-box1')[0].style.backgroundColor = color;
+        uploadColor(id,c,0);
         for(j=0; j<9; j++){
           var cobox = "bg-color-box"+(j+2);
           document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
@@ -193,15 +212,15 @@
       console.log(paths[i]);
     }
 
-
-    var month=new Array(12);
-    month[0]="janvier";  month[1]="février";   month[2]="mars";
-    month[3]="avril";    month[4]="mai";       month[5]="juin";
-    month[6]="juillet";  month[7]="août";      month[8]="septembre";
-    month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
-
     function uploadColor(id,color,bool) {
-      var hex = rgbToHex(color[0],color[1],color[2]);
+      console.log("on entre dans upload avec : ", color);
+      if(color[0]=='r'){
+        console.log("la méthode hexc");
+        var hex = hexc(color);
+      }else{
+        console.log("la méthode RGB");
+        var hex = rgbToHex(color[0],color[1],color[2]);
+      }
       console.log(hex);
       $.ajax({
         type:"POST",
@@ -221,9 +240,26 @@
     var name = "";
 
     function initColorPage(){
-      var photos;
-      photos='{{photos.colors}}';
-      console.log(photos.hexa);
+      console.log("on initialise la page !");
+      var photos =[];
+      var k =0;
+      {%for color in photos[0].colors%}
+        photos[k]='{{color.hexa}}';
+        console.log('{{color.actif}}');
+        if('{{color.actif}}'=='True'){
+          console.log("yesai on a trouvé une couleur active !");
+          color = '#'+photos[k];
+          document.documentElement.style.setProperty('--color-theme', color);
+        }
+        console.log(photos[k]);
+        k++;
+      {%endfor%}
+      for(j=0; j<9; j++){
+        var cobox = "bg-color-box"+(j+2);
+        var color = '#'+photos[j]
+        console.log("voici la couleur d'init du bouton : ", photos[j]);
+        document.getElementsByClassName(cobox)[0].style.backgroundColor = color;
+      }
     }
 
     for(i=0;i<10;i++){
@@ -234,10 +270,10 @@
 
       something[i][0].onclick=function(){
         color=window.getComputedStyle(this,null).getPropertyValue("background-color");
-        console.log("in function",i,color[0]);
-        uploadColor(id,color,1)
-        console.log("postUpload");
+        console.log("in function",i, color);
         document.documentElement.style.setProperty('--color-theme', color);
+        uploadColor(3,color,1)
+        console.log("postUpload", color);
       };
     }
 

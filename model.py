@@ -210,8 +210,13 @@ def set_active_colors(idPhoto, hexa):
             color.actif=0
     if(colorReturn==None):
         colorReturn = Color(hexa=hexa,idPhoto=idPhoto,actif=1);
-        db.session.add(colorReturn);
-        db.session.commit();
+        try:
+            db.session.add(colorReturn);
+            db.session.commit();
+            print("je set bien la couleur comme étant la bonne");
+        except:
+            print("ERROR LOSER")
+    db.session.commit();
     return colorReturn
 
 
