@@ -309,7 +309,6 @@
     }
 
     function initColorPage(){
-      console.log("on initialise la page !",{{photos[0].color}});
       var photos =[];
       var k =0;
       {%if photos%}
@@ -506,6 +505,7 @@
     </div>
   </section>
 
+{%if spectacle%}
   <div class="row">
     <div class="col-md-8">
       <div class="card card-eq-height">
@@ -598,6 +598,8 @@
       </div>
     </div>
   </div>
+
+  {%endif%}
 
   <form action="" method="POST" name="formulaire"onsubmit="return validateForm()" enctype="multipart/form-data">
     <div class = "row">
