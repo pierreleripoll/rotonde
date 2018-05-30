@@ -38,6 +38,7 @@
     </div>
   </div>
 
+
 <div class="row">
   <div class="col-md-4 ">
     <div class="card card-eq-height">
@@ -63,6 +64,7 @@
             {%else%}<a href="https://www.facebook.com/RotondeInsa/" class="lien-fb">facebook</a>
             {%endif%}
             </p>
+
         </div>
 
       </div>
@@ -74,6 +76,7 @@
 
     {% if paths|length != 0 %}
       <div id="showImage"  class="col-md-8 ">
+
         <div class="card-eq-height">
           <div class="imageSpectacle">
             <img onclick="chgPhoto()" onmouseEnter="mouseEnter()"  onmouseleave="mouseLeave()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
@@ -94,9 +97,12 @@
             </div>
           </div>
           {%endif%}
+
         </div>
+        {%endif%}
       </div>
     {% endif %}
+
   </div>
 
   <div class="row">
@@ -160,6 +166,7 @@
     month[6]="juillet";  month[7]="août";      month[8]="septembre";
     month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
     var paths = new Array({{photos|length}});
+
     console.log({{photos|length}});
 
     var i =0;
@@ -173,6 +180,7 @@
         i++;
       {%endfor%}
     {%endif%}
+
 
     i=0;
     initColorPage();
@@ -203,6 +211,7 @@
       image.onload = function(){
         console.log(image);
         var k=0;
+
         {%if photos%}
           {%for photo in photos%}
             photos[k]='{{photo.colors.hexa}}';
@@ -226,6 +235,7 @@
         //   document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
         //   uploadColor(id,p[j],0);
         // }
+
 
 
       }
@@ -267,6 +277,7 @@
       console.log("on initialise la page !");
       var photos =[];
       var k =0;
+
       {%if photos[0]%}
         {%for color in photos[0].colors%}
           photos[k]='{{color.hexa}}';
@@ -286,6 +297,7 @@
           document.getElementsByClassName(cobox)[0].style.backgroundColor = color;
         }
       {%endif%}
+
     }
 
     for(i=0;i<10;i++){
