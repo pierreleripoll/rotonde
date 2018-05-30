@@ -229,7 +229,6 @@ def enleverDB(datedb):
     delete_date_by_date(datedb)
 
 
-
 def get_all_places():
     places = Place.query.all()
     return places
