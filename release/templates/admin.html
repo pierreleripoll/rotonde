@@ -1,0 +1,68 @@
+{% extends "layout.html" %}
+{% set active_page = 'admin' %}
+{% block title %}Administration{% endblock %}
+{%block head%}
+{{super()}}
+  <link href="/static/styles/admin.css" rel="stylesheet">
+
+{%endblock%}
+<link href="/static"
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <h3>Connecté au compte <b>{{admin.login}}</b>.</h3>
+    </div>
+    <div class="row">
+      <form action="" method="POST">
+        <button name="bouton" value="logout" type="submit" class="btn btn-primary">SE DÉCONNECTER</button><br></br>
+        <button name="bouton" value="createspectacle" type="submit" class="btn btn-primary">CRÉER UN SPECTACLE</button>
+        <button name="bouton" value="modifySelf" type="submit" class="btn btn-primary">INFOS DU COMPTE</button>
+        {%if admin.typeAdmin == "super"%}
+        <button name="bouton" value="createadmin" type="submit" class="btn btn-primary">AJOUTER UN ADMIN</button>
+        <button name="bouton" value="adminlist" type="submit" class="btn btn-primary">LISTE DES ADMINS</button>
+        {%endif%}
+      </form>
+    </div>
+
+    {%if admin.typeAdmin == 'normal'%}
+    {%if admin.spectacles != []%}
+      <p>Spectacles:</p>
+      <ul class="list-group">
+        {% for spectacle in admin.spectacles%}
+        <div class="list-group-item">
+          <div class="row">
+            <a class="col-md-8 liste-admin" href="/spectacle/{{spectacle.nom}}">
+              <p>{{spectacle.nom}}</p>
+            </a>
+            <div class="col-md-4">
+              <a href="/voirPlaces/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Voir les réservations</a>
+              <a href="/set_spectacle/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Modifier</a>
+            </div>
+          </div>
+        </div>
+        {%endfor%}
+      </ul>
+      {%endif%}
+      {%elif admin.typeAdmin =='super'%}
+      </br>
+      </br>
+      <p>Spectacles:</p>
+      <ul class="list-group">
+        {% for spectacle in spectacles %}
+        <div class="list-group-item">
+          <div class="row">
+            <a class="col-md-8 liste-admin" href="/spectacle/{{spectacle.nom}}">
+              <p>{{spectacle.nom}}</p>
+            </a>
+            <div class="col-md-4">
+              <a href="/voirPlaces/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Voir les réservations</a>
+              <a href="/set_spectacle/{{spectacle.nom}}" class="btn btn-primary" style="float: right;">Modifier</a>
+            </div>
+          </div>
+        </div>
+        {%endfor%}
+      {%endif%}
+    </ul>
+  </div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+{% set active_page = 'index' %}
+{% block title %}Accueil{% endblock %}
+
+
+{% block content %}
+  <p>{{ message }}</p>
+
+  {% if logged %}
+  <p>
+    <a href="/logout">[logout]</a>
+  </p>
+  {% else %}
+  <form action="/login" method="POST">
+    <p>
+      ... mais qui êtes vous ?
+      <input type="text" name="name">
+      <input type="submit" value="Voilà !">
+    </p>
+  </form>
+  {% endif %}
+{% endblock %}

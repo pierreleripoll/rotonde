@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% set active_page = 'calendrier' %}
+
+{% block title %}Calendrier{% endblock %}
+
+
+{% block content %}
+<div class="container">
+<table class="table table-striped">
+  <tr>
+    <th>Date</th>
+    <th>Nom du spectacle</th>
+    <th>Places diponibles</th>
+    <th>Prix</th>
+  </tr>
+  {% for date in dates %}
+    {%if date.date> date.date.now()%}
+      <tr>
+        <td>{{ date.date|datetime }}</td>
+        <td><a href="/spectacle/{{date.nom}}">{{date.nom}}</a></td>
+        <td>{{date.placesRestantes}}</td>
+        <td>{{date.spectacle.tarif}}€</td>
+      </tr>
+    {%endif%}
+  {% endfor %}
+
+</table>
+</br>
+</div>
+
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+{% set active_page = 'contact' %}
+{% block title %}Contact{% endblock %}
+
+
+{% block content %}
+
+
+<main role="main">
+  <section class="jumbotron text-center">
+    <div class="container">
+      <h1 class="jumbotron-heading">Où est la Rotonde ?</h1>
+      <p class="lead text-muted">Voici le plan pour vous mener jusqu'à nous ! <br>Vous pouvez nous contacter par email ou par téléphone grâce aux coordonnées ci-dessous</p>
+    </div>
+    <br>
+    <br>
+      <div id="rotondeMap" style="height:50vh">
+      </div>
+      <br><br><br>
+    <div class="container">
+      <div class="row">
+          <div class="col-lg-4">
+            <div class="card card-text card-eq-height  lead text-muted" style="background-color:transparent;padding:10px;">
+            <label for="adresse">Notre adresse postale :</label>
+              <p id="adresse" name="adresse">CGR – Casier du BdE<br/>INSA de Lyon<br/>20 av. Albert Einstein<br/>69621 Villeurbanne Cedex</p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card card-text card-eq-height lead text-muted"  style="background-color:transparent; padding:10px;">
+            <label for="permanence">Horaires de permanence :</label>
+            <p id="permanence" name="permanence">Lundi au vendredi de 12h15 à 13h45</p>
+          </div>
+          </div>
+
+          <div class="col-lg-4">
+            <div class="card card-eq-height  lead text-muted"  style="background-color:transparent;padding:10px;">
+              <label for="coord">Coordonnées :</label>
+              <p id="coord" name="coord">cgr.general@gmail.com<br/>04 72 43 88 44</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script>
+    function myMap() {
+      var rotonde = {lat: 45.783844,lng: 4.874063};
+      var mapOptions = {
+        center: rotonde,
+        zoom: 16,
+        mapTypeId: google.maps.MapTypeId.ROADMAPS
+      }
+      var mapObject = new google.maps.Map(document.getElementById("rotondeMap"), mapOptions);
+      var marker = new google.maps.Marker({position: rotonde, map: mapObject});
+    }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+  </section>
+</main>
+{% endblock %}

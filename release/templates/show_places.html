@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% set active_page = 'admin' %}
+{% block title %}Accueil{% endblock %}
+
+
+{% block content %}
+<main role="main">
+  <ul>
+    {%for place in places|reverse %}
+      <li>{{place.nomSpectacle}}     {{place.nomUser}}     {{place.date}} </li>
+
+    {% endfor %}
+  <ul>
+</main>
+{% endblock %}

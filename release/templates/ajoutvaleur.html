@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% set active_page = 'panier' %}
+{% block title %}Panier{% endblock %}
+
+
+{% block content %}
+  <p>Votre Panier : </p>
+
+  <form action="" method="POST">
+      <ul style="list-style-type:none">
+        {% for produit in panier %}
+        <li>{{produit}}</li>
+        {% endfor %}
+      </ul>
+      <button name="foo" value="valider" type="submit">Valider votre commande</button>
+  </form>
+{% endblock %}
