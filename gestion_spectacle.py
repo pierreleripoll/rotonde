@@ -34,8 +34,11 @@ def spectacle(nomSpectacle):
         print("Paths :",paths)
         photoMain = get_photoSpectacle(thisSpectacle.nom,ordre=0);
         print("Voici toutes les photos : ",photos,"\net la photo principale :" ,photoMain, "\n et ses couleur : ");
-        for color in photoMain.colors:
-            print(color.hexa, " : ",color.actif)
+
+        if(photoMain):
+            for color in photoMain.colors:
+                print(color.hexa, " : ",color.actif)
+
         return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths,photos = photos)
     if request.method == "POST":
         if request.form["submit"] == "modify" and session['pseudo'] == thisSpectacle.admin:
@@ -112,17 +115,38 @@ def set_spectacle(nomSpectacle):
                     else:
                         insert_spectacle(spectacle)
 
-                    delete_date(nomSpectacle)
+                    datesDB = get_dates(nomSpectacle)
+                    #delete_date_spectacle(nomSpectacle)
+                    dateCont = [];
                     for dates in cont:
                         if "datetime" in dates:
                             # strDate = cont[dates];
                             # print(strDate)
                             # strDate = strDate[0:len(strDate)-3]
                             datePy = datetime.strptime(cont[dates], '%d/%m/%Y %H:%M')
-                            date = Calendrier(date=datePy,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(re.findall(r'\d+', dates)[0])]))
-                            alreadyIn = "false"
-                            insert_date(date)
-                    db.session.commit();
+                            dateCont.append(datePy)
+                            for x,dateDB in enumerate(datesDB):
+                                if dateDB.date == datePy:
+                                    print("on a enlever db :",dateDB.date," et py : ",datePy)
+                                    dateCont.remove(datePy)
+                                    print("python enlevé")
+                                    del datesDB[x]
+                                    print("DB enlevé")
+
+                    for dateDB in datesDB:
+                        print(dateDB.date)
+                        enleverDB(dateDB.date)
+
+                    for dates in cont:
+                        if "datetime" in dates:
+                            for tata in dateCont:
+                                datePy = datetime.strptime(cont[dates], '%d/%m/%Y %H:%M')
+                                if tata == datePy :
+                                    #print("***********************",tata,"***placeRestante =",int(cont["nPlaces"+str(re.findall(r'\d+', dates)[0])]))
+                                    date = Calendrier(date=tata,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(re.findall(r'\d+', dates)[0])]))
+                                    insert_date(date)
+
+
                     return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=request.form["nom"]))
                 else :
                     return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle="nouveauSpectacle"))

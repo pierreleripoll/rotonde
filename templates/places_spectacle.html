@@ -24,7 +24,9 @@
 {% block content %}
 <div class="container">
   <h1>{{spectacle.nom}}</h1>
-  {%for date in spectacle.dates%}
+
+  {%for date in spectacle.dates | sort(attribute='date')%}
+
     <div class="row">
       <h2>{{date.date|datetime}}</h2>
       <table class="table table-striped">

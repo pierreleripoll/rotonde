@@ -38,60 +38,75 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-4 ">
-      <div class="card card-eq-height">
-        <div class="card-body card-body-tarifs-dates">
-          <h5 class="card-title card-title-tarifs-dates">
-            {%if dates %}
-              {%if dates|length > 1 %}
-                {% if dates[0].date.month != dates[-1].date.month %}
-                  Du {{dates[0].date|datetime(format='spectacle')}} au {{dates[-1].date|datetime(format='spectacle')}}
+
+<div class="row">
+  <div class="col-md-4 ">
+    <div class="card card-eq-height">
+      <div class="card-body card-body-tarifs-dates">
+        <h3 class="card-title card-title-tarifs-dates" style="margin-bottom:5px;">
+              {%if dates %}
+                {%if dates|length > 1 %}
+                  {% if dates[0].date.month != dates[-1].date.month %}
+                    Du {{dates[0].date|datetime(format='spectacle')}} au {{dates[-1].date|datetime(format='spectacle')}}
+                  {% else %}
+                    Du {{dates[0].date.day}} au {{dates[-1].date|datetime(format='spectacle')}}
+                  {% endif %}
                 {% else %}
-                  Du {{dates[0].date.day}} au {{dates[-1].date|datetime(format='spectacle')}}
+                  Le {{dates[0].date|datetime(format='spectacle')}}
                 {% endif %}
-              {% else %}
-                Le {{dates[0].date|datetime(format='spectacle')}}
-              {% endif %}
+              {%endif%}
+            </h3>
+        <h4 style="margin-bottom:12px;">{{spectacle.typeSpectacle}}</h4>
+        <div class="infos">
+            <p>Tarif {% if spectacle.tarif == 0 %} PRIX LIBRE {% else %} {{spectacle.tarif}}€ {% endif %}<br>
+            {%if spectacle.duree%}{{spectacle.duree}}{%endif%} minutes<br>
+            {%if spectacle.liens%}<a href="{{spectacle.liens}}" class="lien-fb">facebook</a>
+            {%else%}<a href="https://www.facebook.com/RotondeInsa/" class="lien-fb">facebook</a>
             {%endif%}
-           </h5>
-          <p>Tarif<br>
-          {% if spectacle.tarif == 0 %}
-            PRIX LIBRE
-          {% else %}
-            {{spectacle.tarif}}€ la place
-          {% endif %}
-          </p>
+            </p>
+
         </div>
-        <div class="card-footer card-footer-billet" onclick="afficheBillets()">
-          <p>BILLETS | DATES</p>
-        </div>
+
+      </div>
+      <div class="card-footer card-footer-billet" onclick="afficheBillets()">
+        <p>BILLETS | DATES</p>
       </div>
     </div>
+  </div>
 
     {% if paths|length != 0 %}
       <div id="showImage"  class="col-md-8 ">
-        <div class="imageSpectacle">
-          <img onclick="chgPhoto()" onmouseEnter="mouseEnter()"  onmouseleave="mouseLeave()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
-        </div>
-        {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
-        <div class="content">
-          <div onmouseleave="mouseLeave()" onmouseEnter="mouseEnter()" class="card-group">
-            <div id="color-box" class="card bg-color-box1"></div>
-            <div id="color-box" class="card bg-color-box2"></div>
-            <div id="color-box" class="card bg-color-box3"></div>
-            <div id="color-box" class="card bg-color-box4"></div>
-            <div id="color-box" class="card bg-color-box5"></div>
-            <div id="color-box" class="card bg-color-box6"></div>
-            <div id="color-box" class="card bg-color-box7"></div>
-            <div id="color-box" class="card bg-color-box8"></div>
-            <div id="color-box" class="card bg-color-box9"></div>
-            <div id="color-box" class="card bg-color-box10"></div>
+
+        <div class="card-eq-height">
+          <div class="imageSpectacle">
+            <img onclick="chgPhoto()" onmouseEnter="mouseEnter()"  onmouseleave="mouseLeave()" id="imgSpectacle" class="card-imgSpectacle" src="{{paths[0]}}">
           </div>
+          {%if session.admin == 'super' or session.pseudo == spectacle.admin%}
+          <div class="content">
+            <div onmouseleave="mouseLeave()" onmouseEnter="mouseEnter()" class="card-group">
+              <div id="color-box" class="card bg-color-box1"></div>
+              <div id="color-box" class="card bg-color-box2"></div>
+              <div id="color-box" class="card bg-color-box3"></div>
+              <div id="color-box" class="card bg-color-box4"></div>
+              <div id="color-box" class="card bg-color-box5"></div>
+              <div id="color-box" class="card bg-color-box6"></div>
+              <div id="color-box" class="card bg-color-box7"></div>
+              <div id="color-box" class="card bg-color-box8"></div>
+              <div id="color-box" class="card bg-color-box9"></div>
+              <div id="color-box" class="card bg-color-box10"></div>
+            </div>
+          </div>
+          {%endif%}
+
         </div>
         {%endif%}
       </div>
     {% endif %}
+
+  </div>
+
+  <div class="row">
+
   </div>
 
   <div class="row"> <!--billeterie -->
@@ -152,14 +167,21 @@
     month[9]="octobre";  month[10]="novembre"; month[11]="décembre";
     var paths = new Array({{photos|length}});
 
+    console.log({{photos|length}});
+
     var i =0;
-    var id={{photos[0].id}};
-    console.log(id);
-    {%for photo in photos%}
-      paths[i] ="{{photo.path}}" ;
-      console.log(paths[i]);
-      i++;
-    {%endfor%}
+    var id=0;
+    {%if photos|length >0%}
+      id={{photos[0].id}};
+      console.log(id);
+      {%for photo in photos%}
+        paths[i] ="{{photo.path}}" ;
+        console.log(paths[i]);
+        i++;
+      {%endfor%}
+    {%endif%}
+
+
     i=0;
     initColorPage();
     var colorThief = new ColorThief();
@@ -189,12 +211,18 @@
       image.onload = function(){
         console.log(image);
         var k=0;
-        {%for photo in photos%}
-          photos[k]='{{photo.colors.hexa}}';
-          console.log(photos[k]);
-          k++;
-        {%endfor%}
 
+        {%if photos%}
+          {%for photo in photos%}
+            photos[k]='{{photo.colors.hexa}}';
+            console.log(photos[k]);
+            k++;
+          {%endfor%}
+        {%endif%}
+        for(j=0; j<9; j++){
+          // var cobox = "bg-color-box"+(j+2);
+          // document.getElementsByClassName(cobox)[0].style.backgroundColor= photos[j];
+        }
         console.log(photos);
         // var c = colorThief.getColor(image);
         // var p = colorThief.getPalette(image);
@@ -207,10 +235,8 @@
         //   document.getElementsByClassName(cobox)[0].style.backgroundColor = 'rgb(' + [p[j][0],p[j][1],p[j][2]].join(',') + ')';
         //   uploadColor(id,p[j],0);
         // }
-        for(j=0; j<9; j++){
-          var cobox = "bg-color-box"+(j+2);
-          document.getElementsByClassName(cobox)[0].style.backgroundColor = photos[j];
-        }
+
+
 
       }
 
@@ -251,23 +277,27 @@
       console.log("on initialise la page !");
       var photos =[];
       var k =0;
-      {%for color in photos[0].colors%}
-        photos[k]='{{color.hexa}}';
-        console.log('{{color.actif}}');
-        if('{{color.actif}}'=='True'){
-          console.log("yesai on a trouvé une couleur active !");
-          color = '#'+photos[k];
-          document.documentElement.style.setProperty('--color-theme', color);
+
+      {%if photos[0]%}
+        {%for color in photos[0].colors%}
+          photos[k]='{{color.hexa}}';
+          console.log('{{color.actif}}');
+          if('{{color.actif}}'=='True'){
+            console.log("yesai on a trouvé une couleur active !");
+            color = '#'+photos[k];
+            document.documentElement.style.setProperty('--color-theme', color);
+          }
+          console.log(photos[k]);
+          k++;
+        {%endfor%}
+        for(j=0; j<9; j++){
+          var cobox = "bg-color-box"+(j+2);
+          var color = '#'+photos[j]
+          console.log("voici la couleur d'init du bouton : ", photos[j]);
+          document.getElementsByClassName(cobox)[0].style.backgroundColor = color;
         }
-        console.log(photos[k]);
-        k++;
-      {%endfor%}
-      for(j=0; j<9; j++){
-        var cobox = "bg-color-box"+(j+2);
-        var color = '#'+photos[j]
-        console.log("voici la couleur d'init du bouton : ", photos[j]);
-        document.getElementsByClassName(cobox)[0].style.backgroundColor = color;
-      }
+      {%endif%}
+
     }
 
     for(i=0;i<10;i++){

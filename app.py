@@ -83,6 +83,12 @@ def empty_cart():
 		return redirect(url_for('logout'))
 
 
+@app.route('/how_to')
+def how_to():
+    return render_template('how_to.html')
+
+
+
 ## CALENDRIER
 @app.route('/calendrier', methods=['GET','POST'])
 def calendrier():
@@ -131,5 +137,7 @@ def uploads(nomSpectacle):
 
 
 if __name__ == '__main__':
+
 	app.run(debug='true')
 	#app.run(host="192.168.0.14",port=5000)
+

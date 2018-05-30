@@ -21,7 +21,7 @@ for fol in folders:
     if os.path.isdir(sauvegarde+'/'+fol):
         print('dir',fol)
         shutil.copytree(sauvegarde+'/'+fol, folder+'/'+fol)
-
+        
 
 
 
@@ -37,6 +37,7 @@ content = [
 Session(login='aMi',password='friendly',typeAdmin='normal'),
 Session(login='cgr',password='cafards',typeAdmin='super'),
 Session(login='superadmin',password='larotonde',typeAdmin='super'),
+
 Contact(nom="---",prenom="---",annee="",depart=""),
 
 Spectacle(nom='Candide',resume=lorem,admin='aMi',photos=1,directeur='John Doe',auteur='John Doe',participants='John Doe',infoComplementaire=lorem,tarif=3,duree=60,typeSpectacle='Theatre'),
@@ -63,6 +64,7 @@ Calendrier(date=datetime(2018,6,2,20,30),nom='Rapa Nui',placesRestantes=300),
 Calendrier(date=datetime(2018,6,3,20,30),nom='Candide',placesRestantes=300),
 Calendrier(date=datetime(2018,6,4,20,30),nom='Candide',placesRestantes=300),
 Calendrier(date=datetime(2018,6,5,20,30),nom='Candide',placesRestantes=300),
+
 
 ]
 
