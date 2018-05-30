@@ -43,9 +43,15 @@ def spectacle(nomSpectacle):
 
         return render_template('spectacle.html',spectacle = thisSpectacle,dates = thisDates,paths = paths,photos = photos)
     if request.method == "POST":
+<<<<<<< HEAD
         if request.form["submit"] == "modify" and (session['admin']=="super" or session['pseudo'] == thisSpectacle.admin):
             return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle=nomSpectacle))
         if request.form["submit"] == "delete" and (session['admin']=="super" or session['pseudo'] == thisSpectacle.admin):
+=======
+        if request.form["submit"] == "modify" and session['admin']=="super" or session['pseudo'] == thisSpectacle.admin:
+            return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle=nomSpectacle))
+        if request.form["submit"] == "delete" and session['admin']=="super" or session['pseudo'] == thisSpectacle.admin:
+>>>>>>> f70696e8bb5a7ee21f4747b3cf0d8eeb7426cdd9
             delete_spectacle(nomSpectacle)
             return redirect(url_for('logout'))
         if request.form["submit"] == "valider" :
