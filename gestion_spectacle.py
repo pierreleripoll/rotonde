@@ -8,12 +8,14 @@ from werkzeug.utils import secure_filename
 from json import dumps
 import os
 import re
+from sqlalchemy import exc
 from model import*
 from jinja2 import TemplateNotFound
 from datetime import datetime
 import re
 from PIL import Image
 import shutil
+
 
 UPLOAD_FOLDER = './static/uploads'
 
@@ -143,9 +145,12 @@ def set_spectacle(nomSpectacle):
                                 if tata == datePy :
                                     #print("***********************",tata,"***placeRestante =",int(cont["nPlaces"+str(re.findall(r'\d+', dates)[0])]))
                                     date = Calendrier(date=tata,nom=cont["nom"],placesRestantes=int(cont["nPlaces"+str(re.findall(r'\d+', dates)[0])]))
-                                    insert_date(date)
-
-
+                                    try:
+                                        insert_date(date)
+                                    except exc.SQLAlchemyError :
+                                        print(exc.SQLAlchemyError)
+                                        flash("Attention dates déjà prises par un autre spectacle !")
+                                        return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle=request.form["nom"]))
                     return redirect(url_for('gestion_spectacle.spectacle',nomSpectacle=request.form["nom"]))
                 else :
                     return redirect(url_for('gestion_spectacle.set_spectacle',nomSpectacle="nouveauSpectacle"))

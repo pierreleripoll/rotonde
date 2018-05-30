@@ -165,7 +165,7 @@
 	 <div class="form-group">
         <select name="ajoutContactDB" id="ajoutContactDB">
           {%for c in contact:%}
-          <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
+          <option {%if c.id == admin.idContact%}selected="selected"{%endif%} value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
           {%endfor%}
         </select>
         <button type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>

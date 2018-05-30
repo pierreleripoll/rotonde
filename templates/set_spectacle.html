@@ -421,7 +421,7 @@
 
       }).on('filedeleted', function(event, key, jqXHR, data) {
         setTimeout(function() {
-            // window.info('Suppression réussie ! ');
+            //
             console.log("Deleted :"+key);
             var photoDeleted = document.getElementById(key);
             console.log(photoDeleted);
@@ -451,6 +451,13 @@
             createColorBase(objectForPalette);
       })
       ;
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+          {%for message in messages%}
+        window.alert('{{message}}');
+        {%endfor%}
+        {% endif %}
+      {% endwith %}
     });
 
 
@@ -488,6 +495,7 @@
 
     }
   initColorPage();
+
 </script>
 
 
@@ -647,17 +655,23 @@
         <div class="card">
           <div class="row form-group">
             <label for="typeSpectacle">Genre:</label><br>
-            <select type="text" name="typeSpectacle" class="form-control" value='{{spectacle.typeSpectacle}}'>
-              <option value="Théâtre">Théâtre</option>
-              <option value="Musique">Musique</option>
-              <option value="Danse">Danse</option>
-              <option value="Impro">Impro</option>
-              <option value="Conférence">Conférence</option>
-              <option value="Cirque">Cirque</option>
-              <option value="Performance">Performance</option>
-              <option value="Autre">Autre</option>
+            <select type="text" name="typeSpectacle" class="form-control" >
+              <option id="Théâtre" value="Théâtre">Théâtre</option>
+              <option id="Musique" value="Musique">Musique</option>
+              <option id="Danse" value="Danse">Danse</option>
+              <option id="Impro"value="Impro">Impro</option>
+              <option id="Conférence"value="Conférence">Conférence</option>
+              <option id="Cirque" value="Cirque">Cirque</option>
+              <option id="Performance" value="Performance">Performance</option>
+              <option id="Autre"value="Autre">Autre</option>
             </select><br>
           </div>
+          <script>
+            var type = '{{spectacle.typeSpectacle}}';
+            var option = document.getElementById(type);
+            option.setAttribute('selected','selected');
+
+          </script>
 
           <div class="row form-group">
             <label for="duree">Durée (en minutes):</label><br>
@@ -683,7 +697,7 @@
           <div class="row form-group">
             <select name="ajoutContactDB" id="ajoutContactDB">
               {%for c in contact:%}
-              <option value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
+              <option {%if c.id == spectacle.idContact %}selected="selected"{%endif%} value="{{c.id}}">{{c.nom}} {{c.prenom}} {{c.annee}}{{c.depart}}</option>
               {%endfor%}
             </select>
             <button class = "btn" type="button" id="addContactbutton" onclick="addNewContact();" name="addContactbutton">Ajouter Contact</button>
